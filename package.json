@@ -1,0 +1,33 @@
+{
+  "name": "MBAEX-EOS-API-Gateway",
+  "version": "0.0.1",
+  "private": true,
+  "description": "MBAEX API Gateway Project",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "main": "app.js",
+  "dependencies": {
+    "bignumber.js": "^7.2.1",
+    "commander": "^2.17.1",
+    "dotenv": "^6.0.0",
+    "eosjs": "^16.0.3",
+    "eosjs-ecc": "^4.0.3",
+    "express": "^4.16.3",
+    "nodemon": "^1.18.4",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
+    "swagger-express-mw": "^0.1.0",
+    "swagger-parser": "^5.0.5",
+    "swagger-stats": "^0.95.6"
+  },
+  "devDependencies": {
+    "should": "^7.1.0",
+    "supertest": "^1.0.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test1": "swagger project test",
+    "test": "./node_modules/.bin/mocha --reporter mochawesome ./eosapi.unit.tests.js --exit"
+  }
+}
