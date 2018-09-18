@@ -1,13 +1,10 @@
 # Synopsis
 # Build
 # Design
-# MBAEX API Gateway project in Swagger
-
-# EOS Node Cheat Sheet
 
 swagger-stats: http://api.byzanti.ne:8902/swagger-stats/ui#sws_summary
 
-# curl cheat sheet
+# API curl cheat sheet
 ```sh
 // Curl Examples for Byzanti.ne API Gateway - EOS Mainnet
 curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/json' 'http://api.byzanti.ne:8902/info' | json_pp
