@@ -1,0 +1,4 @@
+{
+    "salt": "Some key exchanged between byzantine and api customer that is quaranteed to be unique",
+    "nonce": 198
+}

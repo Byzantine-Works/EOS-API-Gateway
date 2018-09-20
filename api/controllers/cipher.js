@@ -1,3 +1,4 @@
+const client = require('./clients.js');
 var crypto = require('crypto');
 var javaEncBufferDES_CBS_PKCS5_Padding = "[B@445b84c0";
 
@@ -15,6 +16,9 @@ function decryptXStrong(enc) {
     dec += decipher.final('utf8');
     var cipherTokens = dec.split(" ");
     console.log('Decrypted strong DES/CBC/PKCS5Padding nonce:key => ' + cipherTokens[0] + ":" + cipherTokens[1]);
-    return cipherTokens[1];
+    if (cipherTokens[0] > client.getNonce(saltKey,cipherTokens[0]))
+        return cipherTokens[1];
+    else
+        throw new Error('nonce too low!');
 }
 module.exports.decryptXStrong = decryptXStrong;
