@@ -7,7 +7,7 @@
 - Provides an easy abstraction for getting balances across various EOS derivative airgrabs and airdrops and token specific contract validation with hashcodes
 - Prevents the following attacks which were in recent news:
 -- https://www.zdnet.com/article/blockchain-betting-app-mocks-competitor-for-getting-hacked-gets-hacked-four-days-later/
---https://thenextweb.com/hardfork/2018/09/18/eos-hackers-exchange-fake/
+-- https://thenextweb.com/hardfork/2018/09/18/eos-hackers-exchange-fake/
 # Build
 
 ```sh
