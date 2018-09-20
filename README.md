@@ -6,7 +6,9 @@
 - Security is enabled through a combination of nonce, private salt, api-security-key and a cipher used by both the client and server for signature. This prevents both the replay attack as well as a secure exchange of keys for signature
 - Provides an easy abstraction for getting balances across various EOS derivative airgrabs and airdrops and token specific contract validation with hashcodes
 - Prevents the following attacks which were in recent news:
+
 -- [EosBetDice hacked using eosio.token transfer exploit](https://www.zdnet.com/article/blockchain-betting-app-mocks-competitor-for-getting-hacked-gets-hacked-four-days-later/)
+
 -- [EosDex hacked with fake EOS tokens](https://thenextweb.com/hardfork/2018/09/18/eos-hackers-exchange-fake/)
 
 # Build
