@@ -3,7 +3,7 @@ info:
   version: "1.0.1"
   title: "Byzanti.ne API Gateway - Powered by ikigai & liberty block"
 # during dev, should point to your local machine
-host: local.byzanti.ne:8901
+host: localhost:8901
 # basePath prefixes all resource paths 
 basePath: /
 # 
