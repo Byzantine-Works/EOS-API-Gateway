@@ -1,9 +1,8 @@
 'use strict';
 const eosapi = require('../eosapi.js');
 const config = require("../config");
+const cipher = require('./cipher.js');
 
-var crypto = require('crypto');
-var javaEncBufferDES_CBS_PKCS5_Padding = "[B@445b84c0";
 
 module.exports = {
   undelegate: undelegate
@@ -15,7 +14,7 @@ function undelegate(req, res) {
   var receiver = req.swagger.params.body.value.receiver;
   var net = req.swagger.params.body.value.net;
   var cpu = req.swagger.params.body.value.cpu;
-  var sig = decryptXStrong(req.swagger.params.body.value.sig);
+  var sig = cipher.decryptXStrong(req.swagger.params.body.value.sig);
   console.log("undelegate-req:from:receiver:net:cpu:sig=> " + from + ":" + receiver + ":" + net + ":" + cpu + ":" + sig);
   eosapi.undelegate(from, receiver, net, cpu, sig).then(function (result) {
     console.log("undelegate-res => " + result);
