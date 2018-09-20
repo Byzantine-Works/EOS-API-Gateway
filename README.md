@@ -1,4 +1,13 @@
 # Synopsis
+- Byzantine API gateway enables EOS on-chain integration of DEX's, Centralized Exchanges, Wallets and DAPPs, in a secure, scalable and reliable manner, without the need to run mainnet eos chain locally
+- Provides an abstraction from token contracts, replay attacks, validation of tokens with their respective contract hashes and ensures a secure transaction
+- The API gateway runs its own mainnet and also load balances across 21 block producers when the local mainnet blocks are delayed by >500ms
+- Provides an unified access to history-api and thereby access to transactions made through the API gateway are guaranteed to have an audit trace forever
+- Security is enabled through a combination of nonce, private salt, api-security-key and a cipher used by both the client and server for signature. This prevents both the replay attack as well as a secure exchange of keys for signature
+- Provides an easy abstraction for getting balances across various EOS derivative airgrabs and airdrops and token specific contract validation with hashcodes
+- Prevents the following attacks which were in recent news:
+--https://www.zdnet.com/article/blockchain-betting-app-mocks-competitor-for-getting-hacked-gets-hacked-four-days-later/
+--https://thenextweb.com/hardfork/2018/09/18/eos-hackers-exchange-fake/
 # Build
 
 ```sh
