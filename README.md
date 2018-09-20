@@ -1,8 +1,19 @@
 # Synopsis
 # Build
-# Design
 
-swagger-stats: http://api.byzanti.ne:8902/swagger-stats/ui#sws_summary
+```sh
+git clone https://github.com/Byzantine-Works/EOS-API-Gateway.git
+npm install
+vi ~/etc/hosts (add loopback interface: 127.0.0.1	local.byzanti.ne)
+npm start
+curl http://local.byzanti.ne/8901/info
+```
+swagger-ui: http://local.byzanti.ne/8901/docs
+swagger-stats:  http://api.byzanti.ne:8902/swagger-stats/ui#sws_summary
+swagger-apidocs:    http://api.byzanti.ne:8901/api-docs
+swagger-editor: https://editor.swagger.io/
+
+# Design
 
 # API curl cheat sheet
 ```sh
