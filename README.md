@@ -27,13 +27,14 @@ curl http://local.byzanti.ne/8901/info
  - swagger-apidocs:    http://local.byzanti.ne:8901/api-docs
  - swagger-editor: https://editor.swagger.io/
 
-# Terminal command cheatsheet
-```sh
-kill $(lsof -t -i :8901) 
-```
-
 # Design
 //TODO
+
+# Terminal command cheatsheet
+```sh
+ps -ef | grep node
+kill $(lsof -t -i :8901) 
+```
 
 # API cheat sheet for mainnet
 ```sh
