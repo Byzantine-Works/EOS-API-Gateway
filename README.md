@@ -17,7 +17,7 @@
 git clone https://github.com/Byzantine-Works/EOS-API-Gateway.git
 npm install
 vi ~/etc/hosts (add loopback interface: 127.0.0.1	local.byzanti.ne)
-npm start
+npm start OR nodemon
 curl http://local.byzanti.ne/8901/info
 ```
 
@@ -26,6 +26,11 @@ curl http://local.byzanti.ne/8901/info
  - swagger-stats:  http://local.byzanti.ne:8901/swagger-stats/ui#sws_summary
  - swagger-apidocs:    http://local.byzanti.ne:8901/api-docs
  - swagger-editor: https://editor.swagger.io/
+
+# Terminal command cheatsheet
+```sh
+kill $(lsof -t -i :8901) 
+```
 
 # Design
 //TODO
