@@ -10,10 +10,10 @@ curl http://local.byzanti.ne/8901/info
 ```
 
 # Validate
-swagger-ui: http://local.byzanti.ne/8901/docs
-swagger-stats:  http://local.byzanti.ne:8901/swagger-stats/ui#sws_summary
-swagger-apidocs:    http://local.byzanti.ne:8901/api-docs
-swagger-editor: https://editor.swagger.io/
+ - swagger-ui: http://local.byzanti.ne/8901/docs
+ - swagger-stats:  http://local.byzanti.ne:8901/swagger-stats/ui#sws_summary
+ - swagger-apidocs:    http://local.byzanti.ne:8901/api-docs
+ - swagger-editor: https://editor.swagger.io/
 
 # Design
 //TODO
