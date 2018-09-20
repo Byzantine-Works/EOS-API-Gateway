@@ -33,7 +33,7 @@ exports.getNonce = function (salt, nonce) {
     var statefulNonce = Number(client.nonce);
     //console.log("statefulNonce => " + statefulNonce);
     if (nonce <= statefulNonce) {
-        throw new Error("nonce too low @" + nonce);
+        throw new Error("nonce too low @rnonce:@cnonce => " + nonce + ":" + statefulNonce);
     } else {
         client.nonce = statefulNonce + 1;
         fs.writeFileSync(require('path').resolve(__dirname, '../c.swp'), JSON.stringify(client, null, 4));
