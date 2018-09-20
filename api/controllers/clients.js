@@ -1,5 +1,8 @@
 fs = require("fs");
 
+//Simple file based persistence to ensure nonce is unique
+//and always higher than the last nonce used by a specific
+//API client
 //TODO Simple file based persistence for now, move to elasticsearch or sql/nosql
 // client.forEach(function(value, key) {
 //     console.log("client => " + key + " : " + value);
