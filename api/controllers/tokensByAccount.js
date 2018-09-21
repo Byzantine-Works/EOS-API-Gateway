@@ -18,7 +18,7 @@ function tokensByAccount(req, res) {
     //console.log("TokenList => " + JSON.stringify(tokenList));
     _getTokensByAccount(tokenList[i].contract, account, tokenList[i].symbol).then(function (value) {
       pass += 1;
-      if (pass == tokenList.length) {
+      if (pass === tokenList.length) {
         console.log("tokensByAccount=>count: " + theTokenArray.length); //+ " data:" + JSON.stringify(theTokenArray));        
         res.json(theTokenArray);
         //res.end();
@@ -39,7 +39,7 @@ async function _getTokensByAccount(code, account, symbol) {
     var balanceStr = balance.toString().split(' ')[0];
     var data = {
       account: account,
-      //contract: code,
+      contract: code,
       symbol: symbol,
       balance: (balanceStr ? balanceStr : "0.0000")
     };

@@ -1,3 +1,4 @@
+
 var config = {};
 //These need to be fetched dynamically via
 //DB based on weightage, and a scheduler can monitor the least
@@ -199,7 +200,82 @@ config.tokens = [{
     "name": "EOS Token",
     "symbol": "EOS",
     "contract": "eosio.token"
-  }
+  }, 
+  {
+  "name": "EOS Cannon",
+  "contract": "eoscancancan",
+  "symbol": "CAN"
+ }, 
+  {
+   "name": "Dabble",
+  "contract": "eoscafekorea",
+  "symbol": "DAB"
+ }, 
+  {
+   "name": "DEOS Games",
+  "contract": "thedeosgames",
+  "symbol": "DEOS"
+ }, 
+  {
+   "name": "EOS90s",
+  "contract": "eosninetiess",
+  "symbol": "EOSNTS"
+ }, 
+  {
+   "name": "ProChain",
+  "contract": "epraofficial",
+  "symbol": "EPRA"
+ }, 
+  {
+   "name": "First Aid",
+  "contract": "eosfaidchain",
+  "symbol": "FAID"
+ }, 
+  {
+   "name": "ITE Dice",
+  "contract": "itecointoken",
+  "symbol": "ITECOIN"
+ }, 
+  {
+   "name": "Luck Chain",
+  "contract": "eosluckchain",
+  "symbol": "LUCK"
+ }, 
+  {
+   "name": "EOS Win",
+  "contract": "eoslucktoken",
+  "symbol": "LUCKY"
+ }, 
+  {
+   "name": "More One",
+  "contract": "eosiomoreone",
+  "symbol": "MORE"
+ }, 
+  {
+   "name": "Prospectors",
+  "contract": "prospectorsg",
+  "symbol": "PGL"
+ }, 
+  {
+   "name": "Tea",
+  "contract": "linzongsheng",
+  "symbol": "TEA"
+ }, 
+  {
+   "name": "TokenPocket",
+  "contract": "tokendapppub",
+  "symbol": "TPT"
+ }, 
+  {
+   "name": "WEOS",
+  "contract": "weosservices",
+  "symbol": "WECASH"
+ }, 
+  {
+   "name": "CryptoWizards",
+  "contract": "wizboxairdro",
+  "symbol": "WIZBOX"
+}
   // ,
   // {
   //   "name": "ABC Token",
@@ -352,6 +428,81 @@ config.tokensA = [{
   "name": "EOS Token",
   "symbol": "EOS",
   "contract": "eosio.token"
+}, 
+  {
+  "name": "EOS Cannon",
+  "contract": "eoscancancan",
+  "symbol": "CAN"
+ }, 
+  {
+   "name": "Dabble",
+  "contract": "eoscafekorea",
+  "symbol": "DAB"
+ }, 
+  {
+   "name": "DEOS Games",
+  "contract": "thedeosgames",
+  "symbol": "DEOS"
+ }, 
+  {
+   "name": "EOS90s",
+  "contract": "eosninetiess",
+  "symbol": "EOSNTS"
+ }, 
+  {
+   "name": "ProChain",
+  "contract": "epraofficial",
+  "symbol": "EPRA"
+ }, 
+  {
+   "name": "First Aid",
+  "contract": "eosfaidchain",
+  "symbol": "FAID"
+ }, 
+  {
+   "name": "ITE Dice",
+  "contract": "itecointoken",
+  "symbol": "ITECOIN"
+ }, 
+  {
+   "name": "Luck Chain",
+  "contract": "eosluckchain",
+  "symbol": "LUCK"
+ }, 
+  {
+   "name": "EOS Win",
+  "contract": "eoslucktoken",
+  "symbol": "LUCKY"
+ }, 
+  {
+   "name": "More One",
+  "contract": "eosiomoreone",
+  "symbol": "MORE"
+ }, 
+  {
+   "name": "Prospectors",
+  "contract": "prospectorsg",
+  "symbol": "PGL"
+ }, 
+  {
+   "name": "Tea",
+  "contract": "linzongsheng",
+  "symbol": "TEA"
+ }, 
+  {
+   "name": "TokenPocket",
+  "contract": "tokendapppub",
+  "symbol": "TPT"
+ }, 
+  {
+   "name": "WEOS",
+  "contract": "weosservices",
+  "symbol": "WECASH"
+ }, 
+  {
+   "name": "CryptoWizards",
+  "contract": "wizboxairdro",
+  "symbol": "WIZBOX"
 }
 // ,
 // {
