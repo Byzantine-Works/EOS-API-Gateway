@@ -16,8 +16,23 @@ var parser = new swaggerParser();
 var app = require('express')();
 module.exports = app; // for testing
 
+// Original Config
+// var config = {
+//   appRoot: __dirname // required config
+// };
 var config = {
-  appRoot: __dirname // required config
+  appRoot: __dirname, // required config
+  swaggerSecurityHandlers: {
+    APIKeyHeader: function (req, authOrSecDef, scopesOrApiKey, cb) {
+      // your security code
+      if (scopesOrApiKey === 'samplekey1234') {
+        console.log('~ API Key Accepted ~');
+        cb(null);
+      } else {
+        cb(new Error('access denied!'));
+      }
+    }
+  }
 };
 
 SwaggerExpress.create(config, function (err, swaggerExpress) {
