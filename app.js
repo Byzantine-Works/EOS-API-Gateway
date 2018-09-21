@@ -16,7 +16,6 @@ var parser = new swaggerParser();
 var app = require('express')();
 module.exports = app; // for testing
 
-// Original Config
 // var config = {
 //   appRoot: __dirname // required config
 // };
