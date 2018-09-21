@@ -9,14 +9,14 @@ var theTokenArray = [];
 
 function tokensByAccount(req, res) {
   theTokenArray = [];
-  var tokenList = config.tokensA;
+  var tokenList = config.tokens;
 
   var pass = 0;
   var account = req.swagger.params.account.value;
   for (var i = 0, len = tokenList.length; i < len; i++) {
     //console.log("Processing contract => " + tokenList[i].contract + ":" + tokenList[i].symbol);
     //console.log("TokenList => " + JSON.stringify(tokenList));
-    _getTokensByAccount(tokenList[i].contract, account, tokenList[i].symbol).then(function (value) {
+    _getTokensByAccount(tokenList[i].contract, account, tokenList[i].symbol,tokenList[i].precision,tokenList[i].hash).then(function (value) {
       pass += 1;
       if (pass === tokenList.length) {
         console.log("tokensByAccount=>count: " + theTokenArray.length); //+ " data:" + JSON.stringify(theTokenArray));        
@@ -33,15 +33,18 @@ function tokensByAccount(req, res) {
   }
 }
 
-async function _getTokensByAccount(code, account, symbol) {
+async function _getTokensByAccount(code, account, symbol,precision,hash) {
   const balance = await eosapi.getTokensByAccount(code, account, symbol);
-  if (balance != undefined && balance.length != 0) {
+  if (balance != undefined && balance.length != 0 && !isNaN(balance.toString().split(' ')[0])) {
     var balanceStr = balance.toString().split(' ')[0];
     var data = {
       account: account,
       contract: code,
       symbol: symbol,
-      balance: (balanceStr ? balanceStr : "0.0000")
+      balance: balanceStr,
+      precision: precision,
+      hash: hash
+      //balance: (balanceStr ? balanceStr : "0.0000")
     };
     //console.log("size is" + theTokenArray.length + " pushing...." + JSON.stringify(data));
     theTokenArray.push(data);

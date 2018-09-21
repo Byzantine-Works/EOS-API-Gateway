@@ -33,13 +33,13 @@ config.eoschain = [{
   //   debug: false,
   //   verbose: false
   // },
-  // // {
-  // //   eosVersion: 'a228b1dc',
-  // //   chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
-  // //   httpEndpoint: 'http://api.eoslaomao.com',
-  // //   debug: false,
-  // //   verbose: false
-  // // },
+  // {
+  //   eosVersion: 'a228b1dc',
+  //   chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
+  //   httpEndpoint: 'http://api.eoslaomao.com',
+  //   debug: false,
+  //   verbose: false
+  // },
   // {
   //   eosVersion: 'a228b1dc',
   //   chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
@@ -64,217 +64,303 @@ config.contracts = {
 config.tokens = [{
     "name": "BitEye",
     "contract": "biteyebiteye",
-    "symbol": "BITI"
+    "symbol": "BITI",
+    "precision": 4,
+    "hash":"f210f606e0f1f35779428dc2167f45b6f5105fc4e47c60eaa9039f6a81cbd926"
   },
   {
     "name": "BOID",
     "contract": "boidcomtoken",
-    "symbol": "BOID"
+    "symbol": "BOID",
+    "precision": 4,
+    "hash": "641f336aa1d08526201599c3c0ddb7a646e5ac8f9fd2493f56414d0422a0f957"
   },
   {
     "name": "Challenge DAC",
     "contract": "challengedac",
-    "symbol": "CHL"
+    "symbol": "CHL",
+    "precision": 4,
+    "hash": "2038a34c8bede2a99f7d4a18d5a81b6f3b4626f4b46e522eca28de0f6fe259b1"
   },
   {
     "name": "EDNA",
     "contract": "ednazztokens",
-    "symbol": "EDNA"
+    "symbol": "EDNA",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "AdderalCoin",
     "contract": "eosadddddddd",
-    "symbol": "ADD"
+    "symbol": "ADD",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "Atidium",
     "contract": "eosatidiumio",
-    "symbol": "ATD"
+    "symbol": "ATD",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "eosBlack",
     "contract": "eosblackteam",
-    "symbol": "BLACK"
+    "symbol": "BLACK",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "eosDAC",
     "contract": "eosdactokens",
-    "symbol": "EOSDAC"
+    "symbol": "EOSDAC",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "Chaince",
     "contract": "eosiochaince",
-    "symbol": "CET"
+    "symbol": "CET",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "Everipedia",
     "contract": "everipediaiq",
-    "symbol": "IQ"
+    "symbol": "IQ",
+    "precision": 3,
+    "hash": ""
   },
   {
     "name": "CETOS token",
     "contract": "gyztomjugage",
-    "symbol": "CETOS"
+    "symbol": "CETOS",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "Horus Pay",
     "contract": "horustokenio",
-    "symbol": "HORUS"
+    "symbol": "HORUS",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "Poorman Token",
     "contract": "poormantoken",
-    "symbol": "POOR"
+    "symbol": "POOR",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "RIDL",
     "contract": "ridlridlcoin",
-    "symbol": "RIDL"
+    "symbol": "RIDL",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "KARMA",
     "contract": "therealkarma",
-    "symbol": "KARMA"
+    "symbol": "KARMA",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "TRYBE",
     "contract": "trybenetwork",
-    "symbol": "TRYBE"
+    "symbol": "TRYBE",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "EOS BET",
     "symbol": "BET",
-    "contract": "betdividends"
+    "contract": "betdividends",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "EETH",
     "symbol": "EETH",
-    "contract": "ethsidechain"
+    "contract": "ethsidechain",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "EOX Commerce",
     "symbol": "EOX",
-    "contract": "eoxeoxeoxeox"
+    "contract": "eoxeoxeoxeox",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "EOS Sports Bets",
     "symbol": "ESB",
-    "contract": "esbcointoken"
+    "contract": "esbcointoken",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "EVR Token",
     "symbol": "EVR",
-    "contract": "eosvrtokenss"
+    "contract": "eosvrtokenss",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "IPOS",
     "symbol": "IPOS",
-    "contract": "oo1122334455"
+    "contract": "oo1122334455",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "iRespo",
     "symbol": "IRESPO",
-    "contract": "irespotokens"
+    "contract": "irespotokens",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "MEET.ONE",
     "symbol": "MEETONE",
-    "contract": "eosiomeetone"
+    "contract": "eosiomeetone",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "Oracle Chain",
     "symbol": "OCT",
-    "contract": "octtothemoon"
+    "contract": "octtothemoon",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "Crypto Peso",
     "symbol": "PSO",
-    "contract": "cryptopesosc"
+    "contract": "cryptopesosc",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "WiZZ",
     "symbol": "WIZZ",
-    "contract": "wizznetwork1"
+    "contract": "wizznetwork1",
+    "precision": 4,
+    "hash": ""
   },
   {
     "name": "EOS Token",
     "symbol": "EOS",
-    "contract": "eosio.token"
+    "contract": "eosio.token",
+    "precision": 4,
+    "hash": ""
   }, 
   {
   "name": "EOS Cannon",
+  "symbol": "CAN",
   "contract": "eoscancancan",
-  "symbol": "CAN"
+  "precision": 4,
+  "hash": ""
  }, 
   {
    "name": "Dabble",
   "contract": "eoscafekorea",
-  "symbol": "DAB"
+  "symbol": "DAB",
+  "precision": 4,
+  "hash": ""
  }, 
   {
    "name": "DEOS Games",
   "contract": "thedeosgames",
-  "symbol": "DEOS"
+  "symbol": "DEOS",
+  "precision": 4,
+  "hash": ""
  }, 
   {
    "name": "EOS90s",
   "contract": "eosninetiess",
-  "symbol": "EOSNTS"
+  "symbol": "EOSNTS",
+  "precision": 4,
+  "hash": ""
  }, 
   {
    "name": "ProChain",
   "contract": "epraofficial",
-  "symbol": "EPRA"
+  "symbol": "EPRA",
+  "precision": 4,
+  "hash": ""
  }, 
   {
    "name": "First Aid",
   "contract": "eosfaidchain",
-  "symbol": "FAID"
+  "symbol": "FAID",
+  "precision": 4,
+  "hash": ""
  }, 
   {
    "name": "ITE Dice",
   "contract": "itecointoken",
-  "symbol": "ITECOIN"
+  "symbol": "ITECOIN",
+  "precision": 4,
+  "hash": ""
  }, 
   {
    "name": "Luck Chain",
   "contract": "eosluckchain",
-  "symbol": "LUCK"
+  "symbol": "LUCK",
+  "precision": 4,
+  "hash": ""
  }, 
   {
    "name": "EOS Win",
   "contract": "eoslucktoken",
-  "symbol": "LUCKY"
+  "symbol": "LUCKY",
+  "precision": 4,
+  "hash": ""
  }, 
   {
    "name": "More One",
   "contract": "eosiomoreone",
-  "symbol": "MORE"
+  "symbol": "MORE",
+  "precision": 4,
+  "hash": ""
  }, 
   {
    "name": "Prospectors",
   "contract": "prospectorsg",
-  "symbol": "PGL"
+  "symbol": "PGL",
+  "precision": 4,
+  "hash": ""
  }, 
   {
    "name": "Tea",
   "contract": "linzongsheng",
-  "symbol": "TEA"
+  "symbol": "TEA",
+  "precision": 4,
+  "hash": ""
  }, 
   {
    "name": "TokenPocket",
   "contract": "tokendapppub",
-  "symbol": "TPT"
+  "symbol": "TPT",
+  "precision": 4,
+  "hash": ""
  }, 
   {
    "name": "WEOS",
   "contract": "weosservices",
-  "symbol": "WECASH"
+  "symbol": "WECASH",
+  "precision": 4,
+  "hash": ""
  }, 
   {
    "name": "CryptoWizards",
   "contract": "wizboxairdro",
-  "symbol": "WIZBOX"
+  "symbol": "WIZBOX",
+  "precision": 4,
+  "hash": ""
 }
   // ,
   // {
@@ -287,233 +373,5 @@ config.tokens = [{
   //   "symbol": "SYS",
   //   "contract": "eosio.token"
   // }
-];
-
-config.tokensA = [{
-  "name": "BitEye",
-  "contract": "biteyebiteye",
-  "symbol": "BITI"
-},
-{
-  "name": "BOID",
-  "contract": "boidcomtoken",
-  "symbol": "BOID"
-},
-{
-  "name": "Challenge DAC",
-  "contract": "challengedac",
-  "symbol": "CHL"
-},
-{
-  "name": "EDNA",
-  "contract": "ednazztokens",
-  "symbol": "EDNA"
-},
-{
-  "name": "AdderalCoin",
-  "contract": "eosadddddddd",
-  "symbol": "ADD"
-},
-{
-  "name": "Atidium",
-  "contract": "eosatidiumio",
-  "symbol": "ATD"
-},
-{
-  "name": "eosBlack",
-  "contract": "eosblackteam",
-  "symbol": "BLACK"
-},
-{
-  "name": "eosDAC",
-  "contract": "eosdactokens",
-  "symbol": "EOSDAC"
-},
-{
-  "name": "Chaince",
-  "contract": "eosiochaince",
-  "symbol": "CET"
-},
-{
-  "name": "Everipedia",
-  "contract": "everipediaiq",
-  "symbol": "IQ"
-},
-{
-  "name": "CETOS token",
-  "contract": "gyztomjugage",
-  "symbol": "CETOS"
-},
-{
-  "name": "Horus Pay",
-  "contract": "horustokenio",
-  "symbol": "HORUS"
-},
-{
-  "name": "Poorman Token",
-  "contract": "poormantoken",
-  "symbol": "POOR"
-},
-{
-  "name": "RIDL",
-  "contract": "ridlridlcoin",
-  "symbol": "RIDL"
-},
-{
-  "name": "KARMA",
-  "contract": "therealkarma",
-  "symbol": "KARMA"
-},
-{
-  "name": "TRYBE",
-  "contract": "trybenetwork",
-  "symbol": "TRYBE"
-},
-{
-  "name": "EOS BET",
-  "symbol": "BET",
-  "contract": "betdividends"
-},
-{
-  "name": "EETH",
-  "symbol": "EETH",
-  "contract": "ethsidechain"
-},
-{
-  "name": "EOX Commerce",
-  "symbol": "EOX",
-  "contract": "eoxeoxeoxeox"
-},
-{
-  "name": "EOS Sports Bets",
-  "symbol": "ESB",
-  "contract": "esbcointoken"
-},
-{
-  "name": "EVR Token",
-  "symbol": "EVR",
-  "contract": "eosvrtokenss"
-},
-{
-  "name": "IPOS",
-  "symbol": "IPOS",
-  "contract": "oo1122334455"
-},
-{
-  "name": "iRespo",
-  "symbol": "IRESPO",
-  "contract": "irespotokens"
-},
-{
-  "name": "MEET.ONE",
-  "symbol": "MEETONE",
-  "contract": "eosiomeetone"
-},
-{
-  "name": "Oracle Chain",
-  "symbol": "OCT",
-  "contract": "octtothemoon"
-},
-{
-  "name": "Crypto Peso",
-  "symbol": "PSO",
-  "contract": "cryptopesosc"
-},
-{
-  "name": "WiZZ",
-  "symbol": "WIZZ",
-  "contract": "wizznetwork1"
-},
-{
-  "name": "EOS Token",
-  "symbol": "EOS",
-  "contract": "eosio.token"
-}, 
-  {
-  "name": "EOS Cannon",
-  "contract": "eoscancancan",
-  "symbol": "CAN"
- }, 
-  {
-   "name": "Dabble",
-  "contract": "eoscafekorea",
-  "symbol": "DAB"
- }, 
-  {
-   "name": "DEOS Games",
-  "contract": "thedeosgames",
-  "symbol": "DEOS"
- }, 
-  {
-   "name": "EOS90s",
-  "contract": "eosninetiess",
-  "symbol": "EOSNTS"
- }, 
-  {
-   "name": "ProChain",
-  "contract": "epraofficial",
-  "symbol": "EPRA"
- }, 
-  {
-   "name": "First Aid",
-  "contract": "eosfaidchain",
-  "symbol": "FAID"
- }, 
-  {
-   "name": "ITE Dice",
-  "contract": "itecointoken",
-  "symbol": "ITECOIN"
- }, 
-  {
-   "name": "Luck Chain",
-  "contract": "eosluckchain",
-  "symbol": "LUCK"
- }, 
-  {
-   "name": "EOS Win",
-  "contract": "eoslucktoken",
-  "symbol": "LUCKY"
- }, 
-  {
-   "name": "More One",
-  "contract": "eosiomoreone",
-  "symbol": "MORE"
- }, 
-  {
-   "name": "Prospectors",
-  "contract": "prospectorsg",
-  "symbol": "PGL"
- }, 
-  {
-   "name": "Tea",
-  "contract": "linzongsheng",
-  "symbol": "TEA"
- }, 
-  {
-   "name": "TokenPocket",
-  "contract": "tokendapppub",
-  "symbol": "TPT"
- }, 
-  {
-   "name": "WEOS",
-  "contract": "weosservices",
-  "symbol": "WECASH"
- }, 
-  {
-   "name": "CryptoWizards",
-  "contract": "wizboxairdro",
-  "symbol": "WIZBOX"
-}
-// ,
-// {
-//   "name": "ABC Token",
-//   "symbol": "ABC",
-//   "contract": "eosio.token"
-// },
-// {
-//   "name": "SYS Token",
-//   "symbol": "SYS",
-//   "contract": "eosio.token"
-// }
 ];
 module.exports = config;

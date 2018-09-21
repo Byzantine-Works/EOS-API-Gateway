@@ -482,12 +482,12 @@ definitions:
     type: array
     items:
       type: object
-      example: {name: Everipedia, contract: everipediaiq,symbol: IQ}
+      example: {name: Everipedia, contract: everipediaiq,symbol: IQ, precision: 3,hash: 42206a89a3873c8b15bda5178ca0e2da6b223597177bc9abe3980c43c860e3fa}
   tokensByAccountResponse:
     type: array
     items:
       type: object
-      example: {account: gi3dcnjshege, contract: everipediaiq,symbol: IQ, balance: '5223.0000'}
+      example: {account: gi3dcnjshege, contract: everipediaiq,symbol: IQ, balance: '5223.0000', precision: 3,hash: 42206a89a3873c8b15bda5178ca0e2da6b223597177bc9abe3980c43c860e3fa}
   transferResponse:
     type: object
     items:

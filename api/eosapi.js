@@ -51,7 +51,7 @@ async function getAllCurrentAirDropTokens() {
     for (var i = tokens.length; i--;) {
         var token = tokens[i];
         //console.log("TOKEN IS " + JSON.stringify(token));
-        delete token.contract;
+        //delete token.contract;
         //token.splice(2, 1);
     }
     return tokens;
