@@ -45,4 +45,5 @@ function getContractForSymbol(amount) {
       return tokenList[i].contract;
     }
   }
+  throw new Error("Invalid token symbol ", symbol);
 }

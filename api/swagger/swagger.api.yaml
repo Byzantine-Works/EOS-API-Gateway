@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
-  version: "1.0.1"
-  title: "Byzanti.ne API Gateway - Powered by Liberty Block"
+  version: "1.2"
+  title: "Byzanti.ne API Gateway - Powered by ikigai & liberty block"
 # during dev, should point to your local machine
 host: api.byzanti.ne:8902
 # basePath prefixes all resource paths 
@@ -23,7 +23,7 @@ paths:
     x-swagger-router-controller: info
     get:
       tags:
-        - Base API {account,tokens,transaction,actions}
+        - Base API {info,account,tokens@account,transaction,actions}
       description: Returns 'info' of the node to the calling application
       # used as the method name of the controller
       operationId: info
@@ -48,8 +48,8 @@ paths:
     x-swagger-router-controller: tokens
     get:
       tags:
-        - Base API {account,tokens,transaction,actions}
-      description: Returns All *legit EOS Derivative Tokens Airdropped, Airgrabbed and ICO'd with an operational contract,symbol
+        - Base API {info,account,tokens@account,transaction,actions}
+      description: Returns All *legit EOS Derivative Tokens Airdropped, Airgrabbed with an original contract,symbol
       operationId: tokens
      # parameters:
       # - ({none})
@@ -72,8 +72,8 @@ paths:
     x-swagger-router-controller: tokensByAccount
     get:
       tags:
-        - Base API {account,tokens,transaction,actions}
-      description: Returns All EOS and Derivative Tokens Airdropped, Airgrabbed and ICO'd that a user has in his account 
+        - Base API {info,account,tokens@account,transaction,actions}
+      description: Returns All EOS and Derivative Tokens Airdropped, Airgrabbed a user has in his account 
       operationId: tokensByAccount
       parameters:
       - name: account
@@ -93,13 +93,13 @@ paths:
     x-swagger-router-controller: transfer
     post:
       tags:
-        - Transfer API {EOS & Derivative Tokens}
+        - Transfer API {EOS & Derivative Tokens}. This API interacts with the specific token contract.
       description: Returns transaction response to transfer on-chain action {from account} {to account} {amount} {memo} 
       operationId: transfer
       parameters:
         - name: body
           in: body
-          description: Body should encapsulate {from=Account to transfer from}, {to=Account to transfer to}, {amount=amout to transfer such as 1.0000 EOS or 1.0000 IQ},{memo=memo for the transfer which is a string such as 'UUID' or 'deposit into exchange for 78934'}
+          description: Body should encapsulate {from=Account to transfer from}, {to=Account to transfer to}, {amount=amout to transfer such as 1.0000 EOS or 1.000 IQ},{memo=memo for the transfer which is a string such as 'UUID' or 'deposit into exchange for 78934'}
           required: true
           schema:
             properties:
@@ -130,7 +130,7 @@ paths:
     x-swagger-router-controller: getTransaction
     get:
       tags:
-        - Base API {account,tokens,transaction,actions}
+        - Base API {info,account,tokens@account,transaction,actions}
       description: Returns transaction details of a previously executed on-chain transaction. Used to validate with certainty successfull completion, and or reversed transaction.
       operationId: getTransaction
       parameters:
@@ -151,8 +151,8 @@ paths:
     x-swagger-router-controller: getAccount
     get:
       tags:
-        - Base API {account,tokens,transaction,actions}
-      description: Returns EOS blockchain account details including avail or staked RAM, CPU.
+        - Base API {info,account,tokens@account,transaction,actions}
+      description: Returns EOS blockchain account details including avail or staked RAM, Net & CPU.
       operationId: getAccount
       parameters:
       - name: account
@@ -172,7 +172,7 @@ paths:
     x-swagger-router-controller: getActions
     get:
       tags:
-        - Base API {account,tokens,transaction,actions}
+        - Base API {info,account,tokens@account,transaction,actions}
       description: Returns actions the given account partook in along with the transaction details. Use pos and offset as a cursor to navigate the items.
       operationId: getActions
       parameters:
@@ -197,11 +197,32 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /isTransactionIrreversible:
+    x-swagger-router-controller: isTransactionIrreversible
+    get:
+      tags:
+        - Base API {info,account,tokens@account,transaction,actions}
+      description: Returns boolean based on the state of transaction irreversibility.
+      operationId: isTransactionIrreversible
+      parameters:
+        - in: query
+          name: id
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/transferResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /getProducers:
     x-swagger-router-controller: getProducers
     get:
       tags:
-        - Block Producer API {Producer List, Voting & Unstaking} *mainnet
+        - Block Producer API {Voting, Undelegate, Bandwidth, Buy/Sell RAM} *mainnet only*
       description: Returns the list of 21 producers.
       operationId: getProducers
       responses:
@@ -217,13 +238,13 @@ paths:
     x-swagger-router-controller: voteProducer
     post:
       tags:
-        - Block Producer API {Producer List, Voting & Unstaking} *mainnet
+        - Block Producer API {Voting, Undelegate, Bandwidth, Buy/Sell RAM} *mainnet only*
       description: Lets you vote for a specific producer account 
       operationId: voteProducer
       parameters:
         - name: body
           in: body
-          description: Body should encapsulate {voter=Account to transfer from}, {producer=comma seperated values of producers to vote for},{sig=voter signature}
+          description: Body should encapsulate {voter=Account to transfer from}, {producer=producer to vote for},{sig=voter signature}
           required: true
           schema:
             properties:
@@ -250,7 +271,7 @@ paths:
     x-swagger-router-controller: undelegate
     post:
       tags:
-        - Block Producer API {Producer List, Voting & Unstaking} *mainnet
+        - Block Producer API {Voting, Undelegate, Bandwidth, Buy/Sell RAM} *mainnet only*
       description: Undelegate specific NET and CPU bandwidth 
       operationId: undelegate
       parameters:
@@ -287,7 +308,7 @@ paths:
     x-swagger-router-controller: getBandwidth
     get:
       tags:
-        - Block Producer API {Producer List, Voting & Unstaking} *mainnet
+        - Block Producer API {Voting, Undelegate, Bandwidth, Buy/Sell RAM} *mainnet only*
       description: Returns account bandwidth staked in EOS for network and cpu.
       operationId: getBandwidth
       parameters:
@@ -308,7 +329,7 @@ paths:
     x-swagger-router-controller: buyRam
     post:
       tags:
-        - Block Producer API {Producer List, Voting & Unstaking} *mainnet
+        - Block Producer API {Voting, Undelegate, Bandwidth, Buy/Sell RAM} *mainnet only*
       description: Buy Ram 
       operationId: buyRam
       parameters:
@@ -343,7 +364,7 @@ paths:
     x-swagger-router-controller: buyRamBytes
     post:
       tags:
-        - Block Producer API {Producer List, Voting & Unstaking} *mainnet
+        - Block Producer API {Voting, Undelegate, Bandwidth, Buy/Sell RAM} *mainnet only*
       description: Buy Ram in specified bytes 
       operationId: buyRamBytes
       parameters:
@@ -378,7 +399,7 @@ paths:
     x-swagger-router-controller: sellRamBytes
     post:
       tags:
-        - Block Producer API {Producer List, Voting & Unstaking} *mainnet
+        - Block Producer API {Voting, Undelegate, Bandwidth, Buy/Sell RAM} *mainnet only*
       description: Sell Ram in specified bytes 
       operationId: sellRamBytes
       parameters:
@@ -411,8 +432,8 @@ paths:
     x-swagger-router-controller: getRamPrice
     get:
       tags:
-        - Block Producer API {Producer List, Voting & Unstaking} *mainnet
-      description: Returns RAM prices based on supply/quote and the Bancor algorithm
+        - Block Producer API {Voting, Undelegate, Bandwidth, Buy/Sell RAM} *mainnet only*
+      description: Returns RAM prices based on supply/quote and Bancor algorithm
       operationId: getRamPrice
       responses:
         "200":
@@ -461,12 +482,12 @@ definitions:
     type: array
     items:
       type: object
-      example: {name: Everipedia, contract: everipediaiq,symbol: IQ}
+      example: {name: Everipedia, contract: everipediaiq,symbol: IQ, precision: 3,hash: 42206a89a3873c8b15bda5178ca0e2da6b223597177bc9abe3980c43c860e3fa}
   tokensByAccountResponse:
     type: array
     items:
       type: object
-      example: {account: gi3dcnjshege, contract: everipediaiq,symbol: IQ, balance: '5223.0000'}
+      example: {account: gi3dcnjshege, contract: everipediaiq,symbol: IQ, balance: '5223.0000', precision: 3,hash: 42206a89a3873c8b15bda5178ca0e2da6b223597177bc9abe3980c43c860e3fa}
   transferResponse:
     type: object
     items:

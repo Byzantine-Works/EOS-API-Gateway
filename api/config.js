@@ -1,4 +1,3 @@
-
 var config = {};
 //These need to be fetched dynamically via
 //DB based on weightage, and a scheduler can monitor the least
@@ -66,7 +65,7 @@ config.tokens = [{
     "contract": "biteyebiteye",
     "symbol": "BITI",
     "precision": 4,
-    "hash":"f210f606e0f1f35779428dc2167f45b6f5105fc4e47c60eaa9039f6a81cbd926"
+    "hash": "f210f606e0f1f35779428dc2167f45b6f5105fc4e47c60eaa9039f6a81cbd926"
   },
   {
     "name": "BOID",
@@ -256,122 +255,111 @@ config.tokens = [{
     "contract": "eosio.token",
     "precision": 4,
     "hash": ""
-  }, 
+  },
   {
-  "name": "EOS Cannon",
-  "symbol": "CAN",
-  "contract": "eoscancancan",
-  "precision": 4,
-  "hash": ""
- }, 
+    "name": "EOS Cannon",
+    "symbol": "CAN",
+    "contract": "eoscancancan",
+    "precision": 4,
+    "hash": ""
+  },
   {
-   "name": "Dabble",
-  "contract": "eoscafekorea",
-  "symbol": "DAB",
-  "precision": 4,
-  "hash": ""
- }, 
+    "name": "Dabble",
+    "contract": "eoscafekorea",
+    "symbol": "DAB",
+    "precision": 4,
+    "hash": ""
+  },
   {
-   "name": "DEOS Games",
-  "contract": "thedeosgames",
-  "symbol": "DEOS",
-  "precision": 4,
-  "hash": ""
- }, 
+    "name": "DEOS Games",
+    "contract": "thedeosgames",
+    "symbol": "DEOS",
+    "precision": 4,
+    "hash": ""
+  },
   {
-   "name": "EOS90s",
-  "contract": "eosninetiess",
-  "symbol": "EOSNTS",
-  "precision": 4,
-  "hash": ""
- }, 
+    "name": "EOS90s",
+    "contract": "eosninetiess",
+    "symbol": "EOSNTS",
+    "precision": 4,
+    "hash": ""
+  },
   {
-   "name": "ProChain",
-  "contract": "epraofficial",
-  "symbol": "EPRA",
-  "precision": 4,
-  "hash": ""
- }, 
+    "name": "ProChain",
+    "contract": "epraofficial",
+    "symbol": "EPRA",
+    "precision": 4,
+    "hash": ""
+  },
   {
-   "name": "First Aid",
-  "contract": "eosfaidchain",
-  "symbol": "FAID",
-  "precision": 4,
-  "hash": ""
- }, 
+    "name": "First Aid",
+    "contract": "eosfaidchain",
+    "symbol": "FAID",
+    "precision": 4,
+    "hash": ""
+  },
   {
-   "name": "ITE Dice",
-  "contract": "itecointoken",
-  "symbol": "ITECOIN",
-  "precision": 4,
-  "hash": ""
- }, 
+    "name": "ITE Dice",
+    "contract": "itecointoken",
+    "symbol": "ITECOIN",
+    "precision": 4,
+    "hash": ""
+  },
   {
-   "name": "Luck Chain",
-  "contract": "eosluckchain",
-  "symbol": "LUCK",
-  "precision": 4,
-  "hash": ""
- }, 
+    "name": "Luck Chain",
+    "contract": "eosluckchain",
+    "symbol": "LUCK",
+    "precision": 4,
+    "hash": ""
+  },
   {
-   "name": "EOS Win",
-  "contract": "eoslucktoken",
-  "symbol": "LUCKY",
-  "precision": 4,
-  "hash": ""
- }, 
+    "name": "EOS Win",
+    "contract": "eoslucktoken",
+    "symbol": "LUCKY",
+    "precision": 4,
+    "hash": ""
+  },
   {
-   "name": "More One",
-  "contract": "eosiomoreone",
-  "symbol": "MORE",
-  "precision": 4,
-  "hash": ""
- }, 
+    "name": "More One",
+    "contract": "eosiomoreone",
+    "symbol": "MORE",
+    "precision": 4,
+    "hash": ""
+  },
   {
-   "name": "Prospectors",
-  "contract": "prospectorsg",
-  "symbol": "PGL",
-  "precision": 4,
-  "hash": ""
- }, 
+    "name": "Prospectors",
+    "contract": "prospectorsg",
+    "symbol": "PGL",
+    "precision": 4,
+    "hash": ""
+  },
   {
-   "name": "Tea",
-  "contract": "linzongsheng",
-  "symbol": "TEA",
-  "precision": 4,
-  "hash": ""
- }, 
+    "name": "Tea",
+    "contract": "linzongsheng",
+    "symbol": "TEA",
+    "precision": 4,
+    "hash": ""
+  },
   {
-   "name": "TokenPocket",
-  "contract": "tokendapppub",
-  "symbol": "TPT",
-  "precision": 4,
-  "hash": ""
- }, 
+    "name": "TokenPocket",
+    "contract": "tokendapppub",
+    "symbol": "TPT",
+    "precision": 4,
+    "hash": ""
+  },
   {
-   "name": "WEOS",
-  "contract": "weosservices",
-  "symbol": "WECASH",
-  "precision": 4,
-  "hash": ""
- }, 
+    "name": "WEOS",
+    "contract": "weosservices",
+    "symbol": "WECASH",
+    "precision": 4,
+    "hash": ""
+  },
   {
-   "name": "CryptoWizards",
-  "contract": "wizboxairdro",
-  "symbol": "WIZBOX",
-  "precision": 4,
-  "hash": ""
-}
-  // ,
-  // {
-  //   "name": "ABC Token",
-  //   "symbol": "ABC",
-  //   "contract": "eosio.token"
-  // },
-  // {
-  //   "name": "SYS Token",
-  //   "symbol": "SYS",
-  //   "contract": "eosio.token"
-  // }
+    "name": "CryptoWizards",
+    "contract": "wizboxairdro",
+    "symbol": "WIZBOX",
+    "precision": 0,
+    "hash": ""
+  }
 ];
 module.exports = config;

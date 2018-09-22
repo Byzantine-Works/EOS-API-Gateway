@@ -1,6 +1,6 @@
 {
     "name": "Byzantine Web Wallet",
     "apirate": 0,
-    "salt": "Some key exchanged between byzantine and api customer that is quaranteed to be unique",
+    "salt": "EOS5EzN7oea3YmT1fNmynY7hfa5C9sb4Xvmpi2xEGchQErnGDzXEi",
     "nonce": 100
 }

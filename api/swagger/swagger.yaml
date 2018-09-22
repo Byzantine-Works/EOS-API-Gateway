@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "1.0.1"
+  version: "1.2"
   title: "Byzanti.ne API Gateway - Powered by ikigai & liberty block"
 # during dev, should point to your local machine
 host: local.byzanti.ne:8901
