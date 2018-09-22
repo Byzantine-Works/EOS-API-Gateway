@@ -41,7 +41,7 @@ exports.getNonce = function (key, nonce) {
     if (nonce <= statefulNonce) {
         throw new Error("nonce too low @rnonce:@cnonce => " + nonce + ":" + statefulNonce);
     } else {
-        client.nonce = statefulNonce + 1;
+        client.nonce = nonce;
         fs.writeFileSync(require('path').resolve(__dirname, '../c.swp'), JSON.stringify(client, null, 4));
         //  console.log("client => " + JSON.stringify(client));
         return statefulNonce;
