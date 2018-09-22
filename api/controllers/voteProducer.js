@@ -1,7 +1,7 @@
 'use strict';
 const eosapi = require('../eosapi.js');
 const config = require("../config");
-const cipher = require('./cipher.js');
+const cipher = require('./decipher.js');
 
 module.exports = {
   voteProducer: voteProducer

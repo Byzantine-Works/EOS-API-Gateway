@@ -1,4 +1,5 @@
 fs = require("fs");
+lodash = require("lodash");
 
 //Simple file based persistence to ensure nonce is unique
 //and always higher than the last nonce used by a specific
@@ -29,12 +30,14 @@ fs = require("fs");
 //     return clients;
 // };
 
-exports.getNonce = function (salt, nonce) {
-    console.log("clients.getNonce for salt:nonce=> " + salt + ":" + nonce);
+exports.getNonce = function (key, nonce) {
+    console.log("clients.getNonce for key:nonce=> " + key + ":" + nonce);
     //console.log('Path of file in parent dir:', require('path').resolve(__dirname, '../c.json'));
     var client = JSON.parse(fs.readFileSync(require('path').resolve(__dirname, '../c.swp')));
-    var statefulNonce = Number(client.nonce);
-    //console.log("statefulNonce => " + statefulNonce);
+    //var client = lodash.filter(clients, x => x.salt === key);
+    //console.log(JSON.stringify(client));
+    var statefulNonce = client.nonce;
+    console.log("statefulNonce => " + statefulNonce);
     if (nonce <= statefulNonce) {
         throw new Error("nonce too low @rnonce:@cnonce => " + nonce + ":" + statefulNonce);
     } else {

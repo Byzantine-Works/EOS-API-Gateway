@@ -1,6 +1,6 @@
 {
-    "name": "Byzantine Web Wallet",
+    "name": "Byzantine Skinny Web Wallet",
     "apirate": 0,
-    "salt": "EOS5EzN7oea3YmT1fNmynY7hfa5C9sb4Xvmpi2xEGchQErnGDzXEi",
-    "nonce": 100
+    "salt": "bf32eb1e0b28d4b75bb1da9eaa4c5b02",
+    "nonce": 102
 }

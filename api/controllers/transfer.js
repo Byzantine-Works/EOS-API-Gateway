@@ -1,6 +1,6 @@
 'use strict';
 const eosapi = require('../eosapi.js');
-const cipher = require('./cipher.js');
+const cipher = require('./decipher.js');
 const config = require("../config");
 
 module.exports = {
@@ -37,9 +37,13 @@ function transfer(req, res) {
 
 function getContractForSymbol(amount) {
   console.log("getContractForSymbol => " + amount);
-  var tokenList = config.tokensA;
+  var tokenList = config.tokens;
   var symbol = amount.toString().split(' ')[1];
-  var contract;
+  // var contract = lodash.filter(tokenList, x => x.symbol === symbol);
+  // if (contract == null)
+  //   throw new Error("Invalid token symbol ", symbol);
+  // else
+  //   return contract.contract;
   for (var i = 0, len = tokenList.length; i < len; i++) {
     if (tokenList[i].symbol == symbol) {
       return tokenList[i].contract;
