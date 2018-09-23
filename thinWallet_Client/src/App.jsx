@@ -37,6 +37,7 @@ class App extends React.Component {
 
     encrypt (nonce) {
         var iv = new Buffer('0000000000000000');
+        let key = Config.saltKey;
         let message = nonce.toString()+' '+this.props.privateKey;
         var decodeKey = crypto.createHash('sha256').update(key, 'utf-8').digest();
           var cipher = crypto.createCipheriv('aes-256-cbc', decodeKey, iv);
