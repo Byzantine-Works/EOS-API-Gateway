@@ -355,7 +355,7 @@ config.tokens = [{
     "name": "CryptoWizards",
     "contract": "wizboxairdro",
     "symbol": "WIZBOX",
-    "precision": 4,
+    "precision": 0,
     "hash": "97dbb012db9aa475912f060be1c9bda2347cd93b9f9acc6c1eae9d10eb2164d2"
   }
 ];
