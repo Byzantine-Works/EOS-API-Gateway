@@ -60,13 +60,13 @@ class App extends React.Component {
 
         const socket = openSocket('http://localhost:8000');
         let randChannel = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        socket.emit('user', [Config.apiKey, randChannel]);
+        socket.emit('user', [Config.saltKey, randChannel]);
 
         let that = this;
 
         socket.on(randChannel, async function (data) {
             let objReq = {};
-            objReq.sig = await that.encrypt(152);
+            objReq.sig = await that.encrypt(data);
             // objReq.sig = "lSuiilNArIohqITCfEVHBQmHsa30bwSlIiLA/UJR1RLavKSF1MjjpvSAXz9Kr12zIGVftN6ngNM="
             objReq.from = that.props.from;
             objReq.to = that.props.to;
