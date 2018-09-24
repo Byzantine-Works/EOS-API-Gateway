@@ -36,12 +36,11 @@ class App extends React.Component {
     }
 
     encrypt (nonce) {
-        var iv = new Buffer('0000000000000000');
+        var iv = Buffer.from('0000000000000000');
         let key = Config.saltKey;
         let message = nonce.toString()+' '+this.props.privateKey;
-        var decodeKey = crypto.createHash('sha256').update(key, 'utf-8').digest();
-          var cipher = crypto.createCipheriv('aes-256-cbc', decodeKey, iv);
-          return cipher.update(message, 'utf8', 'hex') + cipher.final('hex');
+        var cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+        return cipher.update(message, 'utf8', 'hex') + cipher.final('hex');
     };
 
     // decryptXStrong(enc) {
@@ -61,13 +60,13 @@ class App extends React.Component {
 
         const socket = openSocket('http://localhost:8000');
         let randChannel = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        socket.emit('user', [Config.apiKey, randChannel]);
+        socket.emit('user', [Config.saltKey, randChannel]);
 
         let that = this;
 
         socket.on(randChannel, async function (data) {
             let objReq = {};
-            objReq.sig = await that.encrypt(150);
+            objReq.sig = await that.encrypt(data);
             // objReq.sig = "lSuiilNArIohqITCfEVHBQmHsa30bwSlIiLA/UJR1RLavKSF1MjjpvSAXz9Kr12zIGVftN6ngNM="
             objReq.from = that.props.from;
             objReq.to = that.props.to;

@@ -33,19 +33,18 @@ var key = "bf32eb1e0b28d4b75bb1da9eaa4c5b02";
 
 
 var encrypt = function (data) {
-  var iv = new Buffer('0000000000000000');
+  var iv = Buffer.from('0000000000000000');
   
-  var decodeKey = crypto.createHash('sha256').update(key, 'utf-8').digest();
-    var cipher = crypto.createCipheriv('aes-256-cbc', decodeKey, iv);
+  // var decodeKey = crypto.createHash('sha256').update(key, 'utf-8').digest();
+    var cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
     return cipher.update(data, 'utf8', 'hex') + cipher.final('hex');
 };
 
 var decrypt = function (data) {
-  var iv = new Buffer('0000000000000000');
+  var iv = Buffer.from('0000000000000000');
   
-  var encodeKey = crypto.createHash('sha256').update(key, 'utf-8').digest()
-  var cipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(encodeKey, 'hex'),
-      Buffer.from(iv));
+  // var encodeKey = crypto.createHash('sha256').update(key, 'utf-8').digest()
+  var cipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
   var decryptedData = cipher.update(data, 'hex', 'utf8') + cipher.final('utf8');
   return decryptedData;
 
@@ -55,4 +54,4 @@ var decrypt = function (data) {
 // console.log(randChannel)
 // 4fwp4ejcao9409ba59omcn
 
-console.log(encrypt('125 5KDJZqtbfyJZmrAx97C8WB2b2V92NBm2rVi7WMFVBFuGdb5dWwQ'));
+console.log(decrypt(encrypt('125 5KDJZqtbfyJZmrAx97C8WB2b2V92NBm2rVi7WMFVBFuGdb5dWwQ')));
