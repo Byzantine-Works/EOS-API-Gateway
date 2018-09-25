@@ -32,7 +32,7 @@ var config = {
           isEnabled: true,
           callCount: 0,
         },
-        "disabledkey1234": {
+        "disabledkey-321": {
           isEnabled: false,
           callCount: 0,
         },
@@ -46,8 +46,8 @@ var config = {
       }
       
       // if (scopesOrApiKey === 'samplekey1234') { // Singlekey functionality
-      if (allKeys.hasOwnProperty(scopesOrApiKey) === true) { // Multikey functionality
-      // if (allKeys[scopesOrApiKey]["isEnabled"] === true) { // Multikey functionality
+      // if (allKeys.hasOwnProperty(scopesOrApiKey) === true) { // Multikey functionality
+      if (allKeys[scopesOrApiKey]['isEnabled'] === true) {
         console.log('~ API Key Accepted ~');
         cb(null);
       } else {
