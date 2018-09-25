@@ -45,7 +45,7 @@ class App extends React.Component {
 
 
     send(e) {
-
+        // const socket = openSocket('http://api.byzanti.ne:8902/');
         const socket = openSocket('http://localhost:5000');
         let randChannel = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         socket.emit('user', [Config.saltKey, randChannel]);
@@ -62,7 +62,7 @@ class App extends React.Component {
             objReq.memo = that.props.memo;
 
            
-            
+            // await fetch('http://api.byzanti.ne:8902/transfer', {
             await fetch('http://local.byzanti.ne:8901/transfer', {
                 method: 'POST',
                 headers: {
