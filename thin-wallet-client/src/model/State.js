@@ -2,6 +2,8 @@
 export default class State {
     constructor() {
 
+        this.scatter = false;
+        
         this.privateKey = null;
         
         this.from = null;

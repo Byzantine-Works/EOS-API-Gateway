@@ -44,6 +44,11 @@ const updateState = (state = new State(), action) => {
             updatedState[action.payload.data[0]] = action.payload.data[1];
             return updatedState;
         }
+        case types.UPDATE_SCATTER: {
+            let scatterStatus = !state.scatter;
+            updatedState = { ...state, scatter: scatterStatus };
+            return updatedState;
+        }
         default : {
             return state;
         }

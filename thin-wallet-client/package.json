@@ -1,5 +1,5 @@
 {
-  "name": "eoswallet",
+  "name": "thin-wallet",
   "version": "1.0.0",
   "description": "",
   "main": "webpack.config.js",
@@ -40,6 +40,7 @@
     "request": "^2.88.0",
     "sass": "^1.13.4",
     "sass-loader": "^7.1.0",
+    "scatter-js": "^2.5.2",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
     "style-loader": "^0.23.0",
