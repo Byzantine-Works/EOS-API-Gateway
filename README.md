@@ -19,6 +19,8 @@ npm install
 vi ~/etc/hosts (add loopback interface: 127.0.0.1	local.byzanti.ne)
 npm start OR nodemon
 curl http://local.byzanti.ne/8901/info
+cd thin-wallet-client
+npm start
 ```
 
 # Validate
