@@ -32,6 +32,10 @@ var config = {
           isEnabled: true,
           callCount: 0,
         },
+        "disabledkey1234": {
+          isEnabled: false,
+          callCount: 0,
+        },
         "exchange1-ApiKey": {
           isEnabled: true,
           callCount: 0,
@@ -41,8 +45,9 @@ var config = {
         },
       }
       
-      if (scopesOrApiKey === 'samplekey1234') {
-      // Need to add logic for multiple key checking or AppId
+      // if (scopesOrApiKey === 'samplekey1234') { // Singlekey functionality
+      if (allKeys.hasOwnProperty(scopesOrApiKey) === true) { // Multikey functionality
+      // if (allKeys[scopesOrApiKey]["isEnabled"] === true) { // Multikey functionality
         console.log('~ API Key Accepted ~');
         cb(null);
       } else {
