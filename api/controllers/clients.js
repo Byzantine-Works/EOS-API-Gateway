@@ -31,19 +31,34 @@ lodash = require("lodash");
 // };
 
 exports.getNonce = function (key, nonce) {
+    nonce = Number(nonce)
     console.log("clients.getNonce for key:nonce=> " + key + ":" + nonce);
     //console.log('Path of file in parent dir:', require('path').resolve(__dirname, '../c.json'));
-    var client = JSON.parse(fs.readFileSync(require('path').resolve(__dirname, '../c.swp')));
+    var clients = JSON.parse(fs.readFileSync(require('path').resolve(__dirname, '../c.swp')));
+    var index = lodash.sortedIndexOf(clients, lodash.filter(clients, x => x.salt === key)[0]);
     //var client = lodash.filter(clients, x => x.salt === key);
     //console.log(JSON.stringify(client));
-    var statefulNonce = client.nonce;
-    console.log("statefulNonce => " + statefulNonce);
-    if (nonce <= statefulNonce) {
+    var statefulNonce = clients[index].nonce;
+    console.log("statefulNonce => ", statefulNonce);
+    if (nonce !== statefulNonce) {
         throw new Error("nonce too low @rnonce:@cnonce => " + nonce + ":" + statefulNonce);
     } else {
-        client.nonce = nonce;
-        fs.writeFileSync(require('path').resolve(__dirname, '../c.swp'), JSON.stringify(client, null, 4));
-        //  console.log("client => " + JSON.stringify(client));
-        return statefulNonce;
+        clients[index].nonce ++;
+        fs.writeFileSync(require('path').resolve(__dirname, '../c.swp'), JSON.stringify(clients, null, 4));
+        return nonce;
     }
 };
+
+exports.checkNonce = function(key) {
+    
+    var clients = JSON.parse(fs.readFileSync(require('path').resolve(__dirname, '../c.swp')));
+    var index = lodash.sortedIndexOf(clients, lodash.filter(clients, x => x.salt === key)[0]);
+    if(index === -1) throw new Error("The API key has not been registered.");
+    else{
+        clients[index].nonce;
+        var statefulNonce = clients[index].nonce;
+        // fs.writeFileSync(require('path').resolve(__dirname, '../c.swp'), JSON.stringify(clients, null, 4));
+        return statefulNonce;
+    }
+
+}

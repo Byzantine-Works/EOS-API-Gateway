@@ -10,10 +10,13 @@ var decrypt256 = function (data, key) {
     var cipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
     var decryptedData = cipher.update(data, 'hex', 'utf8') + cipher.final('utf8');
     var cipherTokens = decryptedData.split(" ");
+    var token = Number(cipherTokens[0]);
     console.log('Decrypted 256 enc with nonce:key => ' + cipherTokens[0] + ":" + cipherTokens[1]);
-    if (cipherTokens[0] > client.getNonce(key, cipherTokens[0]))
+    if (token === client.getNonce(key, cipherTokens[0])) {
         return cipherTokens[1];
-    else
+    }
+    else {
         throw new Error('nonce too low!');
+    }
 };
 module.exports.decryptXStrong = decrypt256;

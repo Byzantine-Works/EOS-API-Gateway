@@ -43,41 +43,27 @@ class App extends React.Component {
         return cipher.update(message, 'utf8', 'hex') + cipher.final('hex');
     };
 
-    // decryptXStrong(enc) {
-    //     var saltKey = Config.saltKey     
-    //     var iv = Buffer.alloc(8);
-    //     iv.fill(0);
-      
-    //     var decipher = crypto.createDecipheriv('des-cbc', saltKey.substr(0, 8), iv);
-    //     var dec = decipher.update(enc, 'base64', 'utf8');
-    //     dec += decipher.final('utf8');
-    //     // console.log('Decrypted strong DES/CBC/PKCS5Padding Key => ' + dec);
-    //     return dec;
-    //   }
-
 
     send(e) {
 
-        const socket = openSocket('http://localhost:8000');
+        const socket = openSocket('http://localhost:5000');
         let randChannel = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         socket.emit('user', [Config.saltKey, randChannel]);
 
         let that = this;
 
         socket.on(randChannel, async function (data) {
+            console.log(data);
             let objReq = {};
             objReq.sig = await that.encrypt(data);
-            // objReq.sig = "lSuiilNArIohqITCfEVHBQmHsa30bwSlIiLA/UJR1RLavKSF1MjjpvSAXz9Kr12zIGVftN6ngNM="
             objReq.from = that.props.from;
             objReq.to = that.props.to;
             objReq.amount = that.props.amount + ' ' + that.props.coin;
             objReq.memo = that.props.memo;
-            console.log(objReq.sig)
 
            
-            //let trialBody = {"from":"gi3dcnjshege","to":"randomgooppy","amount":"0.0001 EOS","memo":"nonce56","sig":"xko00+bzocRipxqiiHABK2WLmncSCkBhV7RZx+pQFvdffh8e5vAn0RhztlmzTZooL1cRQjJsAck="};
             
-            await fetch('http://api.byzanti.ne:8902/transfer', {
+            await fetch('http://local.byzanti.ne:8901/transfer', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
@@ -85,7 +71,7 @@ class App extends React.Component {
                 body: JSON.stringify(objReq)
             })
             .then(response => console.log(response));
-            // console.log(that.decryptXStrong(objReq.sig));
+            socket.on('disconnect');
         });
     }
 
