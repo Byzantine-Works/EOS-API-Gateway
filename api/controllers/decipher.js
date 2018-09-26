@@ -6,6 +6,7 @@ var iv = Buffer.from('0000000000000000');
 //Common salt exchanged between the customer and api
 var decrypt256 = function (data, key) {
     //this key is the security key and must be passed as -X args to swagger?
+    //TODO: @reddy fix this once we have a securitykey
     key = "bf32eb1e0b28d4b75bb1da9eaa4c5b02";
     var cipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
     var decryptedData = cipher.update(data, 'hex', 'utf8') + cipher.final('utf8');

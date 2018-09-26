@@ -91,21 +91,49 @@ async function transfer(code, from, to, amount, memo, sig) {
 }
 
 async function transferOffline(code, from, to, amount, memo, sig, transactionHeaders) {
-    var keyProvider =sig;
+    var keyProvider = '5J4vRX186htiS6s8rvfCeVqXLYfKyjZDum5mpww8dT1qrpfsEJL'; //dummy key provider to test
+    const eosjsOptions = {
+        broadcast: false,
+        authorization: [{
+            actor: from,
+            permission: 'active'
+        }],
+        transactionHeaders: transactionHeaders
+    };
     //offline signing config
-    eos = Eos({httpEndpoint: null, chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906', keyProvider, transactionHeaders});
-    //const eosjsOptions = { broadcast: false, authorization: [{ actor: from, permission: 'active' }], transactionHeaders: transactionHeaders };
-    //const offlineSigningEos = Eos(eosOfflineSigningConfig);
+    eos = Eos({
+        httpEndpoint: null,
+        keyProvider,
+        authorization: [{
+            actor: from,
+            oermission: 'active'
+        }],
+        transactionHeaders
+    });
 
     console.log("eosapi:transferOffline with sig: =>" + sig);
     console.log("eosapi:transfer=> contract:from:to:amount:memo:sig:trxHeaders  =>" + JSON.stringify(code) + " : " + JSON.stringify(from) + " : " + JSON.stringify(to) + " : " + JSON.stringify(amount) + " : " + JSON.stringify(memo) + " : " + JSON.stringify(sig) + ":" + JSON.stringify(transactionHeaders));
-    var transfer = await eos.transfer(from, to, amount,memo);
+    var transfer = await eos.transfer({
+        from,
+        to,
+        quantity: amount,
+        memo
+    }, eosjsOptions);
+
+    // var transferTransaction = await eos.transaction(code, contractuser => {
+    //     contractuser.transfer({
+    //         from: from,
+    //         to: to,
+    //         quantity: amount,
+    //         memo: memo
+    //     },eosjsOptions);
+    // });
+
     var transferTransaction = transfer.transaction;
     // ONLINE (bring `transferTransaction`)
-     eos = Eos(loadBalance(null));
-     console.log ("@Q#%#@%@#%#$%%" + JSON.stringify(eos));
-     transferTransaction.signatures.push(sig);
-     processedTransaction = await eos.pushTransaction(transferTransaction);
+    eos = Eos(loadBalance(null));
+    transferTransaction.signatures.push(sig); //push scatter signature
+    processedTransaction = await eos.pushTransaction(transferTransaction);
     console.log("eosapi:transferOffline=> " + JSON.stringify(processedTransaction));
     return (processedTransaction);
 }
