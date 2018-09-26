@@ -40,10 +40,10 @@ exports.getNonce = function (key, nonce) {
     //console.log(JSON.stringify(client));
     var statefulNonce = clients[index].nonce;
     console.log("statefulNonce => ", statefulNonce);
-    if (nonce !== statefulNonce) {
+    if (nonce <= statefulNonce) {
         throw new Error("nonce too low @rnonce:@cnonce => " + nonce + ":" + statefulNonce);
     } else {
-        clients[index].nonce ++;
+        clients[index].nonce = nonce;
         fs.writeFileSync(require('path').resolve(__dirname, '../c.swp'), JSON.stringify(clients, null, 4));
         return nonce;
     }
