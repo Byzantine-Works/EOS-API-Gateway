@@ -43,7 +43,7 @@ class App extends React.Component {
 
         this.send = this.send.bind(this);
         this.changeInput = this.changeInput.bind(this);
-        this.purge = this.purge.bind(this);
+        this.scatterSend = this.scatterSend.bind(this);
         this.encrypt = this.encrypt.bind(this);
     }
 
@@ -58,9 +58,7 @@ class App extends React.Component {
 
     send(e) {
 
-
-
-
+        console
         // const socket = openSocket('http://api.byzanti.ne:8902/');
         const socket = openSocket('http://localhost:5000');
         let randChannel = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -92,13 +90,14 @@ class App extends React.Component {
     }
 
 
-    purge() {
-       
+    scatterSend(e) {
+    
         scatter.connect("thin-wallet").then(connected => {
             if(!connected) {
                 // User does not have Scatter Desktop or Classic installed. 
                 return false;
             }
+ 
 
             const requiredFields = { accounts:[network] };
             scatter.getIdentity(requiredFields).then(() => {
@@ -106,13 +105,16 @@ class App extends React.Component {
                 // Always use the accounts you got back from Scatter. Never hardcode them even if you are prompting
                 // the user for their account name beforehand. They could still give you a different account.
                 const account = scatter.identity.accounts.find(x => x.blockchain === 'eos');
-                console.log("The account: ", account);
+                
         
             //     // You can pass in any additional options you want into the eosjs reference.
             //     const eosOptions = { expireInSeconds:60 };
+
+               
         
             //     // Get a proxy reference to eosjs which you can use to sign transactions with a user's Scatter.
                 const eos = scatter.eos(network, Eos);
+                
                 const transactionOptions = { authorization:[`${account.name}@${account.authority}`] };
                 eos.transfer(account.name, this.props.to, this.props.amount + ' ' + this.props.coin, this.props.memo, transactionOptions).then(trx => {
                     // That's it!
@@ -121,13 +123,12 @@ class App extends React.Component {
                     console.error(error);
                 });
         
-            // }).catch(error => {
-            //     // The user rejected this request, or doesn't have the appropriate requirements.
-            //     console.error(error);
-            // });
+            }).catch(error => {
+                // The user rejected this request, or doesn't have the appropriate requirements.
+                console.error(error);
+            });
             
         });
-    });
 
 
     }
@@ -135,17 +136,16 @@ class App extends React.Component {
 
     changeInput(e) {
         let payload = [];
-        if (e.target.key === 'amount') {
+        if (e.target.id === 'amount') {
             let amt = parseFloat(e.target.value)
             amt = parseFloat(Math.round(amt * Math.pow(10, 4)) / Math.pow(10, 4)).toFixed(4);
-            payload.push(e.target.key, amt);
+            payload.push(e.target.id, amt);
         }
         if (e.target.id === "scatter") this.props.updateScatter();
-        else {
-            payload.push(e.target.key, e.target.value)
-        }
+        else payload.push(e.target.id, e.target.value)
         this.props.updateState(payload);
     }
+
 
     render() {
         const scatter = this.props.scatter;
@@ -168,8 +168,7 @@ class App extends React.Component {
             }
             else return el;
         })}
-                <button key="send" onClick={this.props.scatter ? this.purge : this.send}>Send</button>
-                {/* <button key="purge" onClick={this.purge}>Purge</button> */}
+                <button key="send" onClick={this.props.scatter ? this.scatterSend : this.send}>Send</button>
                 <span> Check this box to use scatter<input type="checkbox" id="scatter" onChange={this.changeInput}></input></span>
             </div>
 

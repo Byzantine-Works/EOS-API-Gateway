@@ -1,5 +1,8 @@
 var crypto = require('crypto');
+const ecc = require('eosjs-ecc')
 // var CryptoJS = require('crypto-js');
+eos = require('eosjs') // Or EosApi = require('./src')
+ // // 127.0.0.1:8888
 
 function decryptXStrong(enc) {
   var saltKey = 'EOS5EzN7oea3YmT1fNmynY7hfa5C9sb4Xvmpi2xEGchQErnGDzXEi'
@@ -54,4 +57,22 @@ var decrypt = function (data) {
 // console.log(randChannel)
 // 4fwp4ejcao9409ba59omcn
 
-console.log(decrypt(encrypt('125 5KDJZqtbfyJZmrAx97C8WB2b2V92NBm2rVi7WMFVBFuGdb5dWwQ')));
+var decrypt256 = function () {
+  var key = '686a6bee0a4729d06ccf8e4f2a96bf090b8e234112951f6981d43124256c7980'
+  return crypto.createHash('sha256', key).update('5KDJZqtbfyJZmrAx97C8WB2b2V92NBm2rVi7WMFVBFuGdb5dWwQ').digest('hex');
+
+}
+
+var json = {
+  "from": "vicisnotvern",
+  "to": "vernisnotvic",
+  "amount": "0.001 EOS",
+  "memo": "testest",
+  "sig": "SIG_K1_KVNgp68MZsWeQpqbtZWmEi8QX2kj6i8iGnjycthXrPFRcTMio92z1RvahfdK717uCuKMYyLxRJVkEkH8wwS8F8z79wFUFa"
+  }
+
+  eos = Eos({httpEndpoint, chainId, keyProvider})
+
+  eos.getInfo((error, result) => { console.log(error, result) })
+
+// console.log();

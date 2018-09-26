@@ -4,6 +4,7 @@
         "apirate": 0,
         "salt": "bf32eb1e0b28d4b75bb1da9eaa4c5b02",
         "nonce": 185
+        "apikey": {}
     },
     {
         "name": "Byzantine Skinny Web Wallet",
