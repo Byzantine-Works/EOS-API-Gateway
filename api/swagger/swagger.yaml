@@ -3,10 +3,42 @@ info:
   version: "1.3"
   title: "Byzanti.ne API Gateway - Powered by Liberty Block"
 # during dev, should point to your local machine
-host: local.byzanti.ne:8901
+host: localhost:8901
 # basePath prefixes all resource paths 
 basePath: /
 # 
+
+securityDefinitions:
+   # X-API-Key: abcdef12345
+   APIKeyHeader:
+     type: apiKey
+     in: header
+     name: X-API-Key
+security:
+  - APIKeyHeader: []
+  # - APIKeyHeader: ["custom98"]
+  # - APIKeyHeader: ["X-API-Key:custom98"]
+  # - APIKeyHeader: [{"X-API-Key": "custom98"}]
+  # - APIKeyHeader: ['{"X-API-Key": "custom98"}']
+  # - apiKey: []
+
+  # securityDefinitions:
+  #    # X-API-Key: abcdef12345
+  #    APIKeyHeader:
+  #      type: apiKey
+  #      in: header
+  #      name: X-API-Key
+  #    # /path?api_key=abcdef12345
+  #    APIKeyQueryParam:
+  #      type: apiKey
+  #      in: query
+  #      name: api_key
+  # security:
+  #   - apiKey: []
+  #   - appId: []
+
+
+
 schemes:
   # tip: remove http to make production-grade
   - http
@@ -80,6 +112,13 @@ paths:
         in: path
         required: true
         type: string
+      # Operation-specific security:
+      # security:
+      #   - APIKeyQueryParam: []
+      # ##
+      # security:
+      #   - APIKeyHeader: []
+      ##
       responses:
         "200":
           description: Success

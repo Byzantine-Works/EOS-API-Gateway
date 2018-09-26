@@ -21,8 +21,65 @@ require('events').EventEmitter.defaultMaxListeners = 50;
 var app = require('express')();
 module.exports = app; // for testing
 
+// var config = {
+//   appRoot: __dirname // required config
+// };
 var config = {
-  appRoot: __dirname // required config
+  appRoot: __dirname, // required config
+  swaggerSecurityHandlers: {
+    APIKeyHeader: function (req, authOrSecDef, scopesOrApiKey, cb) {
+      // your security code
+      
+      var allKeys = {};    
+     // Sample allKeys: 
+      allKeys = { 
+        "samplekey1234": {
+          isEnabled: true,
+          callCount: 0,
+        },
+        "disabledkey-321": {
+          isEnabled: false,
+          callCount: 0,
+        },
+        "exchange1-ApiKey": {
+          isEnabled: true,
+          callCount: 0,
+          getInfo: 0,
+          tokens: 0,
+          tokensByAccount: 0,
+        },
+      }
+      
+      // Second Option
+      // allKeys2 = [
+      //   {
+      //     key: "samplekey1234",
+      //     isEnabled: true,
+      //     callCount: 0,
+      //   }, {
+      //     key: "disabledkey-321",
+      //     isEnabled: false,
+      //     callCount: 0,
+      //   }, {
+      //     key: "exchange1-ApiKey",
+      //     isEnabled: true,
+      //     callCount: 0,
+      //     getInfo: 0,
+      //     tokens: 0,
+      //     tokensByAccount: 0,
+      //   },
+      // ]
+
+      // if (scopesOrApiKey === 'samplekey1234') { // Singlekey functionality
+      // if (allKeys.hasOwnProperty(scopesOrApiKey) === true) { // Multikey functionality
+      if (allKeys[scopesOrApiKey]['isEnabled'] === true) {
+        console.log('~ API Key Accepted ~');
+        cb(null);
+      } else {
+        cb(new Error('access denied!'));
+      }
+    }
+  }
 };
 
 SwaggerExpress.create(config, function (err, swaggerExpress) {
