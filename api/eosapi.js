@@ -90,6 +90,26 @@ async function transfer(code, from, to, amount, memo, sig) {
     return (trxDeposit);
 }
 
+async function transferOffline(code, from, to, amount, memo, sig, transactionHeaders) {
+    var keyProvider =sig;
+    //offline signing config
+    eos = Eos({httpEndpoint: null, chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906', keyProvider, transactionHeaders});
+    //const eosjsOptions = { broadcast: false, authorization: [{ actor: from, permission: 'active' }], transactionHeaders: transactionHeaders };
+    //const offlineSigningEos = Eos(eosOfflineSigningConfig);
+
+    console.log("eosapi:transferOffline with sig: =>" + sig);
+    console.log("eosapi:transfer=> contract:from:to:amount:memo:sig:trxHeaders  =>" + JSON.stringify(code) + " : " + JSON.stringify(from) + " : " + JSON.stringify(to) + " : " + JSON.stringify(amount) + " : " + JSON.stringify(memo) + " : " + JSON.stringify(sig) + ":" + JSON.stringify(transactionHeaders));
+    var transfer = await eos.transfer(from, to, amount,memo);
+    var transferTransaction = transfer.transaction;
+    // ONLINE (bring `transferTransaction`)
+     eos = Eos(loadBalance(null));
+     console.log ("@Q#%#@%@#%#$%%" + JSON.stringify(eos));
+     transferTransaction.signatures.push(sig);
+     processedTransaction = await eos.pushTransaction(transferTransaction);
+    console.log("eosapi:transferOffline=> " + JSON.stringify(processedTransaction));
+    return (processedTransaction);
+}
+
 async function getTransaction(id) {
     eos = Eos(loadBalance());
     console.log("eosapi:getTransaction=> id  =>" + JSON.stringify(id));
@@ -180,10 +200,10 @@ function loadBalance(sig) {
     //console.log(chainList);
     var selectedChain = chainList[Math.floor(Math.random() * chainList.length)];
     //use this if we want to be the signing authority and thereby provide staking amount
-    if (sig != undefined) {
+    if (sig !== 'undefined' && sig !== null) {
         selectedChain.keyProvider = [sig];
     } else {
-        selectedChain.keyProvider = [process.env.PAK, process.env.SAK];
+        //selectedChain.keyProvider = [process.env.PAK, process.env.SAK];
     }
     console.log("selectedChain=> " + JSON.stringify(selectedChain));
     console.log("***************************")
@@ -206,3 +226,4 @@ module.exports.buyRam = buyRam;
 module.exports.buyRamBytes = buyRamBytes;
 module.exports.sellRamBytes = sellRamBytes;
 module.exports.getRamData = getRamData;
+module.exports.transferOffline = transferOffline;
