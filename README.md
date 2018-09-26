@@ -12,6 +12,7 @@
 - - [EosDex hacked with fake EOS tokens](https://thenextweb.com/hardfork/2018/09/18/eos-hackers-exchange-fake/)
 
 # Build
+- Byzantine API Gateway
 
 ```sh
 git clone https://github.com/Byzantine-Works/EOS-API-Gateway.git
@@ -19,6 +20,10 @@ npm install
 vi ~/etc/hosts (add loopback interface: 127.0.0.1	local.byzanti.ne)
 npm start OR nodemon
 curl http://local.byzanti.ne/8901/info
+```
+
+- EOS 'Stripe' Wallet
+```sh
 cd thin-wallet-client
 npm start
 ```
@@ -86,6 +91,9 @@ curl -X POST -H "Content-Type:application/json" -d '{"account":"gi3dcnjshege","b
 
 //Get RAM price
 curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/json' 'http://api.byzanti.ne:8902/getRamPrice' | json_pp
+
+//Scatter based transfer
+curl -X POST -H "Content-Type:application/json" -d '{"from":"gi3dcnjshege","to":"randomgooppy","amount":"0.0001 EOS","memo":"offline test","sig":"c77ac47879b2a8e622f9f301c98959cce5b97a53e4d42f5038d0d2d7cb78a0c3e3a135728fb5f5969a81f92cb0412727a040b143e12f57b533c7e0cc595ce965a6318cab00710549c3bc8984ec22b1c9c38f2db7e7e4cb6ba3bb48a3211db082c5315913977262004a4b8e0c052a8ee2","transactionHeaders":{"expiration": "2018-09-19T00:20:40", "ref_block_num": 19055, "ref_block_prefix": 4239914415}}' http://local.byzanti.ne:8901/transferWithScatter | json_pp
 ```
 
 ### Todos
