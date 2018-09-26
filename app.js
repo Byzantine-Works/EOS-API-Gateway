@@ -45,6 +45,26 @@ var config = {
         },
       }
       
+      // Second Option
+      // allKeys2 = [
+      //   {
+      //     key: "samplekey1234",
+      //     isEnabled: true,
+      //     callCount: 0,
+      //   }, {
+      //     key: "disabledkey-321",
+      //     isEnabled: false,
+      //     callCount: 0,
+      //   }, {
+      //     key: "exchange1-ApiKey",
+      //     isEnabled: true,
+      //     callCount: 0,
+      //     getInfo: 0,
+      //     tokens: 0,
+      //     tokensByAccount: 0,
+      //   },
+      // ]
+
       // if (scopesOrApiKey === 'samplekey1234') { // Singlekey functionality
       // if (allKeys.hasOwnProperty(scopesOrApiKey) === true) { // Multikey functionality
       if (allKeys[scopesOrApiKey]['isEnabled'] === true) {
