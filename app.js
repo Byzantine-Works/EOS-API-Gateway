@@ -21,8 +21,67 @@ require('events').EventEmitter.defaultMaxListeners = 50;
 var app = require('express')();
 module.exports = app; // for testing
 
+// var config = {
+//   appRoot: __dirname // required config
+// };
 var config = {
-  appRoot: __dirname // required config
+  appRoot: __dirname, // required config
+  swaggerSecurityHandlers: {
+    APIKeyHeader: function (req, authOrSecDef, scopesOrApiKey, cb) {
+      // your security code
+      
+      var allKeys = {};    
+     // Sample allKeys: 
+      allKeys = { 
+        "samplekey1234": {
+          name: 'samplekey',
+          isEnabled: true,
+          callCount: 0,
+        },
+        "disabledkey-321": {
+          name: 'disabledkey',
+          isEnabled: false,
+          callCount: 0,
+        },
+        "exchange1-ApiKey": {
+          name: 'exchange',
+          isEnabled: true,
+          callCount: 0,
+          // Individual Endpoints
+          getInfo: 0,
+          tokens: 0,
+          tokensByAccount: 0,
+          transaction: 0,
+          getAccount: 0,
+          getActions: 0,
+          isTransactionIrreversible: 0,
+        },
+        "thinwallet-eoskey": {
+          name: 'thinwallet',
+          isEnabled: true,
+          callCount: 0,
+          // Individual Endpoints
+          getInfo: 0,
+          tokens: 0,
+          tokensByAccount: 0,
+          transaction: 0,
+          getAccount: 0,
+          getActions: 0,
+          isTransactionIrreversible: 0,
+        },
+      }
+
+      if (allKeys.hasOwnProperty(scopesOrApiKey) && allKeys[scopesOrApiKey]['isEnabled'] === true) {
+      // if (scopesOrApiKey === 'samplekey1234') { // Singlekey functionality
+      // if (allKeys.hasOwnProperty(scopesOrApiKey) === true) { // Multikey functionality
+        console.log('~~~~~~~~~~~~ API Key Accepted ~~~~~~~~~~~~');
+        cb(null);
+        console.log('complete')
+      } else {
+        cb(new Error('access denied!'));
+      }
+    }
+  }
 };
 
 SwaggerExpress.create(config, function (err, swaggerExpress) {

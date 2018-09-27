@@ -13,9 +13,15 @@ securityDefinitions:
    APIKeyHeader:
      type: apiKey
      in: header
+<<<<<<< HEAD
      name: X-API-Key
 security:
   - APIKeyHeader: []
+=======
+     name: Wallet-API-Key
+# security:
+#   - APIKeyHeader: []
+>>>>>>> alex
 
   # securityDefinitions:
   #    # X-API-Key: abcdef12345
@@ -28,9 +34,21 @@ security:
   #      type: apiKey
   #      in: query
   #      name: api_key
+<<<<<<< HEAD
   # security:
   #   - apiKey: []
   #   - appId: []
+=======
+  #    ThinWallet:
+  #      type: apiKey
+  #      in: header
+  #      name: Thinwallet-API-Key
+  # security:
+  #   - apiKey: []
+  #   - appId: []
+  # # - ThinWallet: []
+
+>>>>>>> alex
 
 schemes:
   # tip: remove http to make production-grade
@@ -209,6 +227,7 @@ paths:
         in: path
         required: true
         type: string
+      
       responses:
         "200":
           description: Success
@@ -230,6 +249,9 @@ paths:
         in: path
         required: true
         type: string
+      ## Enabling Security specifically for /getAccount/{account}
+      security:
+      - APIKeyHeader: []
       responses:
         "200":
           description: Success
