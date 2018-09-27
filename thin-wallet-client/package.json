@@ -46,6 +46,7 @@
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
     "style-loader": "^0.23.0",
+    "web3-eth": "^1.0.0-beta.36",
     "webpack": "^4.19.1",
     "webpack-dev-server": "^3.1.8",
     "write-json-file": "^3.0.2"

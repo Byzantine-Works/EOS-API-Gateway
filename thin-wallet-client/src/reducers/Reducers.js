@@ -57,15 +57,6 @@ const updateState = (state = new State(), action) => {
 
 }
 
-// const noncePersistConfig = {
-//     key: 'nonce',
-//     storage: storage,
-//   }
-  
-// const rootReducer = combineReducers({
-//     nonce: persistReducer(noncePersistConfig, updateNonce),
-//     other: updateState
-//   })
   
 
 

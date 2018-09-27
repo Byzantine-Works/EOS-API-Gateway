@@ -13,6 +13,15 @@ body, html {
     border-radius: 8px;
     padding: 50px;
     display: grid;
+    // grid-template-columns: repeat(3, 1fr);
+    grid-template-areas: 
+    "a a a"
+    "b b b"
+    "c c c"
+    "d e f"
+    "g g g"
+    "h h h"
+    "i i i";
     // background: linear-gradient(360deg, #949494 10%, #efefef 90%);
     background: #efefef;
     justify-content: center;
@@ -20,9 +29,70 @@ body, html {
     width: 30%;
     transform: translateY(50%);
     margin: 0 auto;
-    grid-template-columns: 100%;
     box-shadow: 2px 3px #aaaaaa;
 }
+
+#from {
+    grid-area: a;
+}
+
+#to { 
+    grid-area: b;
+}
+
+#privateKey {
+    grid-area: c;
+}
+#amount {
+    grid-area: d;
+}
+
+#coin {
+    grid-area: e;
+}
+
+#token {
+    grid-area: f;
+}
+
+#memo {
+    grid-area: g;
+
+}
+
+#send {
+    grid-area: h;
+
+}
+
+
+// #amount {
+//     width: 30%;
+//     grid-column-start: 1;
+//     grid-column-end: 2; 
+
+// }
+
+// #coin {
+//     width: 30%;
+//     grid-column-start: 2;
+//     grid-column-end: 3;
+
+// }
+
+// #token {
+//     width: 30%;
+//     width: 30%;
+//     grid-column-start: 3;
+//     grid-column-end: 4;
+
+// }
+
+.Scatter {
+    grid-area: i;
+
+}
+
 
 .options {
     border-radius: 8px;
