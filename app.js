@@ -29,47 +29,49 @@ var config = {
      // Sample allKeys: 
       allKeys = { 
         "samplekey1234": {
+          name: 'samplekey',
           isEnabled: true,
           callCount: 0,
         },
         "disabledkey-321": {
+          name: 'disabledkey',
           isEnabled: false,
           callCount: 0,
         },
         "exchange1-ApiKey": {
+          name: 'exchange',
           isEnabled: true,
           callCount: 0,
+          // Individual Endpoints
           getInfo: 0,
           tokens: 0,
           tokensByAccount: 0,
+          transaction: 0,
+          getAccount: 0,
+          getActions: 0,
+          isTransactionIrreversible: 0,
+        },
+        "thinwallet-eoskey": {
+          name: 'thinwallet',
+          isEnabled: true,
+          callCount: 0,
+          // Individual Endpoints
+          getInfo: 0,
+          tokens: 0,
+          tokensByAccount: 0,
+          transaction: 0,
+          getAccount: 0,
+          getActions: 0,
+          isTransactionIrreversible: 0,
         },
       }
-      
-      // Second Option
-      // allKeys2 = [
-      //   {
-      //     key: "samplekey1234",
-      //     isEnabled: true,
-      //     callCount: 0,
-      //   }, {
-      //     key: "disabledkey-321",
-      //     isEnabled: false,
-      //     callCount: 0,
-      //   }, {
-      //     key: "exchange1-ApiKey",
-      //     isEnabled: true,
-      //     callCount: 0,
-      //     getInfo: 0,
-      //     tokens: 0,
-      //     tokensByAccount: 0,
-      //   },
-      // ]
 
+      if (allKeys.hasOwnProperty(scopesOrApiKey) && allKeys[scopesOrApiKey]['isEnabled'] === true) {
       // if (scopesOrApiKey === 'samplekey1234') { // Singlekey functionality
       // if (allKeys.hasOwnProperty(scopesOrApiKey) === true) { // Multikey functionality
-      if (allKeys[scopesOrApiKey]['isEnabled'] === true) {
-        console.log('~ API Key Accepted ~');
+        console.log('~~~~~~~~~~~~ API Key Accepted ~~~~~~~~~~~~');
         cb(null);
+        console.log('complete')
       } else {
         cb(new Error('access denied!'));
       }

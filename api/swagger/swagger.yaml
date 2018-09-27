@@ -13,14 +13,9 @@ securityDefinitions:
    APIKeyHeader:
      type: apiKey
      in: header
-     name: X-API-Key
-security:
-  - APIKeyHeader: []
-  # - APIKeyHeader: ["custom98"]
-  # - APIKeyHeader: ["X-API-Key:custom98"]
-  # - APIKeyHeader: [{"X-API-Key": "custom98"}]
-  # - APIKeyHeader: ['{"X-API-Key": "custom98"}']
-  # - apiKey: []
+     name: Wallet-API-Key
+# security:
+#   - APIKeyHeader: []
 
   # securityDefinitions:
   #    # X-API-Key: abcdef12345
@@ -33,10 +28,14 @@ security:
   #      type: apiKey
   #      in: query
   #      name: api_key
+  #    ThinWallet:
+  #      type: apiKey
+  #      in: header
+  #      name: Thinwallet-API-Key
   # security:
   #   - apiKey: []
   #   - appId: []
-
+  # # - ThinWallet: []
 
 
 schemes:
@@ -177,6 +176,7 @@ paths:
         in: path
         required: true
         type: string
+      
       responses:
         "200":
           description: Success
@@ -198,6 +198,9 @@ paths:
         in: path
         required: true
         type: string
+      ## Enabling Security specifically for /getAccount/{account}
+      security:
+      - APIKeyHeader: []
       responses:
         "200":
           description: Success
