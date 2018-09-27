@@ -104,7 +104,7 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /transfer/{api_key}:
+  /transfer:
     x-swagger-router-controller: transfer
     post:
       tags:
@@ -113,9 +113,8 @@ paths:
       operationId: transfer
       parameters:
         - name: api_key
-          in: path
+          in: query
           type: string
-          required: true
           description: String api_key 
         - name: body
           in: body

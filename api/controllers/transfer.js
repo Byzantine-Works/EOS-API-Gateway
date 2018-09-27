@@ -10,6 +10,7 @@ module.exports = {
 
 function transfer(req, res) {
   var apiKey = req.swagger.params.api_key.value;
+  //console.log("apiKey => "+ apiKey);
   var from = req.swagger.params.body.value.from;
   var to = req.swagger.params.body.value.to;
   var amount = req.swagger.params.body.value.amount;
