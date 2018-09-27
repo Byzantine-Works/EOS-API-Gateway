@@ -51,7 +51,7 @@ async function getAllCurrentAirDropTokens() {
     for (var i = tokens.length; i--;) {
         var token = tokens[i];
         //console.log("TOKEN IS " + JSON.stringify(token));
-        delete token.contract;
+        //delete token.contract;
         //token.splice(2, 1);
     }
     return tokens;
@@ -88,6 +88,54 @@ async function transfer(code, from, to, amount, memo, sig) {
     });
     console.log("eosapi:transfer=> " + JSON.stringify(trxDeposit));
     return (trxDeposit);
+}
+
+async function transferOffline(code, from, to, amount, memo, sig, transactionHeaders) {
+    var keyProvider = '5J4vRX186htiS6s8rvfCeVqXLYfKyjZDum5mpww8dT1qrpfsEJL'; //dummy key provider to test
+    const eosjsOptions = {
+        broadcast: false,
+        authorization: [{
+            actor: from,
+            permission: 'active'
+        }],
+        transactionHeaders: transactionHeaders
+    };
+    //offline signing config
+    eos = Eos({
+        httpEndpoint: null,
+        keyProvider,
+        authorization: [{
+            actor: from,
+            oermission: 'active'
+        }],
+        transactionHeaders
+    });
+
+    console.log("eosapi:transferOffline with sig: =>" + sig);
+    console.log("eosapi:transfer=> contract:from:to:amount:memo:sig:trxHeaders  =>" + JSON.stringify(code) + " : " + JSON.stringify(from) + " : " + JSON.stringify(to) + " : " + JSON.stringify(amount) + " : " + JSON.stringify(memo) + " : " + JSON.stringify(sig) + ":" + JSON.stringify(transactionHeaders));
+    var transfer = await eos.transfer({
+        from,
+        to,
+        quantity: amount,
+        memo
+    }, eosjsOptions);
+
+    // var transferTransaction = await eos.transaction(code, contractuser => {
+    //     contractuser.transfer({
+    //         from: from,
+    //         to: to,
+    //         quantity: amount,
+    //         memo: memo
+    //     },eosjsOptions);
+    // });
+
+    var transferTransaction = transfer.transaction;
+    // ONLINE (bring `transferTransaction`)
+    eos = Eos(loadBalance(null));
+    transferTransaction.signatures.push(sig); //push scatter signature
+    processedTransaction = await eos.pushTransaction(transferTransaction);
+    console.log("eosapi:transferOffline=> " + JSON.stringify(processedTransaction));
+    return (processedTransaction);
 }
 
 async function getTransaction(id) {
@@ -180,10 +228,10 @@ function loadBalance(sig) {
     //console.log(chainList);
     var selectedChain = chainList[Math.floor(Math.random() * chainList.length)];
     //use this if we want to be the signing authority and thereby provide staking amount
-    if (sig != undefined) {
+    if (sig !== 'undefined' && sig !== null) {
         selectedChain.keyProvider = [sig];
     } else {
-        selectedChain.keyProvider = [process.env.PAK, process.env.SAK];
+        //selectedChain.keyProvider = [process.env.PAK, process.env.SAK];
     }
     console.log("selectedChain=> " + JSON.stringify(selectedChain));
     console.log("***************************")
@@ -206,3 +254,4 @@ module.exports.buyRam = buyRam;
 module.exports.buyRamBytes = buyRamBytes;
 module.exports.sellRamBytes = sellRamBytes;
 module.exports.getRamData = getRamData;
+module.exports.transferOffline = transferOffline;

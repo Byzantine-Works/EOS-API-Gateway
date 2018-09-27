@@ -4,27 +4,28 @@ const cipher = require('./decipher.js');
 const config = require("../config");
 
 module.exports = {
-  transfer: transfer
+  transferWithScatter: transferWithScatter
 };
 
 
-function transfer(req, res) {
+function transferWithScatter(req, res) {
   var from = req.swagger.params.body.value.from;
   var to = req.swagger.params.body.value.to;
   var amount = req.swagger.params.body.value.amount;
   var memo = req.swagger.params.body.value.memo;
   var sig = cipher.decryptXStrong(req.swagger.params.body.value.sig);
-  var contract = getContractForSymbol(amount);
+  var transactionHeaders = req.swagger.params.body.value.transactionHeaders;
 
-  console.log("transfer-req:contract-from-to-amount-memo-sig=> " + contract + ":" + from + ":" + to + ":" + amount + ":" + memo + ":" + sig);
-  eosapi.transfer(contract, from, to, amount, memo, sig).then(function (result) {
+  var contract = getContractForSymbol(amount);
+  console.log("transferWithScatter-req:contract-from-to-amount-memo-sig-transactionHeaders=> " + contract + ":" + from + ":" + to + ":" + amount + ":" + memo + ":" + sig + ":" + transactionHeaders);
+  eosapi.transferOffline(contract, from, to, amount, memo, sig, transactionHeaders).then(function (result) {
     console.log("transfer-res => " + result);
-    //res.status(200).send(result /*JSON.stringify(data,null,2)*/ );
-    //res.end();
-    //res.json(util.format(result));
     res.json((result));
   }, function (err) {
-    console.log("Error in transfer:=>" + err);
+    console.log("Error in transferWithScatter:=>" + err);
+    //TODO: @reddy rollbackNonce if method fails
+
+    //TODO: @reddy fix the kluge below
     //kluge as 500/40x errors have different json connotatins, one is parsable into JSON the other is not ATM
     try {
       var error = JSON.parse(err);
@@ -39,11 +40,6 @@ function getContractForSymbol(amount) {
   console.log("getContractForSymbol => " + amount);
   var tokenList = config.tokens;
   var symbol = amount.toString().split(' ')[1];
-  // var contract = lodash.filter(tokenList, x => x.symbol === symbol);
-  // if (contract == null)
-  //   throw new Error("Invalid token symbol ", symbol);
-  // else
-  //   return contract.contract;
   for (var i = 0, len = tokenList.length; i < len; i++) {
     if (tokenList[i].symbol == symbol) {
       return tokenList[i].contract;

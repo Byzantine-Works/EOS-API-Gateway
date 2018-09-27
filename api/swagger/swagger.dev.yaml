@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "1.0.1"
+  version: "1.3"
   title: "Byzanti.ne API Gateway - Powered by Liberty Block"
 # during dev, should point to your local machine
 host: dev.byzanti.ne:8901
@@ -113,6 +113,45 @@ paths:
                 type: string
               sig:
                 type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/transferResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Error
+          schema:
+            $ref: "#/definitions/TransferErrorResponse"
+  /transferWithScatter:
+    x-swagger-router-controller: transferWithScatter
+    post:
+      tags:
+        - Transfer API {EOS & Derivative Tokens}
+      description: Returns transaction response to transfer on-chain action {from account} {to account} {amount} {memo} {sig} {transactionHeaders}
+      operationId: transferWithScatter
+      parameters:
+        - name: body
+          in: body
+          description: Body should encapsulate {from=Account to transfer from}, {to=Account to transfer to}, {amount=amout to transfer such as 1.0000 EOS or 1.0000 IQ},{memo=memo for the transfer which is a string such as 'UUID' or 'deposit into exchange for 78934'}, {sig=scatter signed arbitrary signature + nonce}, {transactionHeaders}
+          required: true
+          schema:
+            properties:
+              from:
+                type: string
+              to:
+                type: string
+              amount:
+                type: string
+              memo:
+                type: string
+              sig:
+                type: string
+              transactionHeaders:
+                type: object
       responses:
         "200":
           description: Success

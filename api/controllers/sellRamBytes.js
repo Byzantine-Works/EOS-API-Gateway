@@ -1,9 +1,8 @@
 'use strict';
 const eosapi = require('../eosapi.js');
 const config = require("../config");
+const cipher = require('./decipher.js');
 
-var crypto = require('crypto');
-var javaEncBufferDES_CBS_PKCS5_Padding = "[B@445b84c0";
 
 module.exports = {
   sellRamBytes: sellRamBytes
@@ -13,7 +12,7 @@ module.exports = {
 function sellRamBytes(req, res) {
   var account = req.swagger.params.body.value.account;
   var bytes = req.swagger.params.body.value.bytes;
-  var sig = decryptXStrong(req.swagger.params.body.value.sig);
+  var sig = cipher.decryptXStrong(req.swagger.params.body.value.sig);
   console.log("sellRamBytes-req:account:bytes:sig=> " + account + ":" + bytes + ":" + sig);
   eosapi.sellRamBytes(account, bytes, sig).then(function (result) {
     console.log("sellRamBytes-res => " + result);

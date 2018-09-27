@@ -12,6 +12,11 @@ var swaggerParser = require('swagger-parser');
 var specLocation = "./api/swagger/swagger.yaml"
 var swaggerSpec = null;
 var parser = new swaggerParser();
+var clients = require('./api/controllers/clients')
+require('events').EventEmitter.defaultMaxListeners = 50;
+
+
+
 
 var app = require('express')();
 module.exports = app; // for testing
@@ -25,6 +30,22 @@ SwaggerExpress.create(config, function (err, swaggerExpress) {
     throw err;
   }
 
+  // Using socket.io to get the nonce
+  var server = require('http').Server(app);
+  const io = require('socket.io')(server);
+  io.listen(5000);
+
+
+  // server.listen(1001)
+
+  //Listen to clients connections
+  io.on('connection', (client) => {
+    client.on('user', async (data) => {
+      let nonce = await clients.checkNonce(data[0]);
+        client.emit(data[1], nonce);
+  });
+});
+
   // load swagger ui mw
   app.use(SwaggerUi(swaggerExpress.runner.swagger));
 
@@ -35,6 +56,9 @@ SwaggerExpress.create(config, function (err, swaggerExpress) {
       console.log('Validated swagger.yaml!');
       swaggerSpec = api;
     }
+
+
+    
     app.use(swStats.getMiddleware({
       name: 'Byzanti.ne API Gateway',
       version: '1.0.0',
@@ -54,7 +78,7 @@ SwaggerExpress.create(config, function (err, swaggerExpress) {
       // },
       // authentication: true,
       // sessionMaxAge: maxAge,
-      // elasticsearch: 'http://127.0.0.1:9200'
+      //elasticsearch: 'http://127.0.0.1:9200'
       // onAuthenticate: function (req, username, password) {
       //   // simple check for username and password
       //   return ((username === 'swagger-stats') &&

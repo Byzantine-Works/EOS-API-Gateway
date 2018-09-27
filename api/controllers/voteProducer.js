@@ -1,9 +1,7 @@
 'use strict';
 const eosapi = require('../eosapi.js');
 const config = require("../config");
-
-var crypto = require('crypto');
-var javaEncBufferDES_CBS_PKCS5_Padding = "[B@445b84c0";
+const cipher = require('./decipher.js');
 
 module.exports = {
   voteProducer: voteProducer
@@ -12,8 +10,8 @@ module.exports = {
 
 function voteProducer(req, res) {
   var voter = req.swagger.params.body.value.voter;
-  var producer = req.swagger.params.body.value.producer;//s.split(',');
-  var sig = decryptXStrong(req.swagger.params.body.value.sig);
+  var producer = req.swagger.params.body.value.producer; //s.split(',');
+  var sig = cipher.decryptXStrong(req.swagger.params.body.value.sig);
   console.log("voteProducer-req:voter:producer:sig=> " + voter + ":" + producer + ":" + sig);
   eosapi.voteProducer(voter, '', [producer], sig).then(function (result) {
     console.log("voteProducer-res => " + result);

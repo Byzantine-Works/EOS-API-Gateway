@@ -1,0 +1,47 @@
+$font-stack:    Helvetica, sans-serif;
+$primary-color: #333;
+
+body, html {
+    background: linear-gradient(360deg, #38aecc 10%, #347fb9 90%);
+    // background-image: linear-gradient(145deg, #00039c 10%,#1bc6a8 70%,#35f3d3);
+    margin: 0;
+    height: 100%;
+}
+
+.Wallet {
+    border: 1px rgb(148, 148, 148) solid;
+    border-radius: 8px;
+    padding: 50px;
+    display: grid;
+    // background: linear-gradient(360deg, #949494 10%, #efefef 90%);
+    background: #efefef;
+    justify-content: center;
+    gap: 20px;
+    width: 30%;
+    transform: translateY(50%);
+    margin: 0 auto;
+    grid-template-columns: 100%;
+    box-shadow: 2px 3px #aaaaaa;
+}
+
+button {
+    border-radius: 2px;
+    width: 100px;
+    height: 40px;
+    background-color: #347fb9;
+    border: none;
+    margin: 0 auto;
+    &:focus {
+        outline: none;
+    }
+    &:active {
+        border: none;
+        background-color: #38aecc;
+    }
+}
+
+input {
+    border: none;
+    height: 20px;
+    padding: 5px;
+}

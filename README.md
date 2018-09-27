@@ -1,10 +1,49 @@
 # Synopsis
+- Byzantine API gateway enables EOS on-chain integration of DEX's, Centralized Exchanges, Wallets and DAPPs, in a secure, scalable and reliable manner, without the need to run mainnet eos chain locally
+- Provides an abstraction from token contracts, replay attacks, validation of tokens with their respective contract hashes and ensures a secure transaction
+- The API gateway runs its own mainnet and also load balances across 21 block producers when the local mainnet blocks are delayed by >500ms
+- Provides an unified access to history-api and thereby access to transactions made through the API gateway are guaranteed to have an audit trace forever
+- Security is enabled through a combination of nonce, private salt, api-security-key and a cipher used by both the client and server for signature. This prevents both the replay attack as well as a secure exchange of keys for signature
+- Provides an easy abstraction for getting balances across various EOS derivative airgrabs and airdrops and token specific contract validation with hashcodes
+- Prevents the following attacks which were in recent news:
+
+- - [EosBetDice hacked using eosio.token transfer exploit](https://www.zdnet.com/article/blockchain-betting-app-mocks-competitor-for-getting-hacked-gets-hacked-four-days-later/)
+
+- - [EosDex hacked with fake EOS tokens](https://thenextweb.com/hardfork/2018/09/18/eos-hackers-exchange-fake/)
+
 # Build
+- Byzantine API Gateway
+
+```sh
+git clone https://github.com/Byzantine-Works/EOS-API-Gateway.git
+npm install
+vi ~/etc/hosts (add loopback interface: 127.0.0.1	local.byzanti.ne)
+npm start OR nodemon
+curl http://local.byzanti.ne/8901/info
+```
+
+- EOS 'Stripe' Wallet
+```sh
+cd thin-wallet-client
+npm start
+```
+
+# Validate
+ - swagger-ui: http://local.byzanti.ne/8901/docs
+ - swagger-stats:  http://local.byzanti.ne:8901/swagger-stats/ui#sws_summary
+ - swagger-apidocs:    http://local.byzanti.ne:8901/api-docs
+ - swagger-editor: https://editor.swagger.io/
+
 # Design
+//TODO
 
-swagger-stats: http://api.byzanti.ne:8902/swagger-stats/ui#sws_summary
+# Terminal command cheatsheet
+```sh
+ps -ef | grep node
+kill $(lsof -t -i :8901) 
+```
 
-# API curl cheat sheet
+# API cheat sheet for mainnet
 ```sh
 // Curl Examples for Byzanti.ne API Gateway - EOS Mainnet
 curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/json' 'http://api.byzanti.ne:8902/info' | json_pp
@@ -52,6 +91,9 @@ curl -X POST -H "Content-Type:application/json" -d '{"account":"gi3dcnjshege","b
 
 //Get RAM price
 curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/json' 'http://api.byzanti.ne:8902/getRamPrice' | json_pp
+
+//Scatter based transfer
+curl -X POST -H "Content-Type:application/json" -d '{"from":"gi3dcnjshege","to":"randomgooppy","amount":"0.0001 EOS","memo":"offline test","sig":"c77ac47879b2a8e622f9f301c98959cce5b97a53e4d42f5038d0d2d7cb78a0c3e3a135728fb5f5969a81f92cb0412727a040b143e12f57b533c7e0cc595ce965a6318cab00710549c3bc8984ec22b1c9c38f2db7e7e4cb6ba3bb48a3211db082c5315913977262004a4b8e0c052a8ee2","transactionHeaders":{"expiration": "2018-09-19T00:20:40", "ref_block_num": 19055, "ref_block_prefix": 4239914415}}' http://local.byzanti.ne:8901/transferWithScatter | json_pp
 ```
 
 ### Todos
