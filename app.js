@@ -17,7 +17,7 @@ require('events').EventEmitter.defaultMaxListeners = 50;
 
 var app = require('express')();
 module.exports = app; // for testing
-
+ 
 var config = {
   appRoot: __dirname, // required config
   swaggerSecurityHandlers: {
@@ -48,21 +48,17 @@ var config = {
         }
       }
       
+      // if (scopesOrApiKey === 'samplekey1234') { // Singlekey functionality
       if (allKeys.hasOwnProperty(scopesOrApiKey) && allKeys[scopesOrApiKey]['isEnabled'] === true) {
-        // if (scopesOrApiKey === 'samplekey1234') { // Singlekey functionality
-        // if (allKeys.hasOwnProperty(scopesOrApiKey) === true) { // Multikey functionality
-<<<<<<< HEAD
-        console.log('################# API Key Accepted  ##################');
-=======
->>>>>>> 9bb53d1e0ce4b3d1e6c41df3b176c8522ef1870b
+        console.log('~~~~~~~~~~~~ API Key Accepted for name: ' + allKeys[scopesOrApiKey]['name'] + ' ~~~~~~~~~~~~~~~~~~~');
         cb(null);
       } else {
         cb(new Error('Sorry, Either the api_key is invalid or there was no key supplied. Contact the info@byzanti.ne!'));
       }
     },
-    // APIKeyQueryParam: swaggerSecurityHandlers.APIKeyHeader
+    // Allow for Query in addition to Headers
     APIKeyQueryParam: function(req, authOrSecDef, scopesOrApiKey, cb) {
-      console.log('In APIKeyQueryParam ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+      console.log('~~ In APIKeyQueryParam ~~')
       config.swaggerSecurityHandlers.APIKeyHeader(req, authOrSecDef, scopesOrApiKey, cb)
     }
     // APIKeyQueryParam: this.APIKeyHeader
