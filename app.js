@@ -70,17 +70,24 @@ var config = {
           isTransactionIrreversible: 0,
         },
       }
-
+      
       if (allKeys.hasOwnProperty(scopesOrApiKey) && allKeys[scopesOrApiKey]['isEnabled'] === true) {
-      // if (scopesOrApiKey === 'samplekey1234') { // Singlekey functionality
-      // if (allKeys.hasOwnProperty(scopesOrApiKey) === true) { // Multikey functionality
-        console.log('~~~~~~~~~~~~ API Key Accepted ~~~~~~~~~~~~');
+        // if (scopesOrApiKey === 'samplekey1234') { // Singlekey functionality
+        // if (allKeys.hasOwnProperty(scopesOrApiKey) === true) { // Multikey functionality
+        console.log('################# API Key Accepted  ##################');
         cb(null);
         console.log('complete')
       } else {
         cb(new Error('access denied!'));
       }
+    },
+    // APIKeyQueryParam: swaggerSecurityHandlers.APIKeyHeader
+    APIKeyQueryParam: function(req, authOrSecDef, scopesOrApiKey, cb) {
+      console.log('In APIKeyQueryParam ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+      config.swaggerSecurityHandlers.APIKeyHeader(req, authOrSecDef, scopesOrApiKey, cb)
     }
+    // APIKeyQueryParam: this.APIKeyHeader
+
   }
 };
 
