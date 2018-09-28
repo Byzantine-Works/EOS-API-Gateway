@@ -39,8 +39,8 @@ npm start
 The high-level design shown below provides an unified interface for all on-chain EOS operations. 
  - The key components are the API itself, which encapsulates the EOS-chain methods and nuances by using eosjs and ecc. 
  - It uses cryptographic nonce to secure customers from replay attack. 
- - The design necessitates customers to aquire an API-KEY/SALT and use the api-key to fetch the nonce to be used for signing write-transactions and transmit the "sig" attribute as shown in curl examples.
- 
+ - The design necessitates customers to aquire an API-KEY/SALT which is a one time excercise. The api-key is then used to fetch the nonce for signing write-transactions and transmit the "sig" attribute as shown in curl examples.
+
 ![Alt text](/images/byzapi.png?raw=true "Byzantine API Gateway")
 
 
