@@ -51,10 +51,7 @@ var config = {
       if (allKeys.hasOwnProperty(scopesOrApiKey) && allKeys[scopesOrApiKey]['isEnabled'] === true) {
         // if (scopesOrApiKey === 'samplekey1234') { // Singlekey functionality
         // if (allKeys.hasOwnProperty(scopesOrApiKey) === true) { // Multikey functionality
-<<<<<<< HEAD
         console.log('################# API Key Accepted  ##################');
-=======
->>>>>>> 6d9aa48d3370a31673f70738f8edee6e5078187c
         cb(null);
       } else {
         cb(new Error('Sorry, Either the api_key is invalid or there was no key supplied. Contact the info@byzanti.ne!'));
