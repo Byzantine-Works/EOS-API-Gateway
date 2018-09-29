@@ -72,6 +72,7 @@ SwaggerExpress.create(config, function (err, swaggerExpress) {
   //Listen to clients connections
   io.on('connection', (client) => {
     client.on('user', async (data) => {
+      console.log(data[0]);
       let nonce = await clients.checkNonce(data[0]);
       client.emit(data[1], nonce);
     });

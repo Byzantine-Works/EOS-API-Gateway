@@ -2,7 +2,11 @@
 export default class State {
     constructor() {
 
-        this.tokens = null;
+        this.tokens = ["IQ", "HORUS","EOS"],
+
+        this.token = "EOS",
+
+        this.fiatAm = 0,
         
         this.scatter = false;
         
@@ -14,8 +18,12 @@ export default class State {
         
         this.amount = 0;
         
-        this.coin = null;
+        this.coin = "EOS";
+
+        this.rate = null;
         
         this.memo = null;
+
+        this.usdeur = "USD";
     }
 }

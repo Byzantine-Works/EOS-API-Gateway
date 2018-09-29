@@ -19,9 +19,10 @@ body, html {
     "b b b"
     "c c c"
     "d e f"
-    "g g g"
-    "h h h"
-    "i i i";
+    "g g h"
+    "i i i"
+    "j j j"
+    "k k k";
     // background: linear-gradient(360deg, #949494 10%, #efefef 90%);
     background: #efefef;
     justify-content: center;
@@ -46,23 +47,33 @@ body, html {
 #amount {
     grid-area: d;
 }
-
-#coin {
+#token {
     grid-area: e;
 }
 
-#token {
+#coin {
     grid-area: f;
 }
 
-#memo {
+#fiat {
     grid-area: g;
+}
+
+#usdeur {
+    grid-area: h; 
+}
+
+#memo {
+    grid-area: i;
 
 }
 
 #send {
-    grid-area: h;
+    grid-area: j;
+}
 
+.Scatter {
+    grid-area: k;
 }
 
 
@@ -88,10 +99,6 @@ body, html {
 
 // }
 
-.Scatter {
-    grid-area: i;
-
-}
 
 
 .options {
