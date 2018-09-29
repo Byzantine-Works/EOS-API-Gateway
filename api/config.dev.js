@@ -19,6 +19,7 @@ config.tokens = [{
     "symbol": "EOS",
     "contract": "eosio.token",
     "precision": 4,
+    "24HrTransferVolume": 0,
     "hash": "c3f4238e22eab3ae950f4a837751999593b3af3f8edad6a0bcd6c39714540a42"
   },
   {
@@ -26,6 +27,7 @@ config.tokens = [{
     "symbol": "ABC",
     "contract": "eosio.token",
     "precision": 4,
+    "24HrTransferVolume": 0,
     "hash": "c3f4238e22eab3ae950f4a837751999593b3af3f8edad6a0bcd6c39714540a42"
   },
   {
@@ -33,6 +35,7 @@ config.tokens = [{
     "symbol": "SYS",
     "contract": "eosio.token",
     "precision": 4,
+    "24HrTransferVolume": 0,
     "hash": "c3f4238e22eab3ae950f4a837751999593b3af3f8edad6a0bcd6c39714540a42"
   }
 ];
