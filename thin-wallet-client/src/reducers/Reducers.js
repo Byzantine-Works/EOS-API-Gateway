@@ -63,7 +63,6 @@ const updateState = (state = new State(), action) => {
             }
 
             else {
-                console.log("inreducers")
                 updatedState[action.payload.data[0]] = action.payload.data[1];
             }
 

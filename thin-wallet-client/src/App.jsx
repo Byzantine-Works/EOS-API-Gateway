@@ -13,6 +13,7 @@ import listing from './listing.json';
 const lodash = require('lodash');
 import { css } from 'react-emotion';
 import Loader from 'react-spinners/BounceLoader';
+import pic from '../assets/scatterPic.png'
 
 // var Eth = require('web3-eth');
 
@@ -33,11 +34,19 @@ const eosChain = {
   };
 
 
+// const network = {
+//     blockchain:'eos',
+//     protocol:'https',
+//     host:'mainnet.libertyblock.io',
+//     port: 7777,
+//     chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
+// }
+
 const network = {
     blockchain:'eos',
     protocol:'https',
-    host:'mainnet.libertyblock.io',
-    port: 7777,
+    host:'nodes.get-scatter.com',
+    port:443,
     chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
 }
 
@@ -45,8 +54,8 @@ const eos = EosApi(network);
 
 
 const mapStateToProps = store => ({
+    scatterID: store.scatterID,
     loading: store.loading,
-    amountFocus: store.amountFocus,
     fiatFocus: store.fiatFocus,
     amRend : store.amRend,
     fiatAmRend : store.fiatAmRend,
@@ -145,40 +154,27 @@ class App extends React.Component {
     }
 
     async scatterPair(){
+        this.props.updateState(["loading", true]);
         const connected = await scatter.connect("wallet-thin");
-        await console.log(connected);
+        if (connected) {
         const requiredFields = { accounts:[network] };
         const ID = await scatter.getIdentity(requiredFields);
+    
+        this.props.updateScatter();
         this.props.updateState(["from", ID.accounts[0].name]);
         this.props.updateState(["privateKey", ID.hash])
-        console.log(ID)
+        this.props.updateState(["scatterID", ID])
+        console.log(ID);
+        }
+        this.props.updateState(["loading", false]);
     }
 
 
     async scatterSend(e) {
+        this.props.updateState(["loading", true]);
 
-    
-        scatter.connect("wallet-thin").then(connected => {
-            if(!connected) {
-                // User does not have Scatter Desktop or Classic installed. 
-                return false;
-            }
-            if(connected) {
-                // this.scatter = scatter;
-                // window.scatter = null;
-                
-            }
-            console.log(connected)
-    
- 
-
-            const requiredFields = { accounts:[network] };
-            scatter.getIdentity(requiredFields).then(identity => {
-                console.log("identity: ", identity)
-
-                // Always use the accounts you got back from Scatter. Never hardcode them even if you are prompting
-                // the user for their account name beforehand. They could still give you a different account.
-                const account = scatter.identity.accounts.find(x => x.blockchain === 'eos');
+                const account = this.props.scatterID.accounts.find(x => x.blockchain === 'eos');
+                console.log("account: ", account);
                 
                 
         
@@ -191,19 +187,15 @@ class App extends React.Component {
                 const eos = scatter.eos(network, Eos);
                 
                 const transactionOptions = { authorization:[`${account.name}@${account.authority}`] };
-                eos.transfer(account.name, this.props.to, this.props.amount + ' ' + this.props.coin, this.props.memo, transactionOptions).then(trx => {
+                eos.transfer(account.name, this.props.to, this.props.amRend + ' ' + this.props.coin, this.props.memo, transactionOptions).then(trx => {
                     // That's it!
                     console.log(`Transaction ID: ${trx.transaction_id}`);
+                    this.props.updateState(["loading", false]);
                 }).catch(error => {
+                    this.props.updateState(["loading", false]);
                     console.error(error);
                 });
-        
-            }).catch(error => {
-                // The user rejected this request, or doesn't have the appropriate requirements.
-                console.error(error);
-            }); 
-        });
-    }
+            }
 
     unFocus(e) {
             this.props.updateState(["amRend", this.props.amount]);
@@ -277,9 +269,7 @@ class App extends React.Component {
             }
             if(this.props.coin !== null) this.props.updateState(["fiatAm", this.props.amount*this.props[this.props.usdeur]]);
         }
-        } else if (e.target.id === "scatter") {
-            this.props.updateScatter();
-        } else if (e.target.id === "from") {
+        }  else if (e.target.id === "from") {
             payload.push(e.target.id, e.target.value)
             await this.props.updateState(payload);
             if(this.props.coin !== null) {
@@ -346,14 +336,27 @@ class App extends React.Component {
             zindex: '6',  
         }
 
+        let StyleContainer = {
+            transform: 'translateY(20%)',
+            margin: '0 auto',
+            borderRadius: '15px',
+            padding: '-5px',
+            zindex: '6',
+            width:'100%', 
+            background:'white', 
+            height:'5px',
+            gridArea: 'j',
+        }
+        let balance = this.props.token ? this.props.balance[this.props.token].balance - this.props.amount : null;
+
         const fiatSelec = [
             <input key="fiat" id="fiat" value={this.props.fiatAmRend} onBlur={this.unFocus} onChange={this.changeInput}></input>,
             <select key="usdeur" id="usdeur" onChange={this.changeInput} >
                 <option id="USD">USD</option>
                 <option id="EUR">EUR</option>
             </select>,
-            this.props.token ? <p key="balance" id="balance">{(this.props.balance[this.props.token].balance - this.props.amount).toFixed(4)}</p> : null,
-            <div style={{borderRadius: '15px', padding: '-5px', zindex: '6', top: '10px', width:'100%', background:'white', height:'5px'}}><div style={Style} key="balanceVisual" id="balanceVisual"></div></div>
+            this.props.token ? <p key="balance" id="balance" style={{color: balance >= 0 ? 'white' : 'red' }}>{balance.toFixed(4)+' '+this.props.token}</p> : null,
+            <div style={StyleContainer}><div style={Style} key="balanceVisual" id="balanceVisual"></div></div>
         ];
 
         const override = css`
@@ -390,7 +393,10 @@ class App extends React.Component {
                 </select>
                 <input key="memo" id="memo" placeholder="Memo" onChange={this.changeInput}></input>
                 <button id="send" key="send" onClick={this.props.scatter ? this.scatterSend : this.send}>Send</button>
-                <label className="Scatter"><img src="https://coinclarity.com/wp-content/uploads/2018/06/6ZtwIwM_400x400-1.jpg"></img><input type="checkbox" id="scatter" onChange={this.scatterPair}></input><span className="checkmark"></span></label>
+                <label className="Scatter"><input type="checkbox" id="scatter" onChange={this.scatterPair}></input><span className="checkmark"></span><p>Transfer with Scatter</p>
+               </label>
+
+
             </div>
             <div className='sweet-loading'>
                 <Loader

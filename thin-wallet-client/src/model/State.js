@@ -13,9 +13,9 @@ export default class State {
         
         this.scatter = false;
 
-        this.amRend = 0;
+        this.amRend = null;
 
-        this.fiatAmRend = 0;
+        this.fiatAmRend = null;
 
         this.loading = false;
 
