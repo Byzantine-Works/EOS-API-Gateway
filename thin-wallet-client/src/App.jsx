@@ -13,7 +13,7 @@ import listing from './listing.json';
 const lodash = require('lodash');
 import { css } from 'react-emotion';
 import Loader from 'react-spinners/BounceLoader';
-import pic from '../assets/scatterPic.png'
+// import pic from '../assets/scatterPic.png'
 
 // var Eth = require('web3-eth');
 
