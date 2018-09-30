@@ -107,7 +107,7 @@ SwaggerExpress.create(config, function (err, swaggerExpress) {
       // },
       // authentication: true,
       // sessionMaxAge: maxAge,
-      elasticsearch: 'http://127.0.0.1:9200'
+      // elasticsearch: 'http://127.0.0.1:9200'
       // onAuthenticate: function (req, username, password) {
       //   // simple check for username and password
       //   return ((username === 'swagger-stats') &&
