@@ -11,8 +11,14 @@ function getActions(req, res) {
   var account = req.swagger.params.account.value;
   var pos = req.swagger.params.pos.value;
   var offset = req.swagger.params.offset.value;
+
+  if (pos === null || pos === undefined)
+    pos = -1;
+  if (offset === null || offset === undefined)
+    offset = -1;
+
   console.log("getActions-req:account:pos:offset=> " + account + ":" + pos + ":" + offset);
-  eosapi.getActions(account,pos, offset).then(function (result) {
+  eosapi.getActions(account, pos, offset).then(function (result) {
     console.log("getActions-res => " + result);
     res.json(result);
   }, function (err) {
