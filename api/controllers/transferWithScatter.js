@@ -9,11 +9,14 @@ module.exports = {
 
 
 function transferWithScatter(req, res) {
+  var apiKey = req.headers.api_key;
+  if (apiKey === null || apiKey === undefined || apiKey.length < 1) throw new Error("Invalid api_key!");
+
   var from = req.swagger.params.body.value.from;
   var to = req.swagger.params.body.value.to;
   var amount = req.swagger.params.body.value.amount;
   var memo = req.swagger.params.body.value.memo;
-  var sig = cipher.decryptXStrong(req.swagger.params.body.value.sig);
+  var sig = cipher.decryptXStrong(apiKey, req.swagger.params.body.value.sig);
   var transactionHeaders = req.swagger.params.body.value.transactionHeaders;
 
   var contract = getContractForSymbol(amount);

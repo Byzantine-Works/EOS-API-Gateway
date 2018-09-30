@@ -9,9 +9,12 @@ module.exports = {
 
 
 function voteProducer(req, res) {
+  var apiKey = req.headers.api_key;
+  if (apiKey === null || apiKey === undefined || apiKey.length < 1) throw new Error("Invalid api_key!");
+
   var voter = req.swagger.params.body.value.voter;
   var producer = req.swagger.params.body.value.producer; //s.split(',');
-  var sig = cipher.decryptXStrong(req.swagger.params.body.value.sig);
+  var sig = cipher.decryptXStrong(apiKey, req.swagger.params.body.value.sig);
   console.log("voteProducer-req:voter:producer:sig=> " + voter + ":" + producer + ":" + sig);
   eosapi.voteProducer(voter, '', [producer], sig).then(function (result) {
     console.log("voteProducer-res => " + result);

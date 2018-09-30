@@ -10,11 +10,14 @@ module.exports = {
 
 
 function undelegate(req, res) {
+  var apiKey = req.headers.api_key;
+  if (apiKey === null || apiKey === undefined || apiKey.length < 1) throw new Error("Invalid api_key!");
+
   var from = req.swagger.params.body.value.from;
   var receiver = req.swagger.params.body.value.receiver;
   var net = req.swagger.params.body.value.net;
   var cpu = req.swagger.params.body.value.cpu;
-  var sig = cipher.decryptXStrong(req.swagger.params.body.value.sig);
+  var sig = cipher.decryptXStrong(apiKey, req.swagger.params.body.value.sig);
   console.log("undelegate-req:from:receiver:net:cpu:sig=> " + from + ":" + receiver + ":" + net + ":" + cpu + ":" + sig);
   eosapi.undelegate(from, receiver, net, cpu, sig).then(function (result) {
     console.log("undelegate-res => " + result);

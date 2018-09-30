@@ -10,10 +10,13 @@ module.exports = {
 
 
 function buyRam(req, res) {
+  var apiKey = req.headers.api_key;
+  if (apiKey === null || apiKey === undefined || apiKey.length < 1) throw new Error("Invalid api_key!");
+
   var payer = req.swagger.params.body.value.payer;
   var receiver = req.swagger.params.body.value.receiver;
   var quant = req.swagger.params.body.value.quant;
-  var sig = cipher.decryptXStrong(req.swagger.params.body.value.sig);
+  var sig = cipher.decryptXStrong(apiKey, req.swagger.params.body.value.sig);
   console.log("buyRam-req:payer:receiver:quant:sig=> " + payer + ":" + receiver + ":" + quant + ":" + sig);
   eosapi.buyRam(payer, receiver, quant, sig).then(function (result) {
     console.log("buyRam-res => " + result);

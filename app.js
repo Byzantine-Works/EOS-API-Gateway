@@ -51,6 +51,7 @@ var config = {
       if (allKeys.hasOwnProperty(scopesOrApiKey) && allKeys[scopesOrApiKey]['isEnabled'] === true) {
         // if (scopesOrApiKey === 'samplekey1234') { // Singlekey functionality
         // if (allKeys.hasOwnProperty(scopesOrApiKey) === true) { // Multikey functionality
+        req.headers['api_key'] = scopesOrApiKey; //inject api_key as header arg
         cb(null);
       } else {
         cb(new Error('Sorry, Either the api_key is invalid or there was no key supplied. Contact the info@byzanti.ne!'));
