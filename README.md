@@ -29,9 +29,10 @@ npm start
 ```
 
 # Validate
- - swagger-ui: http://local.byzanti.ne/8901/docs
- - swagger-stats:  http://local.byzanti.ne:8901/swagger-stats/ui#sws_summary
- - swagger-apidocs:    http://local.byzanti.ne:8901/api-docs
+ - swagger-ui: http://api.byzanti.ne/8902/docs
+ - API-Analytics: https://analytics.byzanti.ne/goto/2471716043eb347a2079b6d64235d6c2
+ - API-stats:  http://api.byzanti.ne:8902/swagger-stats/ui#sws_summary
+ - swagger-apidocs:    http://api.byzanti.ne:8902/api-docs
  - swagger-editor: https://editor.swagger.io/
 
 # Design
