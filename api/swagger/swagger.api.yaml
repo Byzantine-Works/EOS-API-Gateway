@@ -1,12 +1,17 @@
 swagger: "2.0"
 info:
-  version: "1.3"
+  version: "1.4"
   title: "Byzanti.ne API Gateway - Powered by Liberty Block"
 # during dev, should point to your local machine
 host: api.byzanti.ne:8902
-# basePath prefixes all resource paths 
+# basePath prefixes all resource paths
 basePath: /
-# 
+securityDefinitions:
+  # X-API-Key: abcdef12345
+  APIKeyHeader:
+    type: apiKey
+    in: query
+    name: api_key
 schemes:
   # tip: remove http to make production-grade
   - http
@@ -17,6 +22,9 @@ consumes:
 # format of the responses to the client (Accepts)
 produces:
   - application/json
+# Global security (applies to all operations):
+security:
+  - APIKeyHeader: []
 paths:
   /info:
     # binds a127 app logic to a route
@@ -27,12 +35,11 @@ paths:
       description: Returns 'info' of the node to the calling application
       # used as the method name of the controller
       operationId: info
-     # parameters:
-      # - name: name
-      #  in: query
-      #    description: get EOS Node info
-      #    required: false
-      #    type: string
+      # parameters:
+      #   - name: api_key
+      #     in: header
+      #     type: string
+      #     required: true
       responses:
         "200":
           description: Success
@@ -51,7 +58,7 @@ paths:
         - Base API {account,tokens,transaction,actions}
       description: Returns All *legit EOS Derivative Tokens Airdropped, Airgrabbed and ICO'd with an operational contract,symbol
       operationId: tokens
-     # parameters:
+      # parameters:
       # - ({none})
       #  in: query
       #    description: Retrieve a list of all EOS derivative tokens
@@ -73,13 +80,20 @@ paths:
     get:
       tags:
         - Base API {account,tokens,transaction,actions}
-      description: Returns All EOS and Derivative Tokens Airdropped, Airgrabbed and ICO'd that a user has in his account 
+      description: Returns All EOS and Derivative Tokens Airdropped, Airgrabbed and ICO'd that a user has in his account
       operationId: tokensByAccount
       parameters:
-      - name: account
-        in: path
-        required: true
-        type: string
+        - name: account
+          in: path
+          required: true
+          type: string
+        # Operation-specific security:
+        # security:
+        #   - APIKeyQueryParam: []
+        # ##
+        # security:
+        #   - APIKeyHeader: []
+        ##
       responses:
         "200":
           description: Success
@@ -94,9 +108,13 @@ paths:
     post:
       tags:
         - Transfer API {EOS & Derivative Tokens}
-      description: Returns transaction response to transfer on-chain action {from account} {to account} {amount} {memo} 
+      description: Returns transaction response to transfer on-chain action {from account} {to account} {amount} {memo}
       operationId: transfer
       parameters:
+        # - name: api_key
+        #   in: query
+        #   type: string
+        #   description: String api_key
         - name: body
           in: body
           description: Body should encapsulate {from=Account to transfer from}, {to=Account to transfer to}, {amount=amout to transfer such as 1.0000 EOS or 1.0000 IQ},{memo=memo for the transfer which is a string such as 'UUID' or 'deposit into exchange for 78934'}
@@ -173,10 +191,10 @@ paths:
       description: Returns transaction details of a previously executed on-chain transaction. Used to validate with certainty successfull completion, and or reversed transaction.
       operationId: getTransaction
       parameters:
-      - name: id
-        in: path
-        required: true
-        type: string
+        - name: id
+          in: path
+          required: true
+          type: string
       responses:
         "200":
           description: Success
@@ -194,10 +212,10 @@ paths:
       description: Returns EOS blockchain account details including avail or staked RAM, CPU.
       operationId: getAccount
       parameters:
-      - name: account
-        in: path
-        required: true
-        type: string
+        - name: account
+          in: path
+          required: true
+          type: string
       responses:
         "200":
           description: Success
@@ -257,7 +275,7 @@ paths:
     post:
       tags:
         - Block Producer API {Producer List, Voting & Unstaking} *mainnet
-      description: Lets you vote for a specific producer account 
+      description: Lets you vote for a specific producer account
       operationId: voteProducer
       parameters:
         - name: body
@@ -290,7 +308,7 @@ paths:
     post:
       tags:
         - Block Producer API {Producer List, Voting & Unstaking} *mainnet
-      description: Undelegate specific NET and CPU bandwidth 
+      description: Undelegate specific NET and CPU bandwidth
       operationId: undelegate
       parameters:
         - name: body
@@ -330,10 +348,10 @@ paths:
       description: Returns account bandwidth staked in EOS for network and cpu.
       operationId: getBandwidth
       parameters:
-      - name: account
-        in: path
-        required: true
-        type: string
+        - name: account
+          in: path
+          required: true
+          type: string
       responses:
         "200":
           description: Success
@@ -348,7 +366,7 @@ paths:
     post:
       tags:
         - Block Producer API {Producer List, Voting & Unstaking} *mainnet
-      description: Buy Ram 
+      description: Buy Ram
       operationId: buyRam
       parameters:
         - name: body
@@ -383,7 +401,7 @@ paths:
     post:
       tags:
         - Block Producer API {Producer List, Voting & Unstaking} *mainnet
-      description: Buy Ram in specified bytes 
+      description: Buy Ram in specified bytes
       operationId: buyRamBytes
       parameters:
         - name: body
@@ -418,7 +436,7 @@ paths:
     post:
       tags:
         - Block Producer API {Producer List, Voting & Unstaking} *mainnet
-      description: Sell Ram in specified bytes 
+      description: Sell Ram in specified bytes
       operationId: sellRamBytes
       parameters:
         - name: body
@@ -467,27 +485,27 @@ paths:
 # complex objects have schema definitions
 definitions:
   infoResponse:
-      properties:
-        server_version:
-          type: string
-        chain_id:
-          type: string
-        head_block_num:
-          type: integer
-        last_irreversible_block_num:
-          type: integer
-        last_irreversible_block_id:
-          type: string
-        head_block_producer:
-          type: string
-        virtual_block_cpu_limit:
-          type: integer
-        virtual_block_net_limit:
-          type: integer
-        block_cpu_limit:
-          type: integer
-        block_net_limit:
-          type: integer
+    properties:
+      server_version:
+        type: string
+      chain_id:
+        type: string
+      head_block_num:
+        type: integer
+      last_irreversible_block_num:
+        type: integer
+      last_irreversible_block_id:
+        type: string
+      head_block_producer:
+        type: string
+      virtual_block_cpu_limit:
+        type: integer
+      virtual_block_net_limit:
+        type: integer
+      block_cpu_limit:
+        type: integer
+      block_net_limit:
+        type: integer
   ErrorResponse:
     properties:
       error:
@@ -500,14 +518,20 @@ definitions:
     type: array
     items:
       type: object
-      example: {name: Everipedia, contract: everipediaiq,symbol: IQ}
+      example: { name: Everipedia, contract: everipediaiq, symbol: IQ }
   tokensByAccountResponse:
     type: array
     items:
       type: object
-      example: {account: gi3dcnjshege, contract: everipediaiq,symbol: IQ, balance: '5223.0000'}
+      example:
+        {
+          account: gi3dcnjshege,
+          contract: everipediaiq,
+          symbol: IQ,
+          balance: "5223.0000",
+        }
   transferResponse:
     type: object
     items:
       type: object
-      example: {object: value}
+      example: { object: value }

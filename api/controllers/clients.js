@@ -4,40 +4,21 @@ lodash = require("lodash");
 //Simple file based persistence to ensure nonce is unique
 //and always higher than the last nonce used by a specific
 //API client
-//TODO Simple file based persistence for now, move to elasticsearch or sql/nosql
-// client.forEach(function(value, key) {
-//     console.log("client => " + key + " : " + value);
-// });
+//TODO @reddy Simple file based persistence for now, move to elasticsearch or sql/nosql
 
-// exports.addClient = function (salt, nonce) {
-//     // if (!clients[apiKey]) {
-//     //     clients[apiKey] = apiKey;
-//     // }
-//     if (!clients[apisalt]) {
-//         clients[apisalt] = salt;
-//     }
-//     if (!clients[apinonce]) {
-//         clients[apinonce] = nonce;
-//     }
-//     console.log("clients.addClient => " + salt, nonce);
-// };
-
-// exports.removeClientList = function (salt) {
-//     delete clients[salt];
-// };
-
-// exports.getClientList = function () {
-//     return clients;
-// };
+exports.getSalt4ApiKey = function (key) {
+    console.log("clients.getSalt4ApiKey for key=> " + key);
+    var clients = JSON.parse(fs.readFileSync(require('path').resolve(__dirname, '../c.swp')));
+    var client = lodash.find(clients, ['apikey', key]);
+    console.log("client => ", client);
+    return client.salt;
+};
 
 exports.getNonce = function (key, nonce) {
     nonce = Number(nonce)
     console.log("clients.getNonce for key:nonce=> " + key + ":" + nonce);
-    //console.log('Path of file in parent dir:', require('path').resolve(__dirname, '../c.json'));
     var clients = JSON.parse(fs.readFileSync(require('path').resolve(__dirname, '../c.swp')));
     var index = lodash.sortedIndexOf(clients, lodash.filter(clients, x => x.salt === key)[0]);
-    //var client = lodash.filter(clients, x => x.salt === key);
-    //console.log(JSON.stringify(client));
     var statefulNonce = clients[index].nonce;
     console.log("statefulNonce => ", statefulNonce);
     if (nonce <= statefulNonce) {

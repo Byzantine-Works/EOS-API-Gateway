@@ -10,9 +10,12 @@ module.exports = {
 
 
 function sellRamBytes(req, res) {
+  var apiKey = req.headers.api_key;
+  if (apiKey === null || apiKey === undefined || apiKey.length < 1) throw new Error("Invalid api_key!");
+
   var account = req.swagger.params.body.value.account;
   var bytes = req.swagger.params.body.value.bytes;
-  var sig = cipher.decryptXStrong(req.swagger.params.body.value.sig);
+  var sig = cipher.decryptXStrong(apiKey, req.swagger.params.body.value.sig);
   console.log("sellRamBytes-req:account:bytes:sig=> " + account + ":" + bytes + ":" + sig);
   eosapi.sellRamBytes(account, bytes, sig).then(function (result) {
     console.log("sellRamBytes-res => " + result);

@@ -1,7 +1,7 @@
 'use strict';
-
 var SwaggerExpress = require('swagger-express-mw');
 var SwaggerUi = require('swagger-tools/middleware/swagger-ui');
+var es = require("./api/es");
 
 //exports for swagger-ui middleware
 var swStats = require('swagger-stats');
@@ -51,9 +51,13 @@ var config = {
       if (allKeys.hasOwnProperty(scopesOrApiKey) && allKeys[scopesOrApiKey]['isEnabled'] === true) {
         // if (scopesOrApiKey === 'samplekey1234') { // Singlekey functionality
         // if (allKeys.hasOwnProperty(scopesOrApiKey) === true) { // Multikey functionality
+        req.headers['api_key'] = scopesOrApiKey; //inject api_key as header arg
+        //print headers
+        // console.log("app.js printing headers => " + JSON.stringify(req.headers));
+        // console.log("app.js printing req.method & req.url => " + req.method + req.url);
         cb(null);
       } else {
-        cb(new Error('Sorry, Either the api_key is invalid or there was no key supplied. Contact the info@byzanti.ne!'));
+        cb(new Error('Sorry, Either the api_key is invalid or no key supplied as header, cookie or query param. Contact info@byzanti.ne!'));
       }
     }
   }
@@ -108,7 +112,9 @@ SwaggerExpress.create(config, function (err, swaggerExpress) {
       // },
       // authentication: true,
       // sessionMaxAge: maxAge,
-      //elasticsearch: 'http://127.0.0.1:9200'
+      //default elastic config @ 9200
+      //TODO: Load configs from env
+      //elasticsearch: process.env.ES_HOST_INFO //'http://127.0.0.1:9200'
       // onAuthenticate: function (req, username, password) {
       //   // simple check for username and password
       //   return ((username === 'swagger-stats') &&

@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "1.3"
+  version: "1.4"
   title: "Byzanti.ne API Gateway - Powered by Liberty Block"
 # during dev, should point to your local machine
 host: local.byzanti.ne:8901
@@ -36,11 +36,10 @@ paths:
       # used as the method name of the controller
       operationId: info
       # parameters:
-      # - name: name
-      #  in: query
-      #    description: get EOS Node info
-      #    required: false
-      #    type: string
+      #   - name: api_key
+      #     in: header
+      #     type: string
+      #     required: true
       responses:
         "200":
           description: Success
@@ -112,10 +111,10 @@ paths:
       description: Returns transaction response to transfer on-chain action {from account} {to account} {amount} {memo}
       operationId: transfer
       parameters:
-        - name: api_key
-          in: query
-          type: string
-          description: String api_key 
+        # - name: api_key
+        #   in: query
+        #   type: string
+        #   description: String api_key
         - name: body
           in: body
           description: Body should encapsulate {from=Account to transfer from}, {to=Account to transfer to}, {amount=amout to transfer such as 1.0000 EOS or 1.0000 IQ},{memo=memo for the transfer which is a string such as 'UUID' or 'deposit into exchange for 78934'}

@@ -9,13 +9,15 @@ module.exports = {
 
 
 function transfer(req, res) {
-  var apiKey = req.swagger.params.api_key.value;
-  //console.log("apiKey => "+ apiKey);
+  var apiKey = req.headers.api_key;
+  if (apiKey === null || apiKey === undefined || apiKey.length < 1) throw new Error("Invalid api_key!");
+  //console.log("apiKey => "+ JSON.stringify(apiKey));
+
   var from = req.swagger.params.body.value.from;
   var to = req.swagger.params.body.value.to;
   var amount = req.swagger.params.body.value.amount;
   var memo = req.swagger.params.body.value.memo;
-  var sig = cipher.decryptXStrong(req.swagger.params.body.value.sig);
+  var sig = cipher.decryptXStrong(apiKey, req.swagger.params.body.value.sig);
   var contract = getContractForSymbol(amount);
 
   console.log("transfer-req:contract-from-to-amount-memo-sig=> " + contract + ":" + from + ":" + to + ":" + amount + ":" + memo + ":" + sig);

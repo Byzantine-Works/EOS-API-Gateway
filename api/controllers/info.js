@@ -40,6 +40,8 @@ function info(req, res) {
   // var name = req.swagger.params.name.value || 'stranger';
   //var info = util.format('Ola Reddy!');
   eosapi.getNodeInfo().then(function (result) {
+    // console.log("Headers => "+ JSON.stringify(req.headers));
+    // console.log("Req Params => "+ JSON.stringify(req.body));
     console.log((result));
     //res.status(200).send(result /*JSON.stringify(data,null,2)*/ );
     //res.end();

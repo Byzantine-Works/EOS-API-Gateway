@@ -17,9 +17,16 @@
 ```sh
 git clone https://github.com/Byzantine-Works/EOS-API-Gateway.git
 npm install
+
+//setup loopback interface
 vi ~/etc/hosts (add loopback interface: 127.0.0.1	local.byzanti.ne)
 npm start OR nodemon
+
+//test if the api is running
 curl http://local.byzanti.ne/8901/info
+
+//to generate salt+apikey use
+node -e 'require("./api/controllers/apiKey").keygen()'
 ```
 
 - EOS 'Stripe' Wallet
@@ -29,9 +36,10 @@ npm start
 ```
 
 # Validate
- - swagger-ui: http://local.byzanti.ne/8901/docs
- - swagger-stats:  http://local.byzanti.ne:8901/swagger-stats/ui#sws_summary
- - swagger-apidocs:    http://local.byzanti.ne:8901/api-docs
+ - swagger-ui: http://api.byzanti.ne/8902/docs
+ - API-Analytics: https://analytics.byzanti.ne/goto/5c34272dd2c0a4e76e886d214876706f
+ - API-stats:  http://api.byzanti.ne:8902/swagger-stats/ui#sws_summary
+ - swagger-apidocs:    http://api.byzanti.ne:8902/api-docs
  - swagger-editor: https://editor.swagger.io/
 
 # Design
