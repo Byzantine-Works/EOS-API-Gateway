@@ -21,6 +21,11 @@ module.exports = app; // for testing
 var config = {
   appRoot: __dirname, // required config
   swaggerSecurityHandlers: {
+    // Allow for Query in addition to Headers
+    APIKeyQueryParam: function(req, authOrSecDef, scopesOrApiKey, cb) {
+      console.log('~~ In APIKeyQueryParam\n')
+      config.swaggerSecurityHandlers.APIKeyHeader(req, authOrSecDef, scopesOrApiKey, cb)
+    },
     APIKeyHeader: function (req, authOrSecDef, scopesOrApiKey, cb) {
       //console.log("Security key => " + scopesOrApiKey);
       var allKeys = {};
@@ -45,23 +50,23 @@ var config = {
           name: 'meteredKeyForCoin.us',
           isEnabled: true,
           callCount: 0,
+        },
+        "testkey": {
+          name: 'testkey',
+          isEnabled: true,
+          callCount: 0,
         }
       }
-      
+
+
       // if (scopesOrApiKey === 'samplekey1234') { // Singlekey functionality
       if (allKeys.hasOwnProperty(scopesOrApiKey) && allKeys[scopesOrApiKey]['isEnabled'] === true) {
-        console.log('~~~~~~~~~~~~ API Key Accepted for name: ' + allKeys[scopesOrApiKey]['name'] + ' ~~~~~~~~~~~~~~~~~~~');
+        console.log('\n~~~~~~~~~~~~ API Key Accepted for name: ' + allKeys[scopesOrApiKey]['name'] + ' ~~~~~~~~~~~~~~~~~~~');
         cb(null);
       } else {
         cb(new Error('Sorry, Either the api_key is invalid or there was no key supplied. Contact the info@byzanti.ne!'));
       }
     },
-    // Allow for Query in addition to Headers
-    APIKeyQueryParam: function(req, authOrSecDef, scopesOrApiKey, cb) {
-      console.log('~~ In APIKeyQueryParam ~~')
-      config.swaggerSecurityHandlers.APIKeyHeader(req, authOrSecDef, scopesOrApiKey, cb)
-    }
-    // APIKeyQueryParam: this.APIKeyHeader
 
   }
 };

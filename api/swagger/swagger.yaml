@@ -73,6 +73,8 @@ paths:
       #    description: get EOS Node info
       #    required: false
       #    type: string
+      # security:
+      #   - APIKeyHeader: []   
       responses:
         "200":
           description: Success
@@ -121,8 +123,8 @@ paths:
           required: true
           type: string
         # Operation-specific security:
-        # security:
-        #   - APIKeyQueryParam: []
+      # security:
+      #   - APIKeyQueryParam: []
         # ##
         # security:
         #   - APIKeyHeader: []
@@ -144,10 +146,10 @@ paths:
       description: Returns transaction response to transfer on-chain action {from account} {to account} {amount} {memo}
       operationId: transfer
       parameters:
-        - name: api_key
-          in: query
-          type: string
-          description: String api_key 
+        # - name: api_key
+        #   in: query
+        #   type: string
+        #   description: String api_key 
         - name: body
           in: body
           description: Body should encapsulate {from=Account to transfer from}, {to=Account to transfer to}, {amount=amout to transfer such as 1.0000 EOS or 1.0000 IQ},{memo=memo for the transfer which is a string such as 'UUID' or 'deposit into exchange for 78934'}
