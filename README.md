@@ -30,7 +30,7 @@ npm start
 
 # Validate
  - swagger-ui: http://api.byzanti.ne/8902/docs
- - API-Analytics: https://analytics.byzanti.ne/goto/2471716043eb347a2079b6d64235d6c2
+ - API-Analytics: https://analytics.byzanti.ne/goto/5c34272dd2c0a4e76e886d214876706f
  - API-stats:  http://api.byzanti.ne:8902/swagger-stats/ui#sws_summary
  - swagger-apidocs:    http://api.byzanti.ne:8902/api-docs
  - swagger-editor: https://editor.swagger.io/
