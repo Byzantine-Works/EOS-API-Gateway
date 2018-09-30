@@ -17,9 +17,16 @@
 ```sh
 git clone https://github.com/Byzantine-Works/EOS-API-Gateway.git
 npm install
+
+//setup loopback interface
 vi ~/etc/hosts (add loopback interface: 127.0.0.1	local.byzanti.ne)
 npm start OR nodemon
+
+//test if the api is running
 curl http://local.byzanti.ne/8901/info
+
+//to generate salt+apikey use
+node -e 'require("./api/controllers/apiKey").keygen()'
 ```
 
 - EOS 'Stripe' Wallet
