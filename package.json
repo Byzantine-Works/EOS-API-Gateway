@@ -12,6 +12,7 @@
     "chalk": "^2.4.1",
     "commander": "^2.17.1",
     "dotenv": "^6.0.0",
+    "elasticsearch": "^15.1.1",
     "eosjs": "^16.0.3",
     "eosjs-ecc": "^4.0.3",
     "events": "^3.0.0",
