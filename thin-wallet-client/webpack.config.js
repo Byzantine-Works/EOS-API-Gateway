@@ -39,4 +39,5 @@ module.exports = {
     }]
 },
     plugins: [htmlPlugin],
+    devtool: 'inline-source-map',
 }

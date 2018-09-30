@@ -11,6 +11,8 @@ import axios from 'axios';
 const https = require('https')
 import listing from './listing.json';
 const lodash = require('lodash');
+import { css } from 'react-emotion';
+import Loader from 'react-spinners/BounceLoader';
 
 // var Eth = require('web3-eth');
 
@@ -18,6 +20,8 @@ const lodash = require('lodash');
 // var eth = new Eth(Eth.givenProvider || 'ws://some.local-or-remote.node:8546');
 
 import * as actions from './actions/actions';
+
+
 
 const eosChain = {
     eosVersion: 'f2cb2722',
@@ -41,6 +45,13 @@ const eos = EosApi(network);
 
 
 const mapStateToProps = store => ({
+    loading: store.loading,
+    amountFocus: store.amountFocus,
+    fiatFocus: store.fiatFocus,
+    amRend : store.amRend,
+    fiatAmRend : store.fiatAmRend,
+    balance: store.balance,
+    rateEURUSD: store.rateEURUSD,
     EUR: store.EUR,
     USD: store.USD,
     fiatAm: store.fiatAm,
@@ -75,7 +86,8 @@ class App extends React.Component {
         this.encrypt = this.encrypt.bind(this);
         this.changeCoin = this.changeCoin.bind(this);
         this.conversion = this.conversion.bind(this);
-       
+        this.unFocus = this.unFocus.bind(this);
+        this.scatterPair = this.scatterPair.bind(this);
     }
 
     encrypt (nonce) {
@@ -89,10 +101,10 @@ class App extends React.Component {
 
 
     send(e) {
-
-        const socket = openSocket('http://local.byzanti.ne:8900/');
+        this.props.updateState(["loading", true]);
+        const socket = openSocket('http://local.byzanti.ne:8900');
+        console.log(socket);
         let randChannel = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        console.log("apiKey: ", Config.apiKey)
         socket.emit('user', [Config.apiKey, randChannel]);
 
         let that = this;
@@ -107,10 +119,11 @@ class App extends React.Component {
             objReq.to = that.props.to;
             objReq.amount = amt + ' ' + that.props.token;
             objReq.memo = that.props.memo;
+            console.log(objReq);
 
            
             // await fetch('http://api.byzanti.ne:8902/transfer', {
-            await fetch(`http://local.byzanti.ne:8902/transfer?api_key=${Config.apiKey}`, {
+            await fetch(`http://local.byzanti.ne:8901/transfer?api_key=${Config.apiKey}`, {
                 method: 'POST',
                 headers: {
                     "Wallet-API-Key": Config.apiKey,
@@ -118,9 +131,27 @@ class App extends React.Component {
                 },
                 body: JSON.stringify(objReq)
             })
-            .then(response => console.log(response));
+            .then(response => {
+                console.log(response);
+                this.props.updateState(["loading", false]);
+            }).catch((err) =>  {
+                this.props.updateState(["loading", false])
+                console.log(err)
+            })
             socket.on('disconnect');
         });
+        this.props.updateState(["loading", false])
+
+    }
+
+    async scatterPair(){
+        const connected = await scatter.connect("wallet-thin");
+        await console.log(connected);
+        const requiredFields = { accounts:[network] };
+        const ID = await scatter.getIdentity(requiredFields);
+        this.props.updateState(["from", ID.accounts[0].name]);
+        this.props.updateState(["privateKey", ID.hash])
+        console.log(ID)
     }
 
 
@@ -170,43 +201,65 @@ class App extends React.Component {
             }).catch(error => {
                 // The user rejected this request, or doesn't have the appropriate requirements.
                 console.error(error);
-            });
-            
+            }); 
         });
-
-
     }
-    async changeCoin(){
 
+    unFocus(e) {
+            this.props.updateState(["amRend", this.props.amount]);
+            this.props.updateState(["fiatAmRend", this.props.fiatAm]);
+    }
+
+
+    async changeCoin(){
+        this.props.updateState(["loading", true]);
         let response = await axios(`http://api.byzanti.ne:8902/tokensByAccount/${this.props.from}`);
+        let balance = {};
+        for(let x in response.data){
+            let o = response.data[x]
+            balance[o.symbol] = {balance: o.balance, contract: o.contract, precision: o.precision, hash: o.hash}
+        }
+
         await this.props.updateState(["tokens", response.data.map(el => {return el.symbol})]);
+        await this.props.updateState(["balance", balance]);
         if(this.props.from !== null) {
             await this.props.updateState(["token", response.data[0].symbol]);
             await this.props.updateState(["usdeur", "USD"]);
         }
+        this.conversion();
     }
 
     async conversion () {
-        let rate;
-        let index = lodash.filter(listing.data, x => x.symbol === this.props.token)[0];
-        https.get(`https://api.coinmarketcap.com/v2/ticker/${index.id}/?convert=EUR`, resp => {
-            let data;
-            resp.on('data', d => data += d)
-            resp.on('error', err => console.log(err));
-            resp.on('end', () => {
-                rate = JSON.parse(data.split("undefined")[1]).data.quotes;
-                this.props.updateState(["rate", this.props.token])
-                this.props.updateState(["USD", rate.USD.price]);
-                this.props.updateState(["EUR", rate.EUR.price]);
-                if(this.props.amount > 0) this.props.updateState(["fiatAm", this.props.amount*this.props.USD])
-              });
-        })
+        this.props.updateState(["loading", true]);
+        let rateUSD;
+    
+        //http://free.currencyconverterapi.com/api/v5/convert?q=EUR_USD&compact=y
+        if(this.props.token === 'EOS'){
+            let reqCrypComp = await axios('https://min-api.cryptocompare.com/data/price?fsym=EOS&tsyms=USD,EUR')
+            rateUSD = reqCrypComp.data.USD;
+        } else {
+            let symbol = lodash.filter(listing.data, x => {return x.currency === this.props.token})[0].symbol;
+            let a = await axios('https://cors-anywhere.herokuapp.com/https://api.newdex.io/v1/ticker/price', {params: {symbol: symbol}});
+            rateUSD = a.data.data.price;
+        }
+        if(this.props.rateEURUSD === null){
+            let respEur = await axios('http://free.currencyconverterapi.com/api/v5/convert?q=EUR_USD&compact=y');
+            this.props.updateState(["rateEURUSD", respEur.data.EUR_USD.val]);
+        }
+
+        let rateEUR = rateUSD/this.props.rateEURUSD;
+        this.props.updateState(["rate", this.props.token])
+        this.props.updateState(["USD", rateUSD]);
+        this.props.updateState(["EUR", rateEUR]);
+        if(this.props.amount > 0) {
+            this.props.updateState(["fiatAm", this.props.amount*this.props.USD]);
+            this.props.updateState(["fiatAmRend", this.props.amount*this.props.USD]);
+
+        }
+        this.props.updateState(["loading", false]);
 
     }
 
-    calculateRate()  {
-
-    }
 
 
 
@@ -215,48 +268,49 @@ class App extends React.Component {
 
         let payload = [];
         if (e.target.id === 'amount') {
-            payload.push(e.target.id, Number(Number(e.target.value).toFixed(2)));
-            this.props.updateState(payload);
+            if(isNaN(Number(e.target.value))) return;
+            else {
+            payload.push(e.target.id, e.target.value);
+            await this.props.updateState(payload);
             if(this.props.token !== null && this.props.token !== this.props.rate) {
                 this.conversion();
             }
+            if(this.props.coin !== null) this.props.updateState(["fiatAm", this.props.amount*this.props[this.props.usdeur]]);
         }
-        else if (e.target.id === "scatter") {
+        } else if (e.target.id === "scatter") {
             this.props.updateScatter();
-            this.conversion();
-        }
-        else if (e.target.id === "from") {
+        } else if (e.target.id === "from") {
             payload.push(e.target.id, e.target.value)
             await this.props.updateState(payload);
-            if(this.props.coin !== null) this.changeCoin();
+            if(this.props.coin !== null) {
+                this.changeCoin();
+            }
 
-        }
-        else if (e.target.id === "coin") {
+        } else if (e.target.id === "coin") {
             payload.push(e.target.id, e.target.value)
             this.props.updateState(payload);
             if(this.props.from !== null) {
-                this.changeCoin(this.props.coin)
-                
+                this.changeCoin(this.props.coin);
             }
-        }
-        else if (e.target.id === "token") {
+
+        } else if (e.target.id === "token") {
             payload.push(e.target.id, e.target.value)
             await this.props.updateState(payload);
             await this.conversion();
             await this.props.updateState(["fiatAm", this.props[this.props.usdeur]*this.props.amount]);
         
-        }
-        else if (e.target.id === "usdeur") {
+        } else if (e.target.id === "usdeur") {
             await this.props.updateState(["usdeur", e.target.value]);
-            await this.props.updateState(["fiatAm", this.props[this.props.usdeur]*this.props.amount])
-        }
-        else if (e.target.id === "fiat") {
-            await this.props.updateState(["fiatAm", Number(Number(e.target.value).toFixed(2))]);
+            await this.props.updateState(["fiatAm", this.props[this.props.usdeur]*this.props.amount]);
+
+        } else if (e.target.id === "fiat") {
+            if(isNaN(Number(e.target.value))) return;
+            else {
+            await this.props.updateState(["fiatAm", e.target.value]);
             await this.props.updateState(["amount", this.props.fiatAm/this.props[this.props.usdeur]]);
-        }
+            }
 
-
-        else {
+        } else {
             payload.push(e.target.id, e.target.value)
             this.props.updateState(payload);
         }
@@ -274,24 +328,43 @@ class App extends React.Component {
         //     return <option id={el}>{el}</option>
         // }) 
         const inputs = [
-            <input key="from" id="from" placeholder="From" onChange={this.changeInput}></input>, 
-            <input key="privateKey" id="privateKey" type="password" placeholder="Enter your private key" onChange={this.changeInput}></input>,
             <select key="token" id="token" placeholder="token" onChange={this.changeInput} ></select>,
-            <input key="fiat" id="fiat" value={this.props.fiatAm} onChange={this.changeInput}></input>,
+            <input key="fiat" id="fiat" value={this.props.fiatAmRend} onChange={this.changeInput}></input>
             
         ];
 
+        let gradient = this.props.token ? this.props.amount/this.props.balance[this.props.token].balance : 0;
+
+//        #347fb9 ${(1-(this.props.amount/this.props.balance[this.props.token].balance))*100}%
+
+        let Style = {
+            borderRadius: '15px',
+            margin: 'auto 0',
+            background: `#14466C`,
+            height:'110%',
+            width: `${gradient > 1 ? 100 : gradient*100}%`,
+            zindex: '6',  
+        }
+
         const fiatSelec = [
-            <input key="fiat" id="fiat" value={this.props.fiatAm} onChange={this.changeInput}></input>,
+            <input key="fiat" id="fiat" value={this.props.fiatAmRend} onBlur={this.unFocus} onChange={this.changeInput}></input>,
             <select key="usdeur" id="usdeur" onChange={this.changeInput} >
                 <option id="USD">USD</option>
                 <option id="EUR">EUR</option>
-            </select>
+            </select>,
+            this.props.token ? <p key="balance" id="balance">{(this.props.balance[this.props.token].balance - this.props.amount).toFixed(4)}</p> : null,
+            <div style={{borderRadius: '15px', padding: '-5px', zindex: '6', top: '10px', width:'100%', background:'white', height:'5px'}}><div style={Style} key="balanceVisual" id="balanceVisual"></div></div>
+        ];
 
-        ]
+        const override = css`
+            top: -200px;
+            border-color: red;
+            margin: 0 auto;
+            z-index: 5;`;
 
 
         return (
+            <div>
 
             <div className="Wallet">
             {inputs.map(el => {
@@ -304,13 +377,12 @@ class App extends React.Component {
             } else if(el.key === 'fiat' && this.props.token !== null){
                 return fiatSelec;                    
 
-            } else if(el.key === 'fiat' && this.props.token !== null){
-          
-            }
+            } 
         })}
-
+                <input key="from" id="from" placeholder="From" value={this.props.from} onChange={this.changeInput}></input>
+                <input key="privateKey" id="privateKey" type="password" placeholder="Enter your private key" value={this.props.privateKey} onChange={this.changeInput}></input>
                 <input key="to" id="to" placeholder="To" onChange={this.changeInput}></input>
-                <input key="amount" id="amount" placeholder="Amount" value={this.props.amount} onChange={this.changeInput}></input>
+                <input key="amount" id="amount" placeholder="Amount" value={this.props.amRend} onChange={this.changeInput} onBlur={this.unFocus}></input>
                 <select key="coin" id="coin" placeholder="Coin" onChange={this.changeInput}>
                     <option id="null">Chain</option>
                     <option id="EOS">EOS</option>
@@ -318,8 +390,18 @@ class App extends React.Component {
                 </select>
                 <input key="memo" id="memo" placeholder="Memo" onChange={this.changeInput}></input>
                 <button id="send" key="send" onClick={this.props.scatter ? this.scatterSend : this.send}>Send</button>
-                <span className="Scatter"> Check this box to use scatter<input type="checkbox" id="scatter" onChange={this.changeInput}></input></span>
+                <label className="Scatter"><img src="https://coinclarity.com/wp-content/uploads/2018/06/6ZtwIwM_400x400-1.jpg"></img><input type="checkbox" id="scatter" onChange={this.scatterPair}></input><span className="checkmark"></span></label>
             </div>
+            <div className='sweet-loading'>
+                <Loader
+                              className={override}
+                              sizeUnit={"px"}
+                              size={70}
+                              color={'#14466C'}
+                              loading={this.props.loading}/>
+                </div>
+
+        </div> 
 
         );
     };

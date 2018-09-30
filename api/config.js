@@ -5,7 +5,7 @@ var config = {};
 config.eoschain = [{
     eosVersion: 'f2cb2722',
     chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
-    httpEndpoint: 'https://mainnet.libertyblock.io:7777',
+    httpEndpoint: 'http://mainnet.libertyblock.io:7777',
     debug: false,
     verbose: false,
     latency: 160

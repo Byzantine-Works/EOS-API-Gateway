@@ -1,14 +1,25 @@
+import { isNull } from "util";
 
 export default class State {
     constructor() {
 
-        this.tokens = ["IQ", "HORUS","EOS"],
+        this.tokens = null,
 
-        this.token = "EOS",
+        this.token = null,
+        
+        this.rateEURUSD = null,
 
         this.fiatAm = 0,
         
         this.scatter = false;
+
+        this.amRend = 0;
+
+        this.fiatAmRend = 0;
+
+        this.loading = false;
+
+        this.balance = null;
         
         this.privateKey = null;
         
@@ -18,7 +29,7 @@ export default class State {
         
         this.amount = 0;
         
-        this.coin = "EOS";
+        this.coin = null;
 
         this.rate = null;
         
