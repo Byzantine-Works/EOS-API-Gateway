@@ -22,6 +22,8 @@
     "inquirer": "^6.2.0",
     "lodash": "^4.17.11",
     "nodemon": "^1.18.4",
+    "perf_hooks": "0.0.1",
+    "performance": "^1.1.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
     "shelljs": "^0.8.2",
