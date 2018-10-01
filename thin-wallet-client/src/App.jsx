@@ -34,21 +34,21 @@ const eosChain = {
   };
 
 
-// const network = {
-//     blockchain:'eos',
-//     protocol:'https',
-//     host:'mainnet.libertyblock.io',
-//     port: 7777,
-//     chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-// }
-
 const network = {
     blockchain:'eos',
     protocol:'https',
-    host:'nodes.get-scatter.com',
-    port:443,
+    host:'mainnet.libertyblock.io',
+    port: 7777,
     chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
 }
+
+// const network = {
+//     blockchain:'eos',
+//     protocol:'https',
+//     host:'nodes.get-scatter.com',
+//     port:443,
+//     chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
+// }
 
 const eos = EosApi(network);
 
@@ -135,7 +135,7 @@ class App extends React.Component {
             await fetch(`http://local.byzanti.ne:8901/transfer?api_key=${Config.apiKey}`, {
                 method: 'POST',
                 headers: {
-                    "Wallet-API-Key": Config.apiKey,
+                    "api_key": Config.apiKey,
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(objReq)
