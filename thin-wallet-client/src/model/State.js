@@ -15,17 +15,17 @@ export default class State {
         
         this.scatter = false;
 
-        this.amRend = null;
+        this.amRend = "";
 
-        this.fiatAmRend = null;
+        this.fiatAmRend = "";
 
         this.loading = false;
 
         this.balance = null;
         
-        this.privateKey = null;
+        this.privateKey = "";
         
-        this.from = null;
+        this.from = "";
         
         this.to = null;
         

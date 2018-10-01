@@ -1,40 +1,8 @@
 import * as types from '../actions/actionsType';
 import State from '../model/State';
-import { combineReducers } from 'redux';
-import storage from 'redux-persist/lib/storage';
-import { persistStore, persistReducer } from 'redux-persist';
 
-const updateNonce = (state = new State(), action) => {
-    
-    const { type } = action;
-    let updatedState = null;
-    switch (type) {
-        
-        case types.UPDATE_NONCE: {
-            let user = action.payload.data;
 
-                // let newNonce = state.nonce + 1;
-                // updatedState = { ...state };
-                // updatedState.nonce = newNonce; 
-                // return updatedState;
 
-            if(!state.nonce[user]) {
-                updatedState = { ...state };
-                updatedState.nonce[user] = 1;
-                return updatedState; 
-            } else {
-                let newNonce = state.nonce[user] + 1;
-                updatedState = { ...state };
-                updatedState.nonce[user] = newNonce; 
-                return updatedState; 
-            }
-        }
-        default : {
-            return state;
-        }
-    }
-  
-}
 const updateState = (state = new State(), action) => {
     const { type } = action;
     let updatedState = null;
@@ -54,7 +22,6 @@ const updateState = (state = new State(), action) => {
                 updatedState.fiatAm = Number(action.payload.data[1]);
             } 
             else if(action.payload.data[0] === 'fiatAmRend') {
-                console.log("in update fiatamrend")
                 updatedState[action.payload.data[0]] = Number(action.payload.data[1]).toFixed(4);
             }
 
@@ -85,8 +52,7 @@ const updateState = (state = new State(), action) => {
 
 
 const mainReducer = (state = new State(), action) => {
-    let newState = updateNonce(state, action);
-    newState = updateState(newState, action); 
+    let newState = updateState(state, action); 
     return newState;
 }
 

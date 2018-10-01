@@ -2,11 +2,13 @@
   "name": "thin-wallet",
   "version": "1.0.0",
   "description": "",
-  "main": "webpack.config.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production",
-    "start": "webpack; webpack-dev-server --color --open --watch --hot --inline"
+    "start": "webpack; webpack-dev-server --color --open --watch --hot --inline",
+    "transpile": "babel src -d dist --copy-files",
+    "prepublishOnly": "npm run transpile"
   },
   "author": "",
   "license": "ISC",
@@ -55,7 +57,18 @@
     "webpack-dev-server": "^3.1.8",
     "write-json-file": "^3.0.2"
   },
+  "peerDependencies": {
+    "react": "^16.5.1",
+    "react-dom": "^16.5.1",
+    "react-redux": "^5.0.7",
+    "react-spinners": "^0.4.5",
+    "redux": "^4.0.0",
+    "redux-devtools-extension": "^2.13.5",
+    "redux-offline": "^2.0.0",
+    "redux-persist": "^5.10.0"
+  },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "webpack-cli": "^3.1.0"
   }
 }

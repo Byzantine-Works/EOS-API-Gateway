@@ -70,7 +70,6 @@ const mapStateToProps = store => ({
     tokens: store.tokens,
     token: store.token,
     scatter: store.scatter,
-    nonce: store.nonce,
     privateKey: store.privateKey,
     from: store.from,
     to: store.to,
@@ -134,7 +133,7 @@ class App extends React.Component {
 
            
             // await fetch('http://api.byzanti.ne:8902/transfer', {
-            await fetch(`http://local.byzanti.ne:8901/transfer?api_key=${Config.apiKey}`, {
+            await fetch(`http://api.byzanti.ne:8902/transfer?api_key=${Config.apiKey}`, {
                 method: 'POST',
                 headers: {
                     "api_key": Config.apiKey,
@@ -144,8 +143,8 @@ class App extends React.Component {
             })
             .then(response => {
                 if(response.status !== 200) alert("We were not able to perform the transaction. Pleae ensure that every field is filled properly.");
+                else alert("Your transaction was successful.");
                 console.log(response.status);
-                this.props.updateState(["loading", false]);
                
             }).catch((err) =>  {
                 this.props.updateState(["loading", false])
@@ -222,8 +221,14 @@ class App extends React.Component {
 
 
     async changeCoin(){
+        let response;
         this.props.updateState(["loading", true]);
-        let response = await axios(`http://api.byzanti.ne:8902/tokensByAccount/${this.props.from}`);
+        response = await axios(`http://api.byzanti.ne:8902/tokensByAccount/${this.props.from}`);
+        if(!response.data.length){
+            this.props.updateState(["token", null])
+            this.props.updateState(["loading", false]);
+            return;
+        }
         let balance = {};
         for(let x in response.data){
             let o = response.data[x]
@@ -243,7 +248,6 @@ class App extends React.Component {
         this.props.updateState(["loading", true]);
         let rateUSD;
     
-        //http://free.currencyconverterapi.com/api/v5/convert?q=EUR_USD&compact=y
         if(this.props.token === 'EOS'){
             let reqCrypComp = await axios('https://min-api.cryptocompare.com/data/price?fsym=EOS&tsyms=USD,EUR')
             rateUSD = reqCrypComp.data.USD;
@@ -288,8 +292,9 @@ class App extends React.Component {
             if(this.props.coin !== null) this.props.updateState(["fiatAm", this.props.amount*this.props[this.props.usdeur]]);
         }
         }  else if (e.target.id === "from") {
-            payload.push(e.target.id, e.target.value)
+            payload.push(e.target.id, e.target.value);
             await this.props.updateState(payload);
+            console.log()
             if(this.props.coin !== null) {
                 this.changeCoin();
             }
@@ -297,7 +302,7 @@ class App extends React.Component {
         } else if (e.target.id === "coin") {
             payload.push(e.target.id, e.target.value)
             this.props.updateState(payload);
-            if(this.props.from !== null) {
+            if(this.props.from.length) {
                 this.changeCoin(this.props.coin);
             }
 
@@ -334,9 +339,7 @@ class App extends React.Component {
         
 
 
-        // let eosTokens = symbols.map(el => {
-        //     return <option id={el}>{el}</option>
-        // }) 
+    
         const inputs = [
             <select key="token" id="token" placeholder="token" onChange={this.changeInput} ></select>,
             <input key="fiat" id="fiat" value={this.props.fiatAmRend} onChange={this.changeInput}></input>
@@ -344,8 +347,6 @@ class App extends React.Component {
         ];
 
         let gradient = this.props.token ? this.props.amount/this.props.balance[this.props.token].balance : 0;
-
-//        #347fb9 ${(1-(this.props.amount/this.props.balance[this.props.token].balance))*100}%
 
         let Style = {
             borderRadius: '15px',
@@ -367,16 +368,17 @@ class App extends React.Component {
             height:'5px',
             gridArea: 'j',
         }
+
         let balance = this.props.token ? this.props.balance[this.props.token].balance - this.props.amount : null;
 
         const fiatSelec = [
             <input key="fiat" id="fiat" value={this.props.fiatAmRend} onBlur={this.unFocus} onChange={this.changeInput}></input>,
             <select key="usdeur" id="usdeur" onChange={this.changeInput} >
-                <option id="USD">USD</option>
-                <option id="EUR">EUR</option>
+                <option key="USD" id="USD">USD</option>
+                <option key="EUR" id="EUR">EUR</option>
             </select>,
             this.props.token ? <p key="balance" id="balance" style={{color: balance >= 0 ? 'white' : 'red' }}>{balance.toFixed(4)+' '+this.props.token}</p> : null,
-            <div style={StyleContainer}><div style={Style} key="balanceVisual" id="balanceVisual"></div></div>
+            <div key="balContainer" style={StyleContainer}><div style={Style} key="balanceVisual" id="balanceVisual"></div></div>
         ];
 
         const override = css`
