@@ -2,7 +2,10 @@
 const eosapi = require('../eosapi.js');
 const config = require("../config");
 const cipher = require('./decipher.js');
-
+const {
+  performance
+} = require('perf_hooks');
+var es = require("../es");
 
 module.exports = {
   buyRamBytes: buyRamBytes
@@ -10,16 +13,24 @@ module.exports = {
 
 
 function buyRamBytes(req, res) {
+  var t0 = performance.now();
+  var apiKey = req.headers.api_key;
+  if (apiKey === null || apiKey === undefined || apiKey.length < 1) throw new Error("Invalid api_key!");
+
   var payer = req.swagger.params.body.value.payer;
   var receiver = req.swagger.params.body.value.receiver;
   var bytes = req.swagger.params.body.value.bytes;
-  var sig = cipher.decryptXStrong(req.swagger.params.body.value.sig);
+  var sig = cipher.decryptXStrong(apiKey, req.swagger.params.body.value.sig);
   console.log("buyRamBytes-req:payer:receiver:bytes:sig=> " + payer + ":" + receiver + ":" + bytes + ":" + sig);
   eosapi.buyRamBytes(payer, receiver, bytes, sig).then(function (result) {
     console.log("buyRamBytes-res => " + result);
+    var t1 = performance.now();
+    es.auditAPIEvent(req, t1 - t0, true);
     res.json((result));
   }, function (err) {
     console.log("Error in buyRamBytes:=>" + err);
+    var t2 = performance.now();
+    es.auditAPIEvent(req, t2 - t0, false);
     //kluge as 500/40x errors have different json connotatins, one is parsable into JSON the other is not ATM
     try {
       var error = JSON.parse(err);

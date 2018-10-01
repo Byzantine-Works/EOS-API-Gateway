@@ -9,3 +9,7 @@ export const updateState = data => ({
     type: types.UPDATE_STATE,
     payload: { data },
 })
+
+export const updateScatter = () => ({
+    type: types.UPDATE_SCATTER
+})

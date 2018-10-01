@@ -1,6 +1,8 @@
 'use strict';
 const eosapi = require('../eosapi.js');
 const config = require("../config");
+const {performance} = require('perf_hooks');
+var es = require("../es");
 
 module.exports = {
   getTransaction: getTransaction

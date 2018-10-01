@@ -1,5 +1,8 @@
 'use strict';
 const eosapi = require('../eosapi.js');
+const {performance} = require('perf_hooks');
+var es = require("../es");
+
 /*
  'use strict' is not required but helpful for turning syntactical errors into true errors in the program flow
  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode
@@ -52,14 +55,22 @@ function info(req, res) {
   // console.log('------ req.headers["header-api-key"]: ' + (req.headers["header-api-key"] || 'header-api-key MISSING'))
   // console.log('------ req.query["api_key"]: ' + (req.query["api_key"] || 'api_key MISSING') +'\n')
 
+  var apiKey = req.headers.api_key;
+  var t0 = performance.now();
   eosapi.getNodeInfo().then(function (result) {
+    // console.log("Headers => "+ JSON.stringify(req.headers));
+    // console.log("Req Params => "+ JSON.stringify(req.body));
     console.log((result));
     //res.status(200).send(result /*JSON.stringify(data,null,2)*/ );
     //res.end();
     //res.json(util.format(result));
+    var t1 = performance.now();
+    es.auditAPIEvent(req, t1 - t0, true);
     res.json((result));
   }, function (err) {
     console.log(err);
+    var t2 = performance.now();
+    auditAPIEvent(req, t2 - t0, false);
     //res.status(400).send(err);
   });
 }

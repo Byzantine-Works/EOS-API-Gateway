@@ -2,12 +2,17 @@
 const eosapi = require('../eosapi.js');
 const config = require("../config");
 var Request = require("request");
+const {
+  performance
+} = require('perf_hooks');
+var es = require("../es");
 
 module.exports = {
   getRamPrice: getRamPrice
 };
 
 function getRamPrice(req, res) {
+  var t0 = performance.now();
   var ram;
   console.log("getRamPrice-req:");
   let getData = new Promise((resolve, reject) => {
@@ -28,6 +33,8 @@ function getRamPrice(req, res) {
     Request.get("https://api.coinmarketcap.com/v2/ticker/1765/", (error, response, body) => {
       if (error) {
         console.log("getRamPrice-err => " + error);
+        var t2 = performance.now();
+        es.auditAPIEvent(req, t2 - t0, false);
       }
       var EOSTokenPrice = JSON.parse(body).data.quotes.USD.price;
       console.log("ram/kb in eos:" + kbyteEOSPrice + " in USD: " + EOSTokenPrice);
@@ -35,6 +42,8 @@ function getRamPrice(req, res) {
       ram.price_per_kb_usd = ramPriceinUSD;
       ram.price_per_kb_eos = kbyteEOSPrice;
       console.log("getRamPrice-res => " + JSON.stringify(ram));
+      var t1 = performance.now();
+      es.auditAPIEvent(req, t1 - t0, true);
       res.json(ram)
     });
   })

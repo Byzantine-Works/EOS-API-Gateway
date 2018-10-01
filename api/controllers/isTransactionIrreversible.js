@@ -1,12 +1,17 @@
 'use strict';
 const eosapi = require('../eosapi.js');
 const config = require("../config");
+const {
+  performance
+} = require('perf_hooks');
+var es = require("../es");
 
 module.exports = {
   isTransactionIrreversible: isTransactionIrreversible
 };
 
 function isTransactionIrreversible(req, res) {
+  var t0 = performance.now();
   var trxid = req.swagger.params.id.value;
   console.log("isTransactionIrreversible-req:=> " + trxid);
   eosapi.getTransaction(trxid).then(function (result) {
@@ -16,9 +21,13 @@ function isTransactionIrreversible(req, res) {
       transaction_block_num: result.block_num,
       is_irreversible: result.last_irreversible_block >= result.block_num
     };
+    var t1 = performance.now();
+    es.auditAPIEvent(req, t1 - t0, true);
     res.json(transaction);
   }, function (err) {
     console.log("Error in isTransactionIrreversible:=>" + err);
+    var t2 = performance.now();
+    es.auditAPIEvent(req, t2 - t0, false);
     //var error = JSON.parse(err);
     //var error = err.replace(/"code":500/g, '"code":"500"');
     //console.log("Sanitized Err transfer:=>" + error);
