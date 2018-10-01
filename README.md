@@ -18,6 +18,10 @@
 git clone https://github.com/Byzantine-Works/EOS-API-Gateway.git
 npm install
 
+//install elasticsearch
+brew install elasticsearch
+brew services start elasticsearch
+
 //setup loopback interface
 vi ~/etc/hosts (add loopback interface: 127.0.0.1	local.byzanti.ne)
 npm start OR nodemon
