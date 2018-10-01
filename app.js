@@ -78,7 +78,7 @@ SwaggerExpress.create(config, function (err, swaggerExpress) {
   // Using socket.io to get the nonce
   var server = require('http').Server(app);
   const io = require('socket.io')(server);
-  io.listen(8900);
+  io.listen(process.env.WS_SOCKET_SERVER_PORT);
 
   //Listen to clients connections
   io.on('connection', (client) => {
