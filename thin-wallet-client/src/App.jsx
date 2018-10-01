@@ -13,6 +13,7 @@ import listing from './listing.json';
 const lodash = require('lodash');
 import { css } from 'react-emotion';
 import Loader from 'react-spinners/BounceLoader';
+import Dialog from './Dialog.jsx'
 // import pic from '../assets/scatterPic.png'
 
 // var Eth = require('web3-eth');
@@ -55,6 +56,7 @@ const eos = EosApi(network);
 
 const mapStateToProps = store => ({
     scatterID: store.scatterID,
+    error: store.error,
     loading: store.loading,
     fiatFocus: store.fiatFocus,
     amRend : store.amRend,
@@ -141,10 +143,13 @@ class App extends React.Component {
                 body: JSON.stringify(objReq)
             })
             .then(response => {
-                console.log(response);
+                if(response.status !== 200) alert("We were not able to perform the transaction. Pleae ensure that every field is filled properly.");
+                console.log(response.status);
                 this.props.updateState(["loading", false]);
+               
             }).catch((err) =>  {
                 this.props.updateState(["loading", false])
+                alert("We were not able to perform the transaction. Pleae ensure that every field is filled properly.");
                 console.log(err)
             })
             socket.on('disconnect');
@@ -158,7 +163,9 @@ class App extends React.Component {
         try {
         const connected = await scatter.connect("wallet-thin");
         } catch (error) {
-            console.log(error)
+            this.props.updateState(["loading", false]);
+            alert("We could not pair with your Scatter account. Please ensure that the Scatter desktop application or web estension is signed in before trying again.")
+            // this.props.updateState(["error", "notScatterConnected"]);
         }
         try {
         const requiredFields = { accounts:[network] };
@@ -169,7 +176,9 @@ class App extends React.Component {
         this.props.updateState(["privateKey", ID.hash])
         this.props.updateState(["scatterID", ID])
         } catch (error) {
-            console.log(error);
+            this.props.updateState(["loading", false]);
+            alert("We could not pair with your Scatter account. Please ensure that the Scatter desktop application or web extension is signed in before trying again.")
+            // this.props.updateState(["error", "authRefused"]);
         }
        
         
@@ -202,7 +211,7 @@ class App extends React.Component {
                     this.props.updateState(["loading", false]);
                 }).catch(error => {
                     this.props.updateState(["loading", false]);
-                    console.log(error);
+                    alert("We were not able to perform the transaction. Please ensure that every field is filled properly.")
                 });
             }
 
@@ -320,6 +329,8 @@ class App extends React.Component {
     render() {
         const scatter = this.props.scatter;
         const tokens = this.props.tokens ?  this.props.tokens.map(tok => {return <option key={tok} id={tok}>{tok}</option>}) : null;
+
+        const dialogBox = this.props.error ?  <div id='dialog'><Dialog updateState={this.props.updateState} error={this.props.error}></Dialog></div> : null;
         
 
 
@@ -415,6 +426,9 @@ class App extends React.Component {
                               color={'#14466C'}
                               loading={this.props.loading}/>
                 </div>
+
+
+            {dialogBox}
 
         </div> 
 

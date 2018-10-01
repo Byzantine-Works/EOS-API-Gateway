@@ -230,3 +230,15 @@ input {
 .Wallet.Scatter > p {
     display: inline-block;
 }
+
+#dialog {
+    position: absolute;
+    margin: 0 auto;
+    transform: translateY(20%);
+    
+    width: 500px;
+    height: 200px;
+    color: white;
+    background-color: black;
+    z-index: 20;
+}

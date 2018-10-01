@@ -2,6 +2,8 @@ import React from 'react';
 
 const Dialog = (props) => {
 
+    console.log(props);
+
     let message ={
         notScatterConnected: "We could not pair with your Scatter account. Please ensure that the Scatter desktop application or web estension is signed in before trying again.",
         authRefused: "The request to pair with your Scatter account was refused.",
@@ -11,7 +13,7 @@ const Dialog = (props) => {
     return (
     <div className="Dialog">
         <p>{message[props.error]}</p>
-        <button onClick={props.updateState(["error", false])}>OK</button>
+        {/* <button onClick={props.updateState(["error", false])}>OK</button> */}
     </div>
     )
 
