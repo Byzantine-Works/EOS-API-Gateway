@@ -9,7 +9,8 @@ lodash = require("lodash");
 exports.getSalt4ApiKey = function (key) {
     console.log("clients.getSalt4ApiKey for key=> " + key);
     var clients = JSON.parse(fs.readFileSync(require('path').resolve(__dirname, '../c.swp')));
-    var client = lodash.find(clients, ['apikey', key]);
+
+    var client = lodash.find(clients,['apiKey', key]);
     if (client === undefined || client === null) throw new Error("api_key pairing not found");
     console.log("client => ", client);
     return client.salt;
@@ -52,7 +53,8 @@ exports.rollbackNonce = function (key, nonce) {
 
 exports.checkNonce = function (key) {
     var clients = JSON.parse(fs.readFileSync(require('path').resolve(__dirname, '../c.swp')));
-    var index = lodash.sortedIndexOf(clients, lodash.filter(clients, x => x.salt === key)[0]);
+    console.log("clients: ", typeof key);
+    var index = clients.indexOf(lodash.filter(clients, x => x.apiKey === key)[0]);
     if (index === -1) throw new Error("The API key has not been registered.");
     else {
         clients[index].nonce;

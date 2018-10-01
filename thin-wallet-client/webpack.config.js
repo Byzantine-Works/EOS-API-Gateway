@@ -26,6 +26,10 @@ module.exports = {
         // }
       },
       {
+        test: /\.png$/,
+        loader: 'file-loader',
+      },
+      {
         test: /\.scss$|\.css$/,
         use: [
           'style-loader', // creates style nodes from JS strings
@@ -39,4 +43,5 @@ module.exports = {
     }]
 },
     plugins: [htmlPlugin],
+    devtool: 'inline-source-map',
 }
