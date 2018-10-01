@@ -10,6 +10,8 @@ export default class State {
         this.rateEURUSD = null,
 
         this.fiatAm = 0,
+
+        this.error = false,
         
         this.scatter = false;
 

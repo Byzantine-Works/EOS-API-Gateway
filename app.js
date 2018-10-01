@@ -61,6 +61,7 @@ var config = {
         //print headers
         // console.log("app.js printing headers => " + JSON.stringify(req.headers));
         // console.log("app.js printing req.method & req.url => " + req.method + req.url);
+
         cb(null);
       } else {
         cb(new Error('Sorry, Either the api_key is invalid or no key supplied as header, cookie or query param. Contact info@byzanti.ne!'));

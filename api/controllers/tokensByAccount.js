@@ -1,6 +1,10 @@
 'use strict';
 const eosapi = require('../eosapi.js');
 const config = require("../config");
+const {
+  performance
+} = require('perf_hooks');
+var es = require("../es");
 
 module.exports = {
   tokensByAccount: tokensByAccount
@@ -8,6 +12,7 @@ module.exports = {
 var theTokenArray = [];
 
 function tokensByAccount(req, res) {
+  var t0 = performance.now();
   theTokenArray = [];
   var tokenList = config.tokens;
 
@@ -16,16 +21,20 @@ function tokensByAccount(req, res) {
   for (var i = 0, len = tokenList.length; i < len; i++) {
     //console.log("Processing contract => " + tokenList[i].contract + ":" + tokenList[i].symbol);
     //console.log("TokenList => " + JSON.stringify(tokenList));
-    _getTokensByAccount(tokenList[i].contract, account, tokenList[i].symbol,tokenList[i].precision,tokenList[i].hash).then(function (value) {
+    _getTokensByAccount(tokenList[i].contract, account, tokenList[i].symbol, tokenList[i].precision, tokenList[i].hash).then(function (value) {
       pass += 1;
       if (pass === tokenList.length) {
         console.log("tokensByAccount=>count: " + theTokenArray.length); //+ " data:" + JSON.stringify(theTokenArray));        
+        var t1 = performance.now();
+        es.auditAPIEvent(req, t1 - t0, true);
         res.json(theTokenArray);
         //res.end();
       }
     }).catch(function (e) {
       console.log(e);
       console.log("Eror occured while processing account => " + account);
+      var t2 = performance.now();
+      es.auditAPIEvent(req, t2 - t0, false);
       var error = JSON.parse(e);
       res.status(error.code).json(error);
       //res.status(500).json(e);
@@ -33,7 +42,7 @@ function tokensByAccount(req, res) {
   }
 }
 
-async function _getTokensByAccount(code, account, symbol,precision,hash) {
+async function _getTokensByAccount(code, account, symbol, precision, hash) {
   const balance = await eosapi.getTokensByAccount(code, account, symbol);
   if (balance != undefined && balance.length != 0 && !isNaN(balance.toString().split(' ')[0])) {
     var balanceStr = balance.toString().split(' ')[0];

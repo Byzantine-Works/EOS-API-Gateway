@@ -155,17 +155,26 @@ class App extends React.Component {
 
     async scatterPair(){
         this.props.updateState(["loading", true]);
+        try {
         const connected = await scatter.connect("wallet-thin");
-        if (connected) {
+        } catch (error) {
+            console.log(error)
+        }
+        try {
         const requiredFields = { accounts:[network] };
         const ID = await scatter.getIdentity(requiredFields);
-    
+        console.log(ID);
         this.props.updateScatter();
         this.props.updateState(["from", ID.accounts[0].name]);
         this.props.updateState(["privateKey", ID.hash])
         this.props.updateState(["scatterID", ID])
-        console.log(ID);
+        } catch (error) {
+            console.log(error);
         }
+       
+        
+    
+  
         this.props.updateState(["loading", false]);
     }
 
@@ -193,7 +202,7 @@ class App extends React.Component {
                     this.props.updateState(["loading", false]);
                 }).catch(error => {
                     this.props.updateState(["loading", false]);
-                    console.error(error);
+                    console.log(error);
                 });
             }
 

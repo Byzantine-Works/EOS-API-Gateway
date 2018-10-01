@@ -2,6 +2,10 @@
 const eosapi = require('../eosapi.js');
 const cipher = require('./decipher.js');
 const config = require("../config");
+const {
+  performance
+} = require('perf_hooks');
+var es = require("../es");
 
 module.exports = {
   transfer: transfer
@@ -9,6 +13,7 @@ module.exports = {
 
 
 function transfer(req, res) {
+  var t0 = performance.now();
   var apiKey = req.headers.api_key;
   if (apiKey === null || apiKey === undefined || apiKey.length < 1) throw new Error("Invalid api_key!");
   //console.log("apiKey => "+ JSON.stringify(apiKey));
@@ -26,10 +31,14 @@ function transfer(req, res) {
     //res.status(200).send(result /*JSON.stringify(data,null,2)*/ );
     //res.end();
     //res.json(util.format(result));
+    var t1 = performance.now();
+    es.auditAPIEvent(req, t1 - t0, true);
     res.json((result));
   }, function (err) {
     console.log("Error in transfer:=>" + err);
     //kluge as 500/40x errors have different json connotatins, one is parsable into JSON the other is not ATM
+    var t2 = performance.now();
+    es.auditAPIEvent(req, t2 - t0, false);
     try {
       var error = JSON.parse(err);
       res.status(error.code).json(error);

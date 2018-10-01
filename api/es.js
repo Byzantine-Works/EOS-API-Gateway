@@ -1,10 +1,12 @@
 'use strict';
 
-var elasticsearch = require('elasticsearch');
-var client = new elasticsearch.Client({
+const elasticsearch = require('elasticsearch');
+const client = new elasticsearch.Client({
     host: process.env.ES_HOST_INFO
     //log: 'trace'
 });
+const indexName = "eosapievents";
+const indexType = "eosapievent";
 
 
 function ping() {
@@ -21,8 +23,8 @@ function ping() {
 
 function read() {
     client.search({
-        index: 'B-EOS-API',
-        type: 'methods'
+        index: indexName,
+        type: indexType
     }).then(function (resp) {
         var hits = resp.hits.hits;
         console.log(hits);
@@ -31,24 +33,37 @@ function read() {
     });
 }
 
-function write() {
+function testAuditEvent() {
     client.index({
-        index: 'B-EOS-API',
-        type: 'methods',
+        index: indexName,
+        type: indexType,
         body: {
-            "methodname": "Get Current Balance",
-            "methodstatus": true,
-            "responsetime": 1.2,
-            "apikey": "saas-n-brkr01",
+            "method": "Get Current Balance",
+            "success": true,
+            "sla": 1.2,
+            "key": "FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N",
             "ts": 12312332
         }
     }, function (err, resp, status) {
+        if (err) console.log(err);
         console.log(resp);
+        console.log(status);
+        //return resp;
     });
 }
 
-function index(indexName, indexType, object) {
-    //console.log(JSON.stringify(object));
+function auditAPIEvent(req, mSla, mSuccess) {
+    var body = {};
+    body.method = req.url.match('^[^?]*')[0];
+    body.sla = mSla;
+    body.success = mSuccess;
+    body.key = req.headers.api_key;
+    body.ts = Date.now();
+    index(body);
+}
+
+function index(object) {
+    console.log("es.index => " + JSON.stringify(object));
     client.index({
         index: indexName,
         type: indexType,
@@ -65,7 +80,10 @@ function index(indexName, indexType, object) {
 //index();
 //write();
 //read();
+//testAuditEvent();
 
 module.exports.ping = ping;
 module.exports.read = read;
 module.exports.index = index;
+module.exports.testAuditEvent = testAuditEvent;
+module.exports.auditAPIEvent = auditAPIEvent;
