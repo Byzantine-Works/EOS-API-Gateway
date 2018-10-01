@@ -1,5 +1,10 @@
 'use strict';
 const eosapi = require('../eosapi.js');
+const {
+  performance
+} = require('perf_hooks');
+var es = require("../es");
+
 /*
  'use strict' is not required but helpful for turning syntactical errors into true errors in the program flow
  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode
@@ -36,6 +41,7 @@ module.exports = {
   Param 2: a handle to the response object
  */
 function tokens(req, res) {
+  var t0 = performance.now();
   // variables defined in the Swagger document can be referenced using req.swagger.params.{parameter_name}
   // var name = req.swagger.params.name.value || 'stranger';
   //var info = util.format('Ola Reddy!');
@@ -44,10 +50,14 @@ function tokens(req, res) {
     //res.status(200).send(result /*JSON.stringify(data,null,2)*/ );
     //res.end();
     //res.json(util.format(result));
+    var t1 = performance.now();
+    es.auditAPIEvent(req, t1 - t0, true);
     res.json((result));
     //result = null; //caching tokens?
   }, function (err) {
     console.log(err);
-    //res.status(400).send(err);
+    var t2 = performance.now();
+    es.auditAPIEvent(req, t2 - t0, false);
+    res.status(400).send(err);
   });
 }
