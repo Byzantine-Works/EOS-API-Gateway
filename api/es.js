@@ -63,18 +63,24 @@ function auditAPIEvent(req, mSla, mSuccess) {
 }
 
 function index(object) {
-    console.log("es.index => " + JSON.stringify(object));
-    client.index({
-        index: indexName,
-        type: indexType,
-        body: object
-    }, function (err, resp, status) {
-        //console.log(resp);
-        console.log(status);
-        if (err) {
-            console.log(err);
-        }
-    });
+    //console.log("es.index => " + JSON.stringify(object));
+    if (process.env.ES_EVENT_AUDIT_ENABLED !== 'false') {
+        client.index({
+            index: indexName,
+            type: indexType,
+            body: object
+        }, function (err, resp, status) {
+            //console.log(resp);
+            console.log(status);
+            if (err) {
+                console.log(err);
+            }
+        });
+    } else {
+        console.log("*************API EVENT AUDIT**************");
+        console.log(JSON.stringify(object));
+        console.log("******************************************");
+    }
 }
 //ping();
 //index();
