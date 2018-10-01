@@ -41,16 +41,16 @@ function info(req, res) {
   //var info = util.format('Ola Reddy!');
   
       
-  console.log('\n@@@@@@@@@@@@@@@@@@@ req.headers is: ')
-  console.log(req.headers)  
-  console.log('@@@@@@@@@@@@@@@@@@@ \n')
+  // console.log('\n@@@@@@@@@@@@@@@@@@@ req.headers is: ')
+  // console.log(req.headers)  
+  // console.log('@@@@@@@@@@@@@@@@@@@ \n')
 
-  console.log('\n################### req.query is: ')
-  console.log(req.query)  
-  console.log('################### \n')
+  // console.log('\n################### req.query is: ')
+  // console.log(req.query)  
+  // console.log('################### \n')
   
-  console.log('------ req.headers["header-api-key"]: ' + (req.headers["header-api-key"] || 'header-api-key MISSING'))
-  console.log('------ req.query["api_key"]: ' + (req.query["api_key"] || 'api_key MISSING') +'\n')
+  // console.log('------ req.headers["header-api-key"]: ' + (req.headers["header-api-key"] || 'header-api-key MISSING'))
+  // console.log('------ req.query["api_key"]: ' + (req.query["api_key"] || 'api_key MISSING') +'\n')
 
   eosapi.getNodeInfo().then(function (result) {
     console.log((result));

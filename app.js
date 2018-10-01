@@ -58,10 +58,11 @@ var config = {
         }
       }
 
-
       // if (scopesOrApiKey === 'samplekey1234') { // Singlekey functionality
       if (allKeys.hasOwnProperty(scopesOrApiKey) && allKeys[scopesOrApiKey]['isEnabled'] === true) {
-        console.log('\n~~~~~~~~~~~~ API Key Accepted for name: ' + allKeys[scopesOrApiKey]['name'] + ' ~~~~~~~~~~~~~~~~~~~');
+        console.log('------ headers["header-api-key"]: ' + (req.headers["header-api-key"] || 'header-api-key MISSING'))
+        console.log('------ query["api_key"]: ' + (req.query["api_key"] || 'api_key MISSING') +'\n')      
+        console.log('\n~~~~~~~~~~~~ API Key Accepted for name: ' + allKeys[scopesOrApiKey]['name'] + ' ~~~~~~~~~~~~~~~~~~~\n');
         cb(null);
       } else {
         cb(new Error('Sorry, Either the api_key is invalid or there was no key supplied. Contact the info@byzanti.ne!'));
