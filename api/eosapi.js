@@ -7,7 +7,7 @@ const BN = require("bignumber.js");
 const Eos = require("eosjs");
 const assert = require('assert');
 
-//setup basic LB acros low-latent BP's here
+//setup basic LB acros low-latent BP's (via persist/monitoring)
 //Use the chosen one for eos onchain interactions
 var eos = Eos(loadBalance());
 //console.log("eos node config =>" + JSON.stringify(eos.fc.types.config, null, 4));
@@ -223,7 +223,7 @@ async function getRamData() {
 }
 
 function loadBalance(sig) {
-    console.log("***************************")
+    // console.log("***************************")
     var chainList = config.eoschain;
     //console.log(chainList);
     var selectedChain = chainList[Math.floor(Math.random() * chainList.length)];
@@ -233,8 +233,8 @@ function loadBalance(sig) {
     } else {
         //selectedChain.keyProvider = [process.env.PAK, process.env.SAK];
     }
-    console.log("selectedChain=> " + JSON.stringify(selectedChain));
-    console.log("***************************")
+    //console.log("selectedChain=> " + JSON.stringify(selectedChain));
+    //console.log("***************************")
     return selectedChain;
 }
 
