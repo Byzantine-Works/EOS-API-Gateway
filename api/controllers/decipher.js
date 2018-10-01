@@ -18,7 +18,6 @@ var decrypt256 = function (apiKey, data) {
     var token = Number(cipherTokens[0]);
     console.log('Decrypted 256 enc with nonce:key => ' + cipherTokens[0] + ":" + cipherTokens[1]);
     if (token === client.getNonce(key, cipherTokens[0])) {
-        console.log("cipher tokens: ", cipherTokens)
         return cipherTokens[1];
     }
     else {

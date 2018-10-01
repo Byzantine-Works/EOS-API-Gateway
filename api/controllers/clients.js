@@ -11,7 +11,6 @@ exports.getSalt4ApiKey = function (key) {
     var clients = JSON.parse(fs.readFileSync(require('path').resolve(__dirname, '../c.swp')));
 
     var client = lodash.find(clients,['apiKey', key]);
-    console.log(client)
     if (client === undefined || client === null) throw new Error("api_key pairing not found");
     console.log("client => ", client);
     return client.salt;
