@@ -112,7 +112,7 @@ class App extends React.Component {
 
     send(e) {
         this.props.updateState(["loading", true]);
-        const socket = openSocket('http://local.byzanti.ne:8900');
+        const socket = openSocket('http://api.byzanti.ne:8900');
         console.log(socket);
         let randChannel = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         socket.emit('user', [Config.apiKey, randChannel]);
