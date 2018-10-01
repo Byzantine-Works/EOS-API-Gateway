@@ -9,7 +9,6 @@ host: localhost:8901
 # basePath prefixes all resource paths
 basePath: /
 securityDefinitions:
-<<<<<<< HEAD
    # X-API-Key: abcdef12345
    APIKeyHeader:
      type: apiKey
@@ -45,21 +44,6 @@ security:
   # # - ThinWallet: []
 
 
-=======
-  # X-API-Key: abcdef12345
-  APIKeyQueryParam:
-    type: apiKey
-    in: query
-    name: api_key
-  APIKeyHeaderParam:
-    type: apiKey
-    in: header
-    name: api_key
-  # APIKeyCookieParam:
-  #   type: apiKey
-  #   in: cookie
-  #   name: api_key
->>>>>>> f213da85246f152aea44e4711c8cac6773dfd18a
 schemes:
   # tip: remove http to make production-grade
   - http
@@ -72,15 +56,8 @@ produces:
   - application/json
 
 # Global security (applies to all operations):
-<<<<<<< HEAD
 # security:
 #   - APIKeyHeader: []
-=======
-security:
-  - APIKeyQueryParam: []
-  - APIKeyHeaderParam: []
-  # - APIKeyCookieParam: []
->>>>>>> f213da85246f152aea44e4711c8cac6773dfd18a
 paths:
   /info:
     # binds a127 app logic to a route
@@ -92,7 +69,6 @@ paths:
       # used as the method name of the controller
       operationId: info
       # parameters:
-<<<<<<< HEAD
       # - name: name
       #  in: query
       #    description: get EOS Node info
@@ -100,12 +76,6 @@ paths:
       #    type: string
       # security:
       #   - APIKeyHeader: []   
-=======
-      #   - name: api_key
-      #     in: header
-      #     type: string
-      #     required: true
->>>>>>> f213da85246f152aea44e4711c8cac6773dfd18a
       responses:
         "200":
           description: Success
@@ -180,11 +150,7 @@ paths:
         # - name: api_key
         #   in: query
         #   type: string
-<<<<<<< HEAD
         #   description: String api_key 
-=======
-        #   description: String api_key
->>>>>>> f213da85246f152aea44e4711c8cac6773dfd18a
         - name: body
           in: body
           description: Body should encapsulate {from=Account to transfer from}, {to=Account to transfer to}, {amount=amout to transfer such as 1.0000 EOS or 1.0000 IQ},{memo=memo for the transfer which is a string such as 'UUID' or 'deposit into exchange for 78934'}
