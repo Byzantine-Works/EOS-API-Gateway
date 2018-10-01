@@ -21,22 +21,12 @@ module.exports = app; // for testing
 var config = {
   appRoot: __dirname, // required config
   swaggerSecurityHandlers: {
-<<<<<<< HEAD
     // Allow for Query in addition to Headers
     APIKeyQueryParam: function(req, authOrSecDef, scopesOrApiKey, cb) {
       console.log('~~ In APIKeyQueryParam\n')
       config.swaggerSecurityHandlers.APIKeyHeader(req, authOrSecDef, scopesOrApiKey, cb)
     },
     APIKeyHeader: function (req, authOrSecDef, scopesOrApiKey, cb) {
-=======
-    // case of api_key passed in header..only works via curl and NOT swagger-ui
-    APIKeyHeaderParam: function (req, authOrSecDef, scopesOrApiKey, cb) {
-      config.swaggerSecurityHandlers.APIKeyQueryParam(req, authOrSecDef, scopesOrApiKey, cb);
-    },
-
-    // case of api_key passed in query param..works with both curl and swagger-ui
-    APIKeyQueryParam: function (req, authOrSecDef, scopesOrApiKey, cb) {
->>>>>>> f213da85246f152aea44e4711c8cac6773dfd18a
       //console.log("Security key => " + scopesOrApiKey);
       var allKeys = {};
       // Sample allKeys: 
@@ -70,19 +60,9 @@ var config = {
 
       // if (scopesOrApiKey === 'samplekey1234') { // Singlekey functionality
       if (allKeys.hasOwnProperty(scopesOrApiKey) && allKeys[scopesOrApiKey]['isEnabled'] === true) {
-<<<<<<< HEAD
         console.log('------ headers["header-api-key"]: ' + (req.headers["header-api-key"] || 'header-api-key MISSING'))
         console.log('------ query["api_key"]: ' + (req.query["api_key"] || 'api_key MISSING') +'\n')      
         console.log('\n~~~~~~~~~~~~ API Key Accepted for name: ' + allKeys[scopesOrApiKey]['name'] + ' ~~~~~~~~~~~~~~~~~~~\n');
-=======
-        // if (scopesOrApiKey === 'samplekey1234') { // Singlekey functionality
-        // if (allKeys.hasOwnProperty(scopesOrApiKey) === true) { // Multikey functionality
-        req.headers['api_key'] = scopesOrApiKey; //inject api_key as header arg for consistent access in the backend
-        //print headers
-        // console.log("app.js printing headers => " + JSON.stringify(req.headers));
-        // console.log("app.js printing req.method & req.url => " + req.method + req.url);
-
->>>>>>> f213da85246f152aea44e4711c8cac6773dfd18a
         cb(null);
       } else {
         cb(new Error('Sorry, Either the api_key is invalid or no key supplied as header, cookie or query param. Contact info@byzanti.ne!'));
