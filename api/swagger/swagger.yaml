@@ -3,23 +3,47 @@ info:
   version: "1.4"
   title: "Byzanti.ne API Gateway - Powered by Liberty Block"
 # during dev, should point to your local machine
-host: local.byzanti.ne:8901
+# host: local.byzanti.ne:8901
+## localhost config - for Windows
+host: localhost:8901
 # basePath prefixes all resource paths
 basePath: /
 securityDefinitions:
-  # X-API-Key: abcdef12345
-  APIKeyQueryParam:
-    type: apiKey
-    in: query
-    name: api_key
-  APIKeyHeaderParam:
-    type: apiKey
-    in: header
-    name: api_key
-  # APIKeyCookieParam:
-  #   type: apiKey
-  #   in: cookie
-  #   name: api_key
+   # X-API-Key: abcdef12345
+   APIKeyHeader:
+     type: apiKey
+     in: header
+     name: Header-API-Key
+    #  name: api_key
+   APIKeyQueryParam:
+      type: apiKey
+      in: query
+      name: api_key
+security:
+  - APIKeyHeader: []
+  - APIKeyQueryParam: []
+
+  # securityDefinitions:
+  #    # X-API-Key: abcdef12345
+  #    APIKeyHeader:
+  #      type: apiKey
+  #      in: header
+  #      name: X-API-Key
+  #    # /path?api_key=abcdef12345
+  #    APIKeyQueryParam:
+  #      type: apiKey
+  #      in: query
+  #      name: api_key
+  #    ThinWallet:
+  #      type: apiKey
+  #      in: header
+  #      name: Thinwallet-API-Key
+  # security:
+  #   - apiKey: []
+  #   - appId: []
+  # # - ThinWallet: []
+
+
 schemes:
   # tip: remove http to make production-grade
   - http
@@ -32,10 +56,8 @@ produces:
   - application/json
 
 # Global security (applies to all operations):
-security:
-  - APIKeyQueryParam: []
-  - APIKeyHeaderParam: []
-  # - APIKeyCookieParam: []
+# security:
+#   - APIKeyHeader: []
 paths:
   /info:
     # binds a127 app logic to a route
@@ -47,10 +69,13 @@ paths:
       # used as the method name of the controller
       operationId: info
       # parameters:
-      #   - name: api_key
-      #     in: header
-      #     type: string
-      #     required: true
+      # - name: name
+      #  in: query
+      #    description: get EOS Node info
+      #    required: false
+      #    type: string
+      # security:
+      #   - APIKeyHeader: []   
       responses:
         "200":
           description: Success
@@ -99,8 +124,8 @@ paths:
           required: true
           type: string
         # Operation-specific security:
-        # security:
-        #   - APIKeyQueryParam: []
+      # security:
+      #   - APIKeyQueryParam: []
         # ##
         # security:
         #   - APIKeyHeader: []
@@ -125,7 +150,7 @@ paths:
         # - name: api_key
         #   in: query
         #   type: string
-        #   description: String api_key
+        #   description: String api_key 
         - name: body
           in: body
           description: Body should encapsulate {from=Account to transfer from}, {to=Account to transfer to}, {amount=amout to transfer such as 1.0000 EOS or 1.0000 IQ},{memo=memo for the transfer which is a string such as 'UUID' or 'deposit into exchange for 78934'}
@@ -223,10 +248,13 @@ paths:
       description: Returns EOS blockchain account details including avail or staked RAM, CPU.
       operationId: getAccount
       parameters:
-        - name: account
-          in: path
-          required: true
-          type: string
+      - name: account
+        in: path
+        required: true
+        type: string
+      ## Enabling Security specifically for /getAccount/{account}
+      # security:
+      # - APIKeyHeader: []
       responses:
         "200":
           description: Success
