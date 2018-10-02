@@ -43,7 +43,8 @@ cd thin-wallet-client
 npm start
 ```
 
-# Validate (replace api with local and port with 8901 for local validation)
+# Validate
+ - Replace `api` with `local` and `port` with `8901` for local dev validation for the following
  - swagger-ui: http://api.byzanti.ne/8902/docs
  - API-Analytics: https://analytics.byzanti.ne/goto/5c34272dd2c0a4e76e886d214876706f
  - API-stats:  http://api.byzanti.ne:8902/swagger-stats/ui#sws_summary
