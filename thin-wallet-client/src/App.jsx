@@ -112,7 +112,7 @@ class App extends React.Component {
 
     send(e) {
         this.props.updateState(["loading", true]);
-        const socket = openSocket('http://api.byzanti.ne:8900');
+        const socket = openSocket('http://local.byzanti.ne:8900');
         console.log(socket);
         let randChannel = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         socket.emit('user', [Config.apiKey, randChannel]);
@@ -133,7 +133,7 @@ class App extends React.Component {
 
            
             // await fetch('http://api.byzanti.ne:8902/transfer', {
-            await fetch(`http://api.byzanti.ne:8902/transfer?api_key=${Config.apiKey}`, {
+            await fetch(`http://local.byzanti.ne:8901/transfer?api_key=${Config.apiKey}`, {
                 method: 'POST',
                 headers: {
                     "api_key": Config.apiKey,
@@ -223,7 +223,7 @@ class App extends React.Component {
     async changeCoin(){
         let response;
         this.props.updateState(["loading", true]);
-        response = await axios(`http://api.byzanti.ne:8902/tokensByAccount/${this.props.from}`);
+        response = await axios(`http://local.byzanti.ne:8901/tokensByAccount/${this.props.from}`);
         if(!response.data.length){
             this.props.updateState(["token", null])
             this.props.updateState(["loading", false]);
