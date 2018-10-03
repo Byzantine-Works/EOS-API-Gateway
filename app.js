@@ -22,11 +22,19 @@ var config = {
   appRoot: __dirname, // required config
   swaggerSecurityHandlers: {
     // Allow for Query in addition to Headers
+<<<<<<< HEAD
     APIKeyQueryParam: function(req, authOrSecDef, scopesOrApiKey, cb) {
       console.log('~~ In APIKeyQueryParam\n')
       config.swaggerSecurityHandlers.APIKeyHeader(req, authOrSecDef, scopesOrApiKey, cb)
     },
     APIKeyHeader: function (req, authOrSecDef, scopesOrApiKey, cb) {
+=======
+    APIKeyQueryParam: function (req, authOrSecDef, scopesOrApiKey, cb) {
+      console.log('~~ In APIKeyQueryParam\n')
+      config.swaggerSecurityHandlers.APIKeyHeaderParam(req, authOrSecDef, scopesOrApiKey, cb)
+    },
+    APIKeyHeaderParam: function (req, authOrSecDef, scopesOrApiKey, cb) {
+>>>>>>> 9f63c48b753f145b0457f4f5d963bbbd0a82b8a9
       //console.log("Security key => " + scopesOrApiKey);
       var allKeys = {};
       // Sample allKeys: 
@@ -60,15 +68,28 @@ var config = {
 
       // if (scopesOrApiKey === 'samplekey1234') { // Singlekey functionality
       if (allKeys.hasOwnProperty(scopesOrApiKey) && allKeys[scopesOrApiKey]['isEnabled'] === true) {
+<<<<<<< HEAD
         console.log('------ headers["header-api-key"]: ' + (req.headers["header-api-key"] || 'header-api-key MISSING'))
         console.log('------ query["api_key"]: ' + (req.query["api_key"] || 'api_key MISSING') +'\n')      
         console.log('\n~~~~~~~~~~~~ API Key Accepted for name: ' + allKeys[scopesOrApiKey]['name'] + ' ~~~~~~~~~~~~~~~~~~~\n');
+=======
+        console.log('------ headers["api_key"]: ' + (req.headers["api_key"] || 'api_key MISSING'))
+        console.log('------ query["api_key"]: ' + (req.query["api_key"] || 'api_key MISSING') + '\n')
+        console.log('\n~~~~~~~~~~~~ API Key Accepted for name: ' + allKeys[scopesOrApiKey]['name'] + ' ~~~~~~~~~~~~~~~~~~~\n');
+        req.headers['api_key'] = scopesOrApiKey; //inject api_key as header arg for consistent access in the backend
+        //print headers
+        // console.log("app.js printing headers => " + JSON.stringify(req.headers));
+        // console.log("app.js printing req.method & req.url => " + req.method + req.url);
+>>>>>>> 9f63c48b753f145b0457f4f5d963bbbd0a82b8a9
         cb(null);
       } else {
         cb(new Error('Sorry, Either the api_key is invalid or no key supplied as header, cookie or query param. Contact info@byzanti.ne!'));
       }
     },
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9f63c48b753f145b0457f4f5d963bbbd0a82b8a9
   }
 };
 
@@ -79,8 +100,8 @@ SwaggerExpress.create(config, function (err, swaggerExpress) {
 
   // Using socket.io to get the nonce
   var server = require('http').Server(app);
-  const io = require('socket.io')(server);
-  io.listen(8900);
+  const io = require('socket.io')(server, { origins: '*:*'});
+  io.listen(process.env.WS_SOCKET_SERVER_PORT);
 
   //Listen to clients connections
   io.on('connection', (client) => {
