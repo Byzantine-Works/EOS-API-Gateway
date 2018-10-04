@@ -243,14 +243,34 @@ async function sellRamBytes(account, bytes, sig) {
     return await eos.sellram(account, bytes);
 }
 
+//Ref: https://github.com/EOSIO/eos/blob/master/contracts/eosio.system/eosio.system.abi#L526
+async function getNameBids(account) {
+    console.log("eosapi:getNameBids:account  =>" + (account));
+    return await eos.getTableRows(true, 'eosio', account, 'namebids')
+}
+
+async function getRefunds(account) {
+    console.log("eosapi:getRefunds:account  => " + (account));
+    return await eos.getTableRows(true, 'eosio', account, 'refunds')
+}
+
 async function getBandwidth(account) {
-    console.log("eosapi:getBandwidth=> account  =>" + JSON.stringify(account));
+    console.log("eosapi:getBandwidth:account  =>" + (account));
     return await eos.getTableRows(true, 'eosio', account, 'delband')
 }
 
 async function getRamData() {
     console.log("eosapi:getRamData");
     return await eos.getTableRows(true, 'eosio', 'eosio', 'rammarket')
+}
+
+async function getCurrencyStats(contract, symbol) {
+    eos = Eos(loadBalance());
+    console.log("eosapi:getCurrencyStats:contract:symbol=> " + contract + ":" + symbol);
+    return await eos.getCurrencyStats({
+        code: contract,
+        symbol: symbol
+    });
 }
 
 function loadBalance(sig) {
@@ -271,11 +291,14 @@ function loadBalance(sig) {
 
 //declare functions to export
 module.exports.getNodeInfo = getNodeInfo;
+module.exports.getCurrencyStats = getCurrencyStats;
 module.exports.getAllCurrentAirDropTokens = getAllCurrentAirDropTokens;
 module.exports.getTokensByAccount = getTokensByAccount;
 module.exports.transfer = transfer;
 module.exports.getTransaction = getTransaction;
 module.exports.getActions = getActions;
+module.exports.getRefunds = getRefunds;
+module.exports.getNameBids = getNameBids;
 module.exports.getAccount = getAccount;
 module.exports.getProducers = getProducers;
 module.exports.voteProducer = voteProducer;

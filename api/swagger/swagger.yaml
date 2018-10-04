@@ -236,6 +236,31 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /getCurrencyStats:
+    x-swagger-router-controller: getCurrencyStats
+    get:
+      tags:
+        - Base API {account,tokens,transaction,actions}
+      description: Returns currency stats for a given tokencontract and symbol.
+      operationId: getCurrencyStats
+      parameters:
+        - in: query
+          name: contract
+          required: true
+          type: string
+        - in: query
+          name: symbol
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/transferResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /getActions:
     x-swagger-router-controller: getActions
     get:
@@ -256,6 +281,48 @@ paths:
           name: offset
           required: false
           type: integer
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/transferResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /getRefunds/{account}:
+    x-swagger-router-controller: getRefunds
+    get:
+      tags:
+        - Base API {account,tokens,transaction,actions}
+      description: Returns refunds on a given account.
+      operationId: getRefunds
+      parameters:
+        - in: path
+          name: account
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/transferResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /getNameBids/{account}:
+    x-swagger-router-controller: getNameBids
+    get:
+      tags:
+        - Base API {account,tokens,transaction,actions}
+      description: Returns Name Bids on a given account.
+      operationId: getNameBids
+      parameters:
+        - in: path
+          name: account
+          required: true
+          type: string
       responses:
         "200":
           description: Success
