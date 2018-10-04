@@ -2,6 +2,7 @@
 var SwaggerExpress = require('swagger-express-mw');
 var SwaggerUi = require('swagger-tools/middleware/swagger-ui');
 var es = require("./api/es");
+var path = require('path')
 
 //exports for swagger-ui middleware
 var swStats = require('swagger-stats');
@@ -17,6 +18,14 @@ require('events').EventEmitter.defaultMaxListeners = 50;
 
 var app = require('express')();
 module.exports = app; // for testing
+
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './thin-wallet-client/dist/index.html'));
+});
+
+app.get('/main.js', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './thin-wallet-client/dist/main.js'));
+});
 
 var config = {
   appRoot: __dirname, // required config

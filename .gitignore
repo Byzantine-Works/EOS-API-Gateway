@@ -39,3 +39,6 @@ config/runtime.yaml
 
 # Devteam Specific
 COPY.env
+
+# Salt & APIKey
+config.json

@@ -54,7 +54,7 @@ exports.rollbackNonce = function (key, nonce) {
 exports.checkNonce = function (key) {
     var clients = JSON.parse(fs.readFileSync(require('path').resolve(__dirname, '../c.swp')));
     console.log("clients: ", typeof key);
-    var index = clients.indexOf(lodash.filter(clients, x => x.apiKey === key)[0]);
+    var index = clients.indexOf(lodash.filter(clients, x => x.apikey === key)[0]);
     if (index === -1) throw new Error("The API key has not been registered.");
     else {
         clients[index].nonce;

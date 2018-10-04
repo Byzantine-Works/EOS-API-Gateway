@@ -211,7 +211,7 @@ class App extends React.Component {
         } catch (error) {
             console.log("error: ", error);
             this.props.updateState(["loading", false]);
-            // location.reload();
+            location.reload();
             if(!window.scatter.isExtension){
             this.props.updateState(["message", "authRefused"]);
             document.getElementById('scatter').checked = false;
@@ -474,7 +474,7 @@ class App extends React.Component {
                 </select>
                 <OverlayTrigger placement="top" overlay={tooltip}><input key="memo" id="memo" placeholder="Memo" onChange={this.changeInput} onMouseOver={this.toolTip}></input></OverlayTrigger>
                 <button id="send" key="send" onClick={this.props.scatter ? this.scatterSend : this.send}>Send</button>
-                <label className="Scatter"><input type="checkbox" id="scatter" onChange={this.scatterPair}></input><span className="checkmark"></span><OverlayTrigger placement="top" overlay={tooltip}><p id="scatterBox" onMouseOver={this.toolTip}>Transfer with Scatter</p></OverlayTrigger>
+                <label className="Scatter"><input type="checkbox" id="scatter" onChange={this.scatterPair}></input><span className="checkmark"></span><OverlayTrigger placement="top" overlay={tooltip}><p id="scatterBox" onMouseOver={this.toolTip}>Pair with Scatter</p></OverlayTrigger>
                </label>
         </div>        
         <div className='sweet-loading'>
