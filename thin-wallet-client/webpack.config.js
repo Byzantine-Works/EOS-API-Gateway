@@ -1,5 +1,7 @@
 
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
+var JavaScriptObfuscator = require('webpack-obfuscator');
 
 const htmlPlugin = new HtmlWebPackPlugin({
   template: './src/index.html',
@@ -42,6 +44,15 @@ module.exports = {
         use: 'html-loader',
     }]
 },
-    plugins: [htmlPlugin],
+    plugins: [htmlPlugin, new Dotenv({
+      path: './src/.env',
+    }
+    ), new JavaScriptObfuscator ({
+      rotateUnicodeArray: true
+    })
+  ],
+    node: {
+      fs: 'empty'
+    },
     devtool: 'inline-source-map',
 }

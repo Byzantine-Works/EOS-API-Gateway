@@ -1,16 +1,7 @@
-$font-stack:    Helvetica, sans-serif;
-$primary-color: #333;
 
-body, html {
-    
-    // background-image: linear-gradient(145deg, #00039c 10%,#1bc6a8 70%,#35f3d3);
-    margin: 0;
-    height: 100%;
-    font-family: arial;
-    color: white;
-}
 
-.Wallet {
+#thin-wallet {
+    font-family: Arial, Helvetica, sans-serif;
     background: linear-gradient(360deg, #38aecc 10%, #347fb9 90%);
     border: 1px rgb(148, 148, 148) solid;
     border-radius: 8px;
@@ -30,15 +21,16 @@ body, html {
     // background: #efefef;
     // justify-content: center;
     gap: 30px;
-    width: 30%;
-    transform: translateY(20%);
-    margin: 0 auto;
+    width: 400px;
+    // transform: translateY(20%);
+    // margin: 0 auto;
     box-shadow: 2px 3px #aaaaaa;
     z-index:-1;
 }
 
-input {
+#thin-wallet input {
     width: 100%;
+    color: black;
     border-radius: 15px;
     &:focus {
         outline: none;
@@ -95,7 +87,7 @@ select, option {
 
 #balance {
     margin-left: 70px;
-    font: 15px arial;
+    font-size: 15px;
     font-weight: 800;
     position: relative;
     top: -17px;
@@ -144,11 +136,13 @@ input {
 
 .Scatter {
     position: relative;
-    height: 25px;
-    width: 130px;
+    height: 32px;
+    width: 135px;
     padding-left: 30px;
-    padding-top: 10px;
+    padding-top: 20px;
+    padding-right: 0px;
     margin-bottom: 12px;
+    color: white;
     cursor: pointer;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -193,6 +187,11 @@ input {
     display: none;
 }
 
+.Scatter input {
+    display: none;
+
+}
+
 /* Show the checkmark when checked */
 .Scatter input:checked ~ .checkmark:after {
     display: block;
@@ -222,7 +221,7 @@ input {
 
 .Scatter p {
     position: relative;
-    top: -40px;
+    top: -11px;
     font: 13px Roboto,sans-serif;
 }
 
@@ -232,13 +231,33 @@ input {
 }
 
 #dialog {
-    position: absolute;
+    position: relative;
     margin: 0 auto;
-    transform: translateY(20%);
-    
-    width: 500px;
-    height: 200px;
-    color: white;
-    background-color: black;
+    border-color:  #14466C;
+    border-width: 2px;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    margin-top: -310px;
+    font: 18px arial;
+    letter-spacing: 1px;
+    line-height: 200%;
+    font-weight: 800;
+    width: 130%;
     z-index: 20;
+}
+
+#dialog button {
+    font-size: 15px;
+    margin-bottom: 20px;
+    color: #14466C;
+    background-color: white;
+}
+
+#success button {
+    display: inline-block;
+    margin: 15px;
+    color: white;
+    background-color:  #14466C;
+
 }
