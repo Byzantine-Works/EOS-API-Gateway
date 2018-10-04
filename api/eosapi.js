@@ -194,6 +194,12 @@ async function undelegate(from, receiver, net, cpu, sig) {
     return await eos.undelegatebw(from, receiver, net, cpu);
 }
 
+async function delegate(from, receiver, net, cpu, sig) {
+    eos = Eos(loadBalance(sig));
+    console.log("eosapi:delegatin with key: =>" + eos.fc.types.config.keyProvider);
+    return await eos.delegatebw(from, receiver, net, cpu,0);
+}
+
 async function buyRam(payer, receiver, quant, sig) {
     eos = Eos(loadBalance(sig));
     console.log("eosapi:buyRam with key: =>" + eos.fc.types.config.keyProvider);
@@ -248,6 +254,7 @@ module.exports.getActions = getActions;
 module.exports.getAccount = getAccount;
 module.exports.getProducers = getProducers;
 module.exports.voteProducer = voteProducer;
+module.exports.delegate = delegate;
 module.exports.undelegate = undelegate;
 module.exports.getBandwidth = getBandwidth;
 module.exports.buyRam = buyRam;

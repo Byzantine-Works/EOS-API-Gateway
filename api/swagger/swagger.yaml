@@ -314,6 +314,43 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/TransferErrorResponse"
+  /delegate:
+    x-swagger-router-controller: delegate
+    post:
+      tags:
+        - Block Producer API {Producer List, Voting & Unstaking} *mainnet
+      description: Delegate specific NET and CPU bandwidth for a user
+      operationId: delegate
+      parameters:
+        - name: body
+          in: body
+          description: Body should encapsulate {from=account delegating bandwidth}, {receiver=account to delegate bandwidth to},{net=amount of EOS to undelegate for network bandwidth},{cpu=amount of EOS to undelegate for CPU bandwidth},{sig=voter signature}
+          required: true
+          schema:
+            properties:
+              from:
+                type: string
+              receiver:
+                type: string
+              net:
+                type: string
+              cpu:
+                type: string
+              sig:
+                type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/transferResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Error
+          schema:
+            $ref: "#/definitions/TransferErrorResponse"
   /undelegate:
     x-swagger-router-controller: undelegate
     post:
