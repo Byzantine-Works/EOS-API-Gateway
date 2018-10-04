@@ -106,7 +106,7 @@ async function transferOffline(code, from, to, amount, memo, sig, transactionHea
         keyProvider,
         authorization: [{
             actor: from,
-            oermission: 'active'
+            permission: 'active'
         }],
         transactionHeaders
     });
