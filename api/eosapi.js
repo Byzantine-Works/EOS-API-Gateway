@@ -246,7 +246,14 @@ async function sellRamBytes(account, bytes, sig) {
 //Ref: https://github.com/EOSIO/eos/blob/master/contracts/eosio.system/eosio.system.abi#L526
 async function getNameBids(account) {
     console.log("eosapi:getNameBids:account  =>" + (account));
-    return await eos.getTableRows(true, 'eosio', account, 'namebids')
+    return await eos.getTableRows({
+        json: true,
+        scope: 'eosio',
+        code: 'eosio',
+        table: 'namebids',
+        limit: 20,
+        lower_bound: account
+    })
 }
 
 async function getRefunds(account) {
