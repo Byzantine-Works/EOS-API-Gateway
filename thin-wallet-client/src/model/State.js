@@ -11,9 +11,15 @@ export default class State {
 
         this.fiatAm = 0,
 
-        this.error = false,
+        this.message = false,
+
+        this.transactionID = null;
         
         this.scatter = false;
+
+        this.tooltip = "";
+
+        this.tooltipMessage = {from: "Enter your account name.", to: "Enter the account name's recipient.", memo:"Enter the motive of the transaction.", amount:"The amount of token that are going to be sent.", privateKey:"Copy Paste here your account active private key.", scatterBox: "Check this box if you want to pair with your Scatter account."}
 
         this.amRend = "";
 
@@ -31,7 +37,7 @@ export default class State {
         
         this.amount = 0;
         
-        this.coin = null;
+        this.coin = "EOS";
 
         this.rate = null;
         
