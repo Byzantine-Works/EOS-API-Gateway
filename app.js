@@ -37,7 +37,7 @@ var config = {
           callCount: 0,
         },
         "FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N": {
-          name: 'defaultThinWalletKeyForPublic',
+          name: 'EOS Stripe Wallet',
           isEnabled: true,
           callCount: 0,
         },

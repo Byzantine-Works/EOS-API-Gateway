@@ -91,7 +91,7 @@ async function transfer(code, from, to, amount, memo, sig) {
 }
 
 async function transferOffline(code, from, to, amount, memo, sig, transactionHeaders) {
-    var keyProvider = '5J4vRX186htiS6s8rvfCeVqXLYfKyjZDum5mpww8dT1qrpfsEJL'; //dummy key provider to test
+    var keyProvider = '5J4vRX186htiS6s8rvfCeVxyzfKyjZDum5mpww8dT1qrpfsEJL'; //dummy key provider to test
     const eosjsOptions = {
         broadcast: false,
         authorization: [{
@@ -106,7 +106,7 @@ async function transferOffline(code, from, to, amount, memo, sig, transactionHea
         keyProvider,
         authorization: [{
             actor: from,
-            oermission: 'active'
+            permission: 'active'
         }],
         transactionHeaders
     });
@@ -197,7 +197,32 @@ async function undelegate(from, receiver, net, cpu, sig) {
 async function delegate(from, receiver, net, cpu, sig) {
     eos = Eos(loadBalance(sig));
     console.log("eosapi:delegatin with key: =>" + eos.fc.types.config.keyProvider);
-    return await eos.delegatebw(from, receiver, net, cpu,0);
+    return await eos.delegatebw(from, receiver, net, cpu, 0);
+}
+
+async function createKeyset() {
+    var keySet = {};
+    keySet.owner_privateKey = await ecc.randomKey();
+    keySet.owner_publicKey = ecc.privateToPublic(keySet.owner_privateKey);
+    keySet.active_privateKey = await ecc.randomKey();
+    keySet.active_publicKey = ecc.privateToPublic(keySet.active_privateKey);
+    console.log("eosapi:keySet =>" + JSON.stringify(keySet));
+    return keySet;
+}
+
+async function createAccount(creator, name, owner, active, sig) {
+    eos = Eos(loadBalance(sig));
+    console.log("eosapi:createAccount with key: =>" + eos.fc.types.config.keyProvider);
+    return trxCreateAccount = await eos.transaction(tr => {
+        tr.newaccount({
+            creator: creator,
+            name: name,
+            owner: owner,
+            active: active
+        }, {
+            authorization: [creator]
+        });
+    });
 }
 
 async function buyRam(payer, receiver, quant, sig) {
@@ -254,6 +279,8 @@ module.exports.getActions = getActions;
 module.exports.getAccount = getAccount;
 module.exports.getProducers = getProducers;
 module.exports.voteProducer = voteProducer;
+module.exports.createAccount = createAccount;
+module.exports.createKeyset = createKeyset;
 module.exports.delegate = delegate;
 module.exports.undelegate = undelegate;
 module.exports.getBandwidth = getBandwidth;

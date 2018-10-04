@@ -265,11 +265,64 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /getKeyset:
+    x-swagger-router-controller: getKeyset
+    get:
+      tags:
+        - Base API {account,tokens,transaction,actions}
+      description: Returns a public/private key pairs. You need 2 pairs for account creation. these are owner keypair and active keypair. Although you can use the same keypair for both owner and active, it is not recommended.
+      operationId: getKeyset
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/transferResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /createAccount:
+    x-swagger-router-controller: createAccount
+    post:
+      tags:
+        - Base API {account,tokens,transaction,actions}
+      description: Create an EOS Account
+      operationId: createAccount
+      parameters:
+        - name: body
+          in: body
+          description: Body should encapsulate {creator=EOS account name creating the account}, {name=name of the account being created},{owner=Owner Public key},{active=Active Public key},{sig=account creator signature}
+          required: true
+          schema:
+            properties:
+              creator:
+                type: string
+              name:
+                type: string
+              owner:
+                type: string
+              active:
+                type: string
+              sig:
+                type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/transferResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Error
+          schema:
+            $ref: "#/definitions/TransferErrorResponse"
   /getProducers:
     x-swagger-router-controller: getProducers
     get:
       tags:
-        - Block Producer API {Producer List, Voting & Unstaking} *mainnet
+        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price} *mainnet
       description: Returns the list of 21 producers.
       operationId: getProducers
       responses:
@@ -285,7 +338,7 @@ paths:
     x-swagger-router-controller: voteProducer
     post:
       tags:
-        - Block Producer API {Producer List, Voting & Unstaking} *mainnet
+        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price} *mainnet
       description: Lets you vote for a specific producer account
       operationId: voteProducer
       parameters:
@@ -318,7 +371,7 @@ paths:
     x-swagger-router-controller: delegate
     post:
       tags:
-        - Block Producer API {Producer List, Voting & Unstaking} *mainnet
+        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price} *mainnet
       description: Delegate specific NET and CPU bandwidth for a user
       operationId: delegate
       parameters:
@@ -355,7 +408,7 @@ paths:
     x-swagger-router-controller: undelegate
     post:
       tags:
-        - Block Producer API {Producer List, Voting & Unstaking} *mainnet
+        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price} *mainnet
       description: Undelegate specific NET and CPU bandwidth
       operationId: undelegate
       parameters:
@@ -392,7 +445,7 @@ paths:
     x-swagger-router-controller: getBandwidth
     get:
       tags:
-        - Block Producer API {Producer List, Voting & Unstaking} *mainnet
+        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price} *mainnet
       description: Returns account bandwidth staked in EOS for network and cpu.
       operationId: getBandwidth
       parameters:
@@ -413,7 +466,7 @@ paths:
     x-swagger-router-controller: buyRam
     post:
       tags:
-        - Block Producer API {Producer List, Voting & Unstaking} *mainnet
+        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price} *mainnet
       description: Buy Ram
       operationId: buyRam
       parameters:
@@ -448,7 +501,7 @@ paths:
     x-swagger-router-controller: buyRamBytes
     post:
       tags:
-        - Block Producer API {Producer List, Voting & Unstaking} *mainnet
+        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price} *mainnet
       description: Buy Ram in specified bytes
       operationId: buyRamBytes
       parameters:
@@ -483,7 +536,7 @@ paths:
     x-swagger-router-controller: sellRamBytes
     post:
       tags:
-        - Block Producer API {Producer List, Voting & Unstaking} *mainnet
+        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price} *mainnet
       description: Sell Ram in specified bytes
       operationId: sellRamBytes
       parameters:
@@ -516,7 +569,7 @@ paths:
     x-swagger-router-controller: getRamPrice
     get:
       tags:
-        - Block Producer API {Producer List, Voting & Unstaking} *mainnet
+        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price} *mainnet
       description: Returns RAM prices based on supply/quote and the Bancor algorithm
       operationId: getRamPrice
       responses:
