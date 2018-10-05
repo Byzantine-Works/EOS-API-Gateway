@@ -2,7 +2,13 @@ var config = {};
 //These need to be fetched dynamically via
 //DB based on weightage, and a scheduler can monitor the least
 //latency bps, and queue them in db with weightage for dyn lb *selection
-config.eoschain = [
+config.eoschain = [{
+    eosVersion: 'a228b1dc',
+    chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
+    httpEndpoint: 'http://api.eoslaomao.com',
+    debug: false,
+    verbose: false
+  }
   // {
   //   eosVersion: 'f2cb2722',
   //   chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
@@ -11,13 +17,13 @@ config.eoschain = [
   //   verbose: false,
   //   latency: 160
   // },
-  {
-    eosVersion: 'b8c1b2c2',
-    chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
-    httpEndpoint: 'http://mainnet.genereos.io',
-    debug: false,
-    verbose: false
-  }
+  // {
+  //   eosVersion: 'b8c1b2c2',
+  //   chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
+  //   httpEndpoint: 'http://mainnet.genereos.io',
+  //   debug: false,
+  //   verbose: false
+  // }
   //,
   // {
   //   eosVersion: '817b1d01',
