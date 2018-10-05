@@ -70,30 +70,45 @@ The high-level design shown below provides an unified interface for all on-chain
 ```sh
 // Curl Examples for Byzanti.ne API Gateway - EOS Mainnet
 // Base API Operations
-// create key sets - owner and active keys
+// create EOS key sets - owner and active keys
 curl -X GET --header 'Accept: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/getKeyset' | json_pp
 
 //create account
 curl -X POST -H "Content-Type:application/json" -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"creator":"gi3dcnjshege","name":"randomgooppy","owner":"EOS7m36vdT6WbE6JA25z9ePGhyWuqMYSLuCxLicMa1eLZ2YqSQqfh","active":"EOS59eusHMqbvJsPsdBKMNbuVHLz8kiif9NW27HQxiuge5iupvZec","sig":"6EF0AEFBFD50850D70366D5B7A6F04346BC81B2BDE0615CED49D803F1C2F042FAA42FF33723ADCC0E73CA4616603D29C4BF544FA515FB4BC1ECD55C9CE6DCF9E"}' http://local.byzanti.ne:8901/createAccount | json_pp
 
-
+//get info (for testing)
 curl -X GET --header 'Content-Type: application/json'  --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/info' | json_pp
 
+//get all *legit EOS tokens
 curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/tokens' | json_pp
 
+//get tokens by account
 curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/tokensByAccount/gi3dcnjshege' | json_pp
 
+//get tokens by account
 curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/tokensByAccount/randomgooppy' | json_pp
 
+//get account
 curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/getAccount/gi3dcnjshege' | json_pp
 
+//get account
 curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/getAccount/randomgooppy' | json_pp
 
+//get actions
 curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/getActions?account=gi3dcnjshege' | json_pp
 
+//transfer with pki
 curl -X POST -H "Content-Type:application/json" -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"from":"reddy","to":"exchange","amount":"0.0001 EOS","memo":"random test","sig":"cipher"}' http://local.byzanti.ne:8901/transfer | json_pp
 
-curl -X GET --header 'Content-Type: application/json' --header  --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'Accept: application/json' 'http://local.byzanti.ne:8901/transaction/0a3c7d2bf7426a19dd3f7e8a641d5954d8f1459036bd5eb212c69373072f74c4' | json_pp
+//get transaction
+curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/transaction/5a309398bc60d7f2849080d3b88646a22d8e9f682a5d257f1ac7672d5122688d' | json_pp
+
+//get refunds
+curl -X GET --header 'Accept: application/json'  --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/getRefunds/gi3dcnjshege' | json_pp
+
+//get name bids
+curl -X GET --header 'Accept: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/getNameBids/reddy' | json_pp
+
 
 //Block - Producer operations
 //Get EOS producers

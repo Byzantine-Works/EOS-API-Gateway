@@ -32,21 +32,21 @@ let scatter = ScatterJS.scatter;
 
 import * as actions from './actions/actions';
 
-// const network = {
-//     blockchain:'eos',
-//     protocol:'https',
-//     host: process.env.HOST,
-//     port: Number(process.env.PORT),
-//     chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-// }
-
 const network = {
     blockchain:'eos',
     protocol:'https',
-    host: 'mainnet.libertyblock.io',
-    port: 7777,
+    host: process.env.HOST,
+    port: Number(process.env.PORT),
     chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
 }
+
+// const network = {
+//     blockchain:'eos',
+//     protocol:'https',
+//     host: 'mainnet.libertyblock.io',
+//     port: 7777,
+//     chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
+// }
 
 
 // const network = {
@@ -260,7 +260,7 @@ class App extends React.Component {
         console.log("process.env.TOKENS :", process.env.TOKENS)
         let response;
         this.props.updateState(["loading", true]);
-        response = await axios(process.env.TOKENS+this.props.from);
+        response = await axios(process.env.TOKENS+this.props.from + '?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N');
         if(!response.data.length){
             this.props.updateState(["token", null])
             this.props.updateState(["loading", false]);
