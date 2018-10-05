@@ -21,7 +21,6 @@
     // background: #efefef;
     // justify-content: center;
     gap: 30px;
-    width: 400px;
     // transform: translateY(20%);
     // margin: 0 auto;
     box-shadow: 2px 3px #aaaaaa;
@@ -87,10 +86,10 @@ select, option {
 
 #balance {
     margin-left: 70px;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 800;
     position: relative;
-    top: -17px;
+    top: -7px;
     grid-area: k;
 }
 
@@ -118,7 +117,7 @@ button {
     height: 40px;
     background-color: #14466C;
     border: none;
-    margin: 0 auto;
+    margin: 0;
     &:focus {
         outline: none;
     }
@@ -231,8 +230,8 @@ input {
 }
 
 #dialog {
-    position: relative;
     margin: 0 auto;
+    transform: translateY(50%);
     border-color:  #14466C;
     border-width: 2px;
     justify-content: center;

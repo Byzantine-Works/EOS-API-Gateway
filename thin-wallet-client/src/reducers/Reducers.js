@@ -22,7 +22,7 @@ const updateState = (state = new State(), action) => {
                 updatedState.fiatAm = Number(action.payload.data[1]);
             } 
             else if(action.payload.data[0] === 'fiatAmRend') {
-                updatedState[action.payload.data[0]] = Number(action.payload.data[1]).toFixed(4);
+                updatedState[action.payload.data[0]] = Number(action.payload.data[1]).toFixed(2);
             }
 
             else if(action.payload.data[0] === 'amRend') {

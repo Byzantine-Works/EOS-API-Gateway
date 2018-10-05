@@ -161,13 +161,10 @@ class App extends React.Component {
     
 
     async scatterPair(e){
-        console.log(window.scatter);
 
 
         if(this.props.scatter) {
-            this.props.updateScatter();
-            this.props.updateState(["from", ""])
-            this.props.updateState(["privateKey", ""])
+            location.reload();
         }
         else {
         e.preventDefault()
@@ -211,10 +208,9 @@ class App extends React.Component {
         } catch (error) {
             console.log("error: ", error);
             this.props.updateState(["loading", false]);
-            location.reload();
-            if(!window.scatter.isExtension){
-            this.props.updateState(["message", "authRefused"]);
-            document.getElementById('scatter').checked = false;
+                if(!window.scatter.isExtension){
+                this.props.updateState(["message", "authRefused"]);
+                document.getElementById('scatter').checked = false;
             }
         }
     };
@@ -231,16 +227,16 @@ class App extends React.Component {
                 
         
             //     // You can pass in any additional options you want into the eosjs reference.
-            //     const eosOptions = { expireInSeconds:60 };
+                const eosOptions = { expireInSeconds:15 };
 
                
         
             //     // Get a proxy reference to eosjs which you can use to sign transactions with a user's Scatter.
-                const eos = scatter.eos(network, Eos);
+                const eos = scatter.eos(network, Eos, eosOptions);
                 
                 const transactionOptions = { authorization:[`${account.name}@${account.authority}`] };
                 console.log(account.name, this.props.to, this.props.amRend + ' ' + this.props.coin, this.props.memo, transactionOptions)
-                eos.transfer(account.name, this.props.to, this.props.amRend + ' ' + this.props.coin, this.props.memo, transactionOptions).then(trx => {
+                await eos.transfer(account.name, this.props.to, this.props.amRend + ' ' + this.props.coin, this.props.memo, transactionOptions).then(trx => {
                     // That's it!
                     console.log(`Transaction ID: ${trx.transaction_id}`);
                     this.props.updateState(["loading", false]);
@@ -248,9 +244,10 @@ class App extends React.Component {
                     this.props.updateState(["transactionID", trx.transaction_id])
 
                 }).catch(error => {
-                    this.props.updateState(["loading", false]);
+                    
                     this.props.updateState(["message", "transacRefused"]);                
                 });
+                this.props.updateState(["loading", false]);
             }
 
     unFocus(e) {
@@ -315,6 +312,7 @@ class App extends React.Component {
         this.props.updateState(["loading", false]);
 
     }
+    
 
     toolTip(e) {
         this.props.updateState(["tooltip", e.target.id]);
@@ -446,7 +444,7 @@ class App extends React.Component {
             if(el.key === "from" || el.key === "privateKey"){
                 if(!scatter) return el;
             } else if(el.key === 'token' && this.props.token !== null) {
-                    return <select key="token" id="token" placeholder="token" onChange={this.changeInput}>
+                    return <select key="token" id="token" placeholder="token" value={this.props.token} onChange={this.changeInput}>
                                 {tokens}
                             </select>
             } else if(el.key === 'fiat' && this.props.token !== null){
@@ -486,9 +484,10 @@ class App extends React.Component {
                               loading={this.props.loading}/>
 
 
-            {dialogBox}
+           
 
         </div> 
+        {dialogBox}
         </span>
         );
     };
