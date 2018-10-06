@@ -33,8 +33,8 @@ function transfer(req, res) {
     //res.json(util.format(result));
     var t1 = performance.now();
     es.auditAPIEvent(req, t1 - t0, true);
-    res.json((result));
-  }, function (err) {
+    res.json(result);
+  }).catch(err => {
     console.log("Error in transfer:=>" + err);
     //kluge as 500/40x errors have different json connotatins, one is parsable into JSON the other is not ATM
     var t2 = performance.now();

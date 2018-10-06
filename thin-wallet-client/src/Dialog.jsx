@@ -24,20 +24,21 @@ const Dialog = (props) => {
 
 
     console.log(props);
-    let buttons = props.message === "transacSuccess" ? 
-    <div id="success"><button onClick={messageFalse} style={{display:'inline-block'}}>No thank you.</button><button style={{display:'inline-block'}}><a href={`https://eosflare.io/tx/${props.transactionID}`} target="_blank" rel="noopener noreferrer">Sure!</a></button></div>
-    : <button onClick={messageFalse}>OK</button>;
 
     let message ={
         notScatterConnected: "We could not pair with your Scatter account. Please ensure that the Scatter desktop application or web extension is signed in before trying again.",
         authRefused: "We could not pair with your Scatter account. Please ensure that the Scatter desktop application or web extension is signed in before trying again.",
         transacRefused: "We were not able to perform the transaction. Please ensure that every field is filled properly.",
-        transacSuccess: "Your transaction was executed successfully. Check its status." }
+        transacDenied: "The transaction has been denied.",
+        transacSuccess: "Your transaction was executed successfully. Check its status.",
+        cpuExceeded: "You exeeded your CPU usage limit. Please wait few minutes before trying again.",
+        missingField: "Please make sure that all the fields are filled.",
+        mustPositive: "The transaction has not been performed. The amount must be superior to 0."}
 
     return (
     <div className="Dialog" style={props.message === "transacSuccess" ? successStyle : errorStyle} >
         <p>{message[props.message]}</p>
-        {buttons}
+        <button onClick={messageFalse}>OK</button>
         
     </div>
     )
