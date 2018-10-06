@@ -19,9 +19,9 @@ require('events').EventEmitter.defaultMaxListeners = 50;
 var app = require('express')();
 module.exports = app; // for testing
 
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, './thin-wallet-client/dist/index.html'));
-});
+// app.get('/', (req, res) => {
+//   res.sendFile(path.resolve(__dirname, './thin-wallet-client/dist/index.html'));
+// });
 
 app.get('/main.js', (req, res) => {
   res.sendFile(path.resolve(__dirname, './thin-wallet-client/dist/main.js'));

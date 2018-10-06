@@ -19,7 +19,7 @@ export default class State {
 
         this.tooltip = "";
 
-        this.tooltipMessage = {from: "Enter your account name.", to: "Enter the account name's recipient.", memo:"Enter the motive of the transaction.", amount:"The amount of token that are going to be sent.", privateKey:"Copy Paste here your account active private key.", scatterBox: "Check this box if you want to pair with your Scatter account."}
+        this.tooltipMessage = {from: "Enter your account name.", to: "Enter the account name's recipient.", memo:"Enter the motive of the transaction.", amount:"The amount of token that are going to be sent.", privateKey:"Copy Paste here your account active private key.", scatterBox: "Check this box if you want to pair with your Scatter account.", transactionId: "Click on this link to check your transaction status."};
 
         this.amRend = "";
 
