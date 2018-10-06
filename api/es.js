@@ -5,9 +5,13 @@ const client = new elasticsearch.Client({
     host: process.env.ES_HOST_INFO
     //log: 'trace'
 });
+
 const indexName = "eosapievents";
 const indexType = "eosapievent";
+const apiKeyIndexName = "apikeys"
+const apiKeyIndexType = "apikey"
 
+// TODO @reddy - clean this up with proper templated calls
 
 function ping() {
     client.ping({
@@ -59,10 +63,57 @@ function auditAPIEvent(req, mSla, mSuccess) {
     body.success = mSuccess;
     body.key = req.headers.api_key;
     body.ts = Date.now();
-    index(body);
+    index(body, indexName, indexType);
 }
 
-function index(object) {
+function addApiKey(name, key, webhook, rate, salt, nonce) {
+    if (name == null || key == null || webhook == null || salt == null)
+        throw new Error(" Cannot add apiKey with null args!");
+    var body = {};
+    body.name = name;
+    body.key = key;
+    body.webhook = webhook;
+    body.rate = rate;
+    body.nonce = nonce;
+    body.salt = salt;
+    body.ts = Date.now();
+    console.log("addApiKey => " + JSON.stringify(body));
+    index(body, apiKeyIndexName, apiKeyIndexType);
+}
+
+async function incrementNonce(apikey,nonce) {
+    if (apikey == null || nonce == null)
+        throw new Error(" Cannot increment nonce for null apiKey!");
+    var updateNonce = nonce + 1;
+    return await client.updateByQuery({
+        index: apiKeyIndexName,
+        type: apiKeyIndexType,
+        body: {
+            "query": {
+                "match": {
+                    "key": apikey
+                }
+            },
+            "script": "ctx._source.nonce=" + updateNonce
+        }
+    });
+}
+
+async function getApiKeySet(apikey) {
+    return await client.search({
+        index: apiKeyIndexName,
+        type: apiKeyIndexType,
+        body: {
+            query: {
+                match: {
+                    key: apikey
+                }
+            }
+        }
+    });
+}
+
+function index(object, indexName, indexType) {
     //console.log("es.index => " + JSON.stringify(object));
     if (process.env.ES_EVENT_AUDIT_ENABLED !== 'false') {
         client.index({
@@ -70,14 +121,14 @@ function index(object) {
             type: indexType,
             body: object
         }, function (err, resp, status) {
-            //console.log(resp);
-            console.log(status);
+            //console.log(JSON.stringify(resp, null, 3));
+            //console.log(status);
             if (err) {
                 console.log(err);
             }
         });
     } else {
-        console.log("*************API EVENT AUDIT**************");
+        console.log("*************API INDEX EVENT**************");
         console.log(JSON.stringify(object));
         console.log("******************************************");
     }
@@ -87,9 +138,26 @@ function index(object) {
 //write();
 //read();
 //testAuditEvent();
+//addApiKey('Byzantine Skinny(Stripe) Web Wallet','FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N','http://local.byzanti.ne:8905/webhook',0,'bf32eb1e0b28d4b75bb1da9eaa4c5b02',0);
 
-module.exports.ping = ping;
-module.exports.read = read;
-module.exports.index = index;
-module.exports.testAuditEvent = testAuditEvent;
+// getApiKeySet('FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N').then(function (result) {
+//     console.log("getApiKeySet => " + JSON.stringify(result.hits.hits[0]._source));
+// }, function (err) {
+//     console.log("getApiKeyset => error: " + err);
+// });
+
+// incrementNonce('FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N',16).then(function (result) {
+//     console.log("incrementNonce => " + JSON.stringify(result));
+// }, function (err) {
+//     console.log("incrementNonce => error: " + err);
+// });
+
+//Export Methods
+// module.exports.ping = ping;
+// module.exports.read = read;
+// module.exports.index = index;
+// module.exports.testAuditEvent = testAuditEvent;
 module.exports.auditAPIEvent = auditAPIEvent;
+module.exports.addApiKey = addApiKey;
+module.exports.getApiKeySet = getApiKeySet;
+module.exports.incrementNonce = incrementNonce;

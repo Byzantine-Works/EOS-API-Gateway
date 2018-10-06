@@ -98,7 +98,7 @@ curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR
 curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/getActions?account=gi3dcnjshege' | json_pp
 
 //transfer with pki
-curl -X POST -H "Content-Type:application/json" -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"from":"reddy","to":"exchange","amount":"0.0001 EOS","memo":"random test","sig":"cipher"}' http://local.byzanti.ne:8901/transfer | json_pp
+curl -X POST -H "Content-Type:application/json" -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"from":"gi3dcnjshege","to":"randomgooppy","amount":"0.0001 EOS","memo":"random test","sig":"6EF0AEFBFD50850D70366D5B7A6F04346BC81B2BDE0615CED49D803F1C2F042FAA42FF33723ADCC0E73CA4616603D29C4BF544FA515FB4BC1ECD55C9CE6DCF9E"}' http://local.byzanti.ne:8901/transfer | json_pp
 
 //get transaction
 curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/transaction/5a309398bc60d7f2849080d3b88646a22d8e9f682a5d257f1ac7672d5122688d' | json_pp
