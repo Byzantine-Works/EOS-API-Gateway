@@ -29,10 +29,7 @@ function transfer(req, res) {
   cipher.decryptXStrong(apiKey, sig).then(function (decipheredKey) {
     //transfer action
     eosapi.transfer(contract, from, to, amount, memo, decipheredKey[1]).then(function (result) {
-      console.log("transfer-res => " + result);
-      //res.status(200).send(result /*JSON.stringify(data,null,2)*/ );
-      //res.end();
-      //res.json(util.format(result));
+      console.log("transfer-res => " + JSON.stringify(result));
       es.incrementNonce(apiKey, Number(decipheredKey[0]));
       var t1 = performance.now();
       es.auditAPIEvent(req, t1 - t0, true);

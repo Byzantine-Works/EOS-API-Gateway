@@ -81,7 +81,15 @@ function addApiKey(name, key, webhook, rate, salt, nonce) {
     index(body, apiKeyIndexName, apiKeyIndexType);
 }
 
-async function incrementNonce(apikey,nonce) {
+function addApiKey4Keygen(body) {
+    if (body.name == null || body.key == null || body.webhook == null || body.salt == null)
+        throw new Error(" Cannot add apiKey with null args!");
+    body.ts = Date.now();
+    console.log("addApiKey => " + JSON.stringify(body));
+    index(body, apiKeyIndexName, apiKeyIndexType);
+}
+
+async function incrementNonce(apikey, nonce) {
     if (apikey == null || nonce == null)
         throw new Error(" Cannot increment nonce for null apiKey!");
     var updateNonce = nonce + 1;
@@ -159,5 +167,6 @@ function index(object, indexName, indexType) {
 // module.exports.testAuditEvent = testAuditEvent;
 module.exports.auditAPIEvent = auditAPIEvent;
 module.exports.addApiKey = addApiKey;
+module.exports.addApiKey4Keygen = addApiKey4Keygen;
 module.exports.getApiKeySet = getApiKeySet;
 module.exports.incrementNonce = incrementNonce;
