@@ -59,6 +59,11 @@ var config = {
           name: 'COIN.US',
           isEnabled: true,
           callCount: 0,
+        },
+        "TNHX1PC-3T5460M-JNSCD1F-8KMKQSH": {
+          name: 'COIN.US',
+          isEnabled: true,
+          callCount: 0,
         }
       }
 
