@@ -13,6 +13,7 @@ module.exports = {
 
 
 function transfer(req, res) {
+  console.log("req transfer: ", req.swagger.params.body.value)
   var t0 = performance.now();
   var apiKey = req.headers.api_key;
   if (apiKey === null || apiKey === undefined || apiKey.length < 1) throw new Error("Invalid api_key!");
