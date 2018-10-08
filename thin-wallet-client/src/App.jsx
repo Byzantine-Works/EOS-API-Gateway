@@ -293,8 +293,11 @@ class App extends React.Component {
             let o = response.data[x]
             balance[o.symbol] = { balance: o.balance, contract: o.contract, precision: o.precision, hash: o.hash }
         }
-
-        await this.props.updateState(["tokens", response.data.map(el => { return el.symbol })]);
+        let tokens = response.data.map(el => { return el.symbol }).sort();
+        tokens.splice(tokens.indexOf('EOS'), 1);
+        tokens.unshift('EOS');
+        console.log(tokens)
+        await this.props.updateState(["tokens", tokens]);
         await this.props.updateState(["balance", balance]);
         if (this.props.from !== null) {
             await this.props.updateState(["token", "EOS"]);
