@@ -415,6 +415,38 @@ config.tokens = [{
     "name": "CryptoWizards",
     "24HrTransferVolume": 308.20828,
     "hash": "97dbb012db9aa475912f060be1c9bda2347cd93b9f9acc6c1eae9d10eb2164d2"
+  },
+  {
+    "symbol": "CAT",
+    "contract": "tokenbyeocat",
+    "precision": 4,
+    "name": "Token CAT",
+    "24HrTransferVolume": 509.20828,
+    "hash": "1f4dedd93f5de649ff9d371a48dbb1f0bd4634c9464b54a13f93c1ab8db220ce"
+  },
+  {
+    "symbol": "BTN",
+    "contract": "eosbuttonbtn",
+    "precision": 4,
+    "name": "Token BTN",
+    "24HrTransferVolume": 1219.5690,
+    "hash": "3e0cf4172ab025f9fff5f1db11ee8a34d44779492e1d668ae1dc2d129e865348"
+  },
+  {
+    "symbol": "PUB",
+    "contract": "publytoken11",
+    "precision": 4,
+    "name": "Token PUB",
+    "24HrTransferVolume": 34543.0921,
+    "hash": "9d2540a364d784e819ef86715dc7544520b6ed9ff1c3611119a188858805043b"
+  },
+  {
+    "symbol": "SHAPE",
+    "contract": "gmaslaunches",
+    "precision": 4,
+    "name": "Token SHAPE",
+    "24HrTransferVolume": 3432.3421,
+    "hash": "21ece6a1ae7b8dc1d246c7b17ca842337afab136ea67d569963efd900cb57a9f"
   }
 ];
 module.exports = config;
