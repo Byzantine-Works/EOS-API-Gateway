@@ -73,8 +73,8 @@ async function getTokensByAccount(code, account, symbol) {
 
 async function transfer(code, from, to, amount, memo, sig) {
     eos = Eos(loadBalance(sig));
-    console.log("eosapi:transferin with key: =>" + eos.fc.types.config.keyProvider);
-    console.log("eosapi:transfer=> contract:from:to:amount:memo  =>" + JSON.stringify(code) + " : " + JSON.stringify(from) + " : " + JSON.stringify(to) + " : " + JSON.stringify(amount) + " : " + JSON.stringify(memo) + " : " + JSON.stringify(sig));
+    //console.log("eosapi:transferin with key: =>" + eos.fc.types.config.keyProvider);
+    console.log("eosapi:transfer=> contract:from:to:amount:memo  =>" + JSON.stringify(code) + " : " + JSON.stringify(from) + " : " + JSON.stringify(to) + " : " + JSON.stringify(amount) + " : " + JSON.stringify(memo));
     var trxDeposit = await eos.transaction(code, contractuser => {
         contractuser.transfer({
             from: from,

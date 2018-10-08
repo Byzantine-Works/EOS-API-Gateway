@@ -1,0 +1,36 @@
+PUT eosapievents
+{
+      "template": "eosapievents",
+    "settings": {
+        "index.refresh_interval": "1s",
+        "analysis": {
+            "analyzer": {
+                "default": {
+                    "type": "standard",
+                    "stopwords": "_none_"
+                }
+            }
+        }
+    },
+
+  "version": 1,
+  "mappings": {
+    "eosapievent": {
+      "properties": {
+        "method": {
+          "type": "keyword"
+        },
+        "sla": {
+          "type": "float"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "ts": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}

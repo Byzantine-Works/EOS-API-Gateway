@@ -40,8 +40,8 @@ var config = {
       var allKeys = {};
       // Sample allKeys: 
       allKeys = {
-        "YKP6DKM-DQA43G8-HMJVXEP-11KQQ4H": {
-          name: 'defaultKeyForPublic', //this one would be free
+        "V03JKDQ-8484DY7-QY8MVWA-ACTB30V": {
+          name: 'Basic key for general public', //this one would be free
           isEnabled: true,
           callCount: 0,
         },
@@ -50,13 +50,18 @@ var config = {
           isEnabled: true,
           callCount: 0,
         },
-        "VYRCBG6-DAHMPFR-NVTPZRR-MS1S80M": {
-          name: 'meteredKeyForMBAEX',
+        "44QR9VJ-NEYMAMC-HYRVT7V-HGA01S8": {
+          name: 'MBAEX',
           isEnabled: true,
           callCount: 0,
         },
-        "0EF5EHA-8TD41XD-GSYH8K5-R3DTSDV": {
-          name: 'meteredKeyForCoin.us',
+        "YXA8JA1-8N14DKA-GNJJ2V8-VXJR6AF": {
+          name: 'COIN.US',
+          isEnabled: true,
+          callCount: 0,
+        },
+        "TNHX1PC-3T5460M-JNSCD1F-8KMKQSH": {
+          name: 'COIN.US',
           isEnabled: true,
           callCount: 0,
         }
@@ -86,7 +91,9 @@ SwaggerExpress.create(config, function (err, swaggerExpress) {
 
   // Using socket.io to get the nonce
   var server = require('http').Server(app);
-  const io = require('socket.io')(server, { origins: '*:*'});
+  const io = require('socket.io')(server, {
+    origins: '*:*'
+  });
   io.listen(process.env.WS_SOCKET_SERVER_PORT);
 
   //Listen to clients connections

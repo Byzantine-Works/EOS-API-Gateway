@@ -1,14 +1,6 @@
-GET eosapievents/_search
-
-DELETE eosapievents
-
-GET eosapievents
-
-DELETE eosapievents
-
-PUT eosapievents
+PUT apikeys
 {
-      "template": "eosapievents",
+      "template": "apikey",
     "settings": {
         "index.refresh_interval": "1s",
         "analysis": {
@@ -23,16 +15,25 @@ PUT eosapievents
 
   "version": 1,
   "mappings": {
-    "eosapievent": {
+    "apikey": {
       "properties": {
-        "method": {
+        "name": {
           "type": "keyword"
         },
-        "sla": {
-          "type": "float"
+        "key": {
+          "type": "keyword"
         },
-        "success": {
-          "type": "boolean"
+        "webhook": {
+          "type": "keyword"
+        },
+        "nonce": {
+          "type": "integer"
+        },
+        "rate": {
+          "type": "integer"
+        },
+        "salt": {
+          "type": "keyword"
         },
         "ts": {
           "type": "date",
