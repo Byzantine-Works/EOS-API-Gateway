@@ -103,6 +103,7 @@ class App extends React.Component {
 
 
     send(e) {
+        console.log("in send")
         this.props.updateState(["loading", true]);
         const socket = openSocket(process.env.SOCKET);
         let randChannel = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -112,13 +113,12 @@ class App extends React.Component {
 
         socket.on(randChannel, async function (data) {
             let amt = parseFloat(that.props.amount)
-            amt = parseFloat(Math.round(amt * Math.pow(10, 4)) / Math.pow(10, 4)).toFixed(4);
             console.log(data);
             let objReq = {};
             objReq.sig = await encrypt(data, that.props.privateKey);
             objReq.from = that.props.from;
             objReq.to = that.props.to;
-            objReq.amount = amt + ' ' + that.props.token;
+            objReq.amount = that.props.amRend + ' ' + that.props.token;
             objReq.memo = that.props.memo;
             let arReq = Object.keys(objReq).map(function(key) {return objReq[key]});
             console.log(arReq);
@@ -128,28 +128,40 @@ class App extends React.Component {
                 that.props.updateState(["loading", false]);
                 that.props.updateState(["message", "missingField"]);
             } else {
-            console.log(process.env.TRANSFER)
-            let response = await fetch(process.env.TRANSFER, {
-                method: 'POST',
-                headers: {
-                    "api_key": Config.apiKey,
-                    "Content-Type": "application/json"
+                let url = process.env.TRANSFER;
+                const options = {
+                    method: 'POST',
+                    headers: { 'content-type': 'application/json', "api_key": Config.apiKey },
+                    data: JSON.stringify(objReq),
+                    url,
+                  };    
+                  let response;
+                  try {
+                    response = await axios(options);
+                    console.log("Response: ", response)
+                    if(response.status === 200) {
+                        that.props.updateState(["loading", false]);
+                        that.props.updateState(["message", "transacSuccess"]);
+                        that.props.updateState(['transactionID', response.data.transaction_id]);
+                    }
+                  } catch(error) {
+                      console.log(error);
+                  }
 
-                },
-                body: JSON.stringify(objReq)
-            })
-                .then(response => {
-                    if (response.status !== 200) that.props.updateState(["message", "transacRefused"]);
-                    else that.props.updateState(["message", "transacSuccess"])
-                    console.log(response);
 
-                }).catch((err) => {
-                    this.props.updateState(["message", "transacRefused"]);
-                    this.props.updateState(["loading", false])
+        
+                // .then(response => {
+                //     if (response.status !== 200) that.props.updateState(["message", "transacRefused"]);
+                //     else that.props.updateState(["message", "transacSuccess"])
+                //     console.log(response);
 
-                    console.log(err)
-                })
-                console.log(response);
+                // }).catch((err) => {
+                //     this.props.updateState(["message", "transacRefused"]);
+                //     this.props.updateState(["loading", false])
+
+                //     console.log(err)
+                // })
+    
             socket.on('disconnect');
             }
         });

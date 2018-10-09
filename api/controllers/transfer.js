@@ -27,7 +27,7 @@ function transfer(req, res) {
 
   console.log("transfer-req:contract-from-to-amount-memo-sig=> " + contract + ":" + from + ":" + to + ":" + amount + ":" + memo + ":" + sig);
   //decipher sig
-  cipher.decryptXStrong(apiKey, sig).then(function (decipheredKey) {
+  cipher.decryptXStrong(apiKey, sig).then(function (decipheredKey) { 
     //transfer action
     eosapi.transfer(contract, from, to, amount, memo, decipheredKey[1]).then(function (result) {
       console.log("transfer-res => " + JSON.stringify(result));
@@ -48,7 +48,7 @@ function transfer(req, res) {
       }
     });
   }).catch(err => {
-    console.log("Error in transfer:=>" + err);
+    console.log("Error in decypher transfer:=>" + err);
     var t2 = performance.now();
     es.auditAPIEvent(req, t2 - t0, false);
     var error = {

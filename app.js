@@ -100,7 +100,9 @@ SwaggerExpress.create(config, function (err, swaggerExpress) {
   io.on('connection', (client) => {
     client.on('user', async (data) => {
       console.log(data[0]);
-      let nonce = await clients.checkNonce(data[0]);
+      let apiKeySet = await es.getApiKeySet(data[0]);
+      console.log("nonce: ", apiKeySet.hits.hits[0]._source.nonce);
+      let nonce = apiKeySet.hits.hits[0]._source.nonce;
       client.emit(data[1], nonce);
     });
   });
