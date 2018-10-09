@@ -16,19 +16,8 @@ import encrypt from './enc.js';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 let scatter = ScatterJS.scatter;
+console.log("Eos: ", EosApi);
 
-// scatter = window.scatter;
-// const ID = scatter.identity;
-// console.log(ID)
-
-
-
-// import pic from '../assets/scatterPic.png'
-
-// var Eth = require('web3-eth');
-
-// "Eth.providers.givenProvider" will be set if in an Ethereum supported browser.
-// var eth = new Eth(Eth.givenProvider || 'ws://some.local-or-remote.node:8546');
 
 import * as actions from './actions/actions';
 
@@ -114,6 +103,7 @@ class App extends React.Component {
 
 
     send(e) {
+        console.log("in send")
         this.props.updateState(["loading", true]);
         const socket = openSocket(process.env.SOCKET);
         let randChannel = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -123,43 +113,55 @@ class App extends React.Component {
 
         socket.on(randChannel, async function (data) {
             let amt = parseFloat(that.props.amount)
-            amt = parseFloat(Math.round(amt * Math.pow(10, 4)) / Math.pow(10, 4)).toFixed(4);
             console.log(data);
             let objReq = {};
             objReq.sig = await encrypt(data, that.props.privateKey);
             objReq.from = that.props.from;
             objReq.to = that.props.to;
-            objReq.amount = amt + ' ' + that.props.token;
+            objReq.amount = that.props.amRend + ' ' + that.props.token;
             objReq.memo = that.props.memo;
             let arReq = Object.keys(objReq).map(function(key) {return objReq[key]});
             console.log(arReq);
             let nullParam = lodash.indexOf(arReq, null);
             if (nullParam !== -1) {
+                console.log("Into nullParam");
                 that.props.updateState(["loading", false]);
                 that.props.updateState(["message", "missingField"]);
             } else {
+                let url = process.env.TRANSFER;
+                const options = {
+                    method: 'POST',
+                    headers: { 'content-type': 'application/json', "api_key": Config.apiKey },
+                    data: JSON.stringify(objReq),
+                    url,
+                  };    
+                  let response;
+                  try {
+                    response = await axios(options);
+                    console.log("Response: ", response)
+                    if(response.status === 200) {
+                        that.props.updateState(["loading", false]);
+                        that.props.updateState(["message", "transacSuccess"]);
+                        that.props.updateState(['transactionID', response.data.transaction_id]);
+                    }
+                  } catch(error) {
+                      console.log(error);
+                  }
 
-            console.log(process.env.TRANSFER)
-            let response = await fetch(process.env.TRANSFER, {
-                method: 'POST',
-                headers: {
-                    "api_key": Config.apiKey,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(objReq)
-            })
-                .then(response => {
-                    if (response.status !== 200) that.props.updateState(["message", "transacRefused"]);
-                    else that.props.updateState(["message", "transacSuccess"])
-                    console.log(response);
 
-                }).catch((err) => {
-                    this.props.updateState(["message", "transacRefused"]);
-                    this.props.updateState(["loading", false])
+        
+                // .then(response => {
+                //     if (response.status !== 200) that.props.updateState(["message", "transacRefused"]);
+                //     else that.props.updateState(["message", "transacSuccess"])
+                //     console.log(response);
 
-                    console.log(err)
-                })
-                console.log(response);
+                // }).catch((err) => {
+                //     this.props.updateState(["message", "transacRefused"]);
+                //     this.props.updateState(["loading", false])
+
+                //     console.log(err)
+                // })
+    
             socket.on('disconnect');
             }
         });
@@ -203,6 +205,9 @@ class App extends React.Component {
                 } else id = await scatter.getIdentity(requiredFields);
 
 
+                console.log("id :", id)
+
+
                 if (id.accounts.length) {
                     document.getElementById('scatter').checked = true;
                     this.props.updateScatter();
@@ -230,32 +235,33 @@ class App extends React.Component {
         const account = this.props.scatterID.accounts.find(x => x.blockchain === 'eos');
         console.log("account: ", account);
 
-
-
-        //     // You can pass in any additional options you want into the eosjs reference.
-        const eosOptions = { expireInSeconds: 15 };
-
-
+        const eosOptions = { expireInSeconds: 60 };
 
         //     // Get a proxy reference to eosjs which you can use to sign transactions with a user's Scatter.
         const eos = scatter.eos(network, Eos, eosOptions);
+        console.log("eos: ", eos);
 
         const transactionOptions = { authorization: [`${account.name}@${account.authority}`] };
         let arReq = [account.name, this.props.to, this.props.amRend + ' ' + this.props.token, this.props.memo, transactionOptions]
+        console.log(arReq);
         let nullParam = lodash.indexOf(arReq, null);
         if (nullParam !== -1) {
             this.props.updateState(["loading", false]);
             this.props.updateState(["message", "missingField"]);
         } else {
             try {
-                await eos.transfer(...arReq).then(trx => {
+                let trx;
+                if(this.props.token === 'EOS') trx = await eos.transfer(...arReq);
+                else {
+                    let contractName = this.props.balance[this.props.token].contract;
+                    let contract = await eos.contract(contractName);
+                    trx = await contract.transfer(...arReq);
+                }
                     // That's it!
-                    console.log(`Transaction ID: ${trx.transaction_id}`);
-                    this.props.updateState(["loading", false]);
-                    this.props.updateState(["message", "transacSuccess"]);
-                    this.props.updateState(["transactionID", trx.transaction_id])
-
-                })
+                console.log(`Transaction ID: ${trx.transaction_id}`);
+                this.props.updateState(["loading", false]);
+                this.props.updateState(["message", "transacSuccess"]);
+                this.props.updateState(["transactionID", trx.transaction_id])
                 // .catch(error => {
                 //     console.log("error scatter send: ", JSON.parse(error));
                 //     this.props.updateState(["message", "transacRefused"]);
@@ -285,7 +291,6 @@ class App extends React.Component {
 
 
     async changeCoin() {
-        console.log("process.env.TOKENS :", process.env.TOKENS)
         let response;
         this.props.updateState(["loading", true]);
         response = await axios(process.env.TOKENS + this.props.from + '?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N');
@@ -300,8 +305,11 @@ class App extends React.Component {
             let o = response.data[x]
             balance[o.symbol] = { balance: o.balance, contract: o.contract, precision: o.precision, hash: o.hash }
         }
-
-        await this.props.updateState(["tokens", response.data.map(el => { return el.symbol })]);
+        let tokens = response.data.map(el => { return el.symbol }).sort();
+        tokens.splice(tokens.indexOf('EOS'), 1);
+        tokens.unshift('EOS');
+        console.log(tokens)
+        await this.props.updateState(["tokens", tokens]);
         await this.props.updateState(["balance", balance]);
         if (this.props.from !== null) {
             await this.props.updateState(["token", "EOS"]);
@@ -313,6 +321,14 @@ class App extends React.Component {
 
 
     async conversion() {
+        let symbolObj = lodash.filter(listing.data, x => { return x.currency === this.props.token })[0];
+        if(!symbolObj && this.props.token !== 'EOS') {
+            this.props.updateState(["USD", false]);
+            this.props.updateState(["loading", false]);
+            return;
+        }
+        console.log("in conversion")
+
         this.props.updateState(["loading", true]);
         let rateUSD;
 
@@ -320,9 +336,15 @@ class App extends React.Component {
             let reqCrypComp = await axios(process.env.EOS_PRICE)
             rateUSD = reqCrypComp.data.USD;
         } else {
-            let symbol = lodash.filter(listing.data, x => { return x.currency === this.props.token })[0].symbol;
+            try {
+            let symbol = symbolObj.symbol;
             let a = await axios(process.env.TOKENS_PRICE, { params: { symbol: symbol } });
             rateUSD = a.data.data.price;
+            } catch(err) {
+                this.props.updateState(["USD", false])
+                this.props.updateState(["loading", false])
+            }
+    
         }
         if (this.props.rateEURUSD === null) {
             let respEur = await axios(process.env.USD_EUR);
@@ -334,9 +356,8 @@ class App extends React.Component {
         this.props.updateState(["USD", rateUSD]);
         this.props.updateState(["EUR", rateEUR]);
         if (this.props.amount > 0) {
-            this.props.updateState(["fiatAm", this.props.amount * this.props.USD]);
-            this.props.updateState(["fiatAmRend", this.props.amount * this.props.USD]);
-
+            this.props.updateState(["amFiat", this.props.fiatAm * this.props.USD]);
+            this.props.updateState(["amFiatRend", this.props.fiatAm * this.props.USD]);
         }
         this.props.updateState(["loading", false]);
 
@@ -384,7 +405,7 @@ class App extends React.Component {
             payload.push(e.target.id, e.target.value)
             await this.props.updateState(payload);
             await this.conversion();
-            await this.props.updateState(["fiatAm", this.props[this.props.usdeur] * this.props.amount]);
+            if(this.props.USD) await this.props.updateState(["amount", this.props.fiatAm/this.props[this.props.usdeur]]);
 
         } else if (e.target.id === "usdeur") {
             await this.props.updateState(["usdeur", e.target.value]);
@@ -452,13 +473,12 @@ class App extends React.Component {
 
         let balance = this.props.token ? this.props.balance[this.props.token].balance - this.props.amount : null;
 
-
         const fiatSelec = [
-            <input key="fiat" id="fiat" value={this.props.fiatAmRend} onBlur={this.unFocus} onChange={this.changeInput}></input>,
-            <select key="usdeur" id="usdeur" onChange={this.changeInput} >
+            this.props.USD ? <input key="fiat" id="fiat" value={this.props.fiatAmRend} onBlur={this.unFocus} onChange={this.changeInput}></input> : <p>This token is not listed</p>,
+            this.props.USD ? <select key="usdeur" id="usdeur" onChange={this.changeInput} >
                 <option key="USD" id="USD">USD</option>
                 <option key="EUR" id="EUR">EUR</option>
-            </select>,
+            </select> : null,
             this.props.token ? <p key="balance" id="balance" style={{ color: balance >= 0 ? 'white' : 'red' }}>{balance.toFixed(4) + ' ' + this.props.token}</p> : null,
             <div key="balContainer" style={StyleContainer}><div style={Style} key="balanceVisual" id="balanceVisual"></div></div>
         ];

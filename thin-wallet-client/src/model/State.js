@@ -23,7 +23,7 @@ export default class State {
 
         this.amRend = "";
 
-        this.fiatAmRend = "";
+        this.fiatAmRend = "0.00";
 
         this.loading = false;
 
@@ -32,6 +32,10 @@ export default class State {
         this.privateKey = "";
         
         this.from = "";
+
+        this.USD = false;
+
+        this.EUR = false;
         
         this.to = null;
         

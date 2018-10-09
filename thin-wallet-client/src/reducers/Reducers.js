@@ -26,7 +26,8 @@ const updateState = (state = new State(), action) => {
             }
 
             else if(action.payload.data[0] === 'amRend') {
-                updatedState[action.payload.data[0]] = Number(action.payload.data[1]).toFixed(state.balance[state.token].precision);
+                if(state.USD) updatedState[action.payload.data[0]] = Number(action.payload.data[1]).toFixed(state.balance[state.token].precision);
+                else updatedState[action.payload.data[0]] = Number(action.payload.data[1]).toFixed(4);
             }
 
             else {

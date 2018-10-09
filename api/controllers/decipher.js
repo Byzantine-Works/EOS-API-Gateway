@@ -8,6 +8,7 @@ async function decrypt256(apiKey, data) {
     //apiKey is the api security key and must be passed as header or query param to swagger?
     // get the salt key using the apiKey
     var apiKeySet = await es.getApiKeySet(apiKey);
+    
     var apiKeySetSource = apiKeySet.hits.hits[0]._source;
     var key = apiKeySetSource.salt;
     var nonceFromState = apiKeySetSource.nonce;

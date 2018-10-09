@@ -33,7 +33,7 @@ const Dialog = (props) => {
         transacSuccess: "Your transaction was executed successfully. Check its status.",
         cpuExceeded: "You exeeded your CPU usage limit. Please wait few minutes before trying again.",
         missingField: "Please make sure that all the fields are filled.",
-        mustPositive: "The transaction has not been performed. The amount must be superior to 0."}
+        mustPositive: "The transaction has not been performed. The amount must be greater than 0."}
 
     return (
     <div className="Dialog" style={props.message === "transacSuccess" ? successStyle : errorStyle} >
