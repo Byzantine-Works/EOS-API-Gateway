@@ -37,7 +37,7 @@ function transfer(req, res) {
       res.json(result);
     }).catch(err => {
       console.log("Error in transfer:=>" + err);
-      //kluge as 500/40x errors have different json connotatins, one is parsable into JSON the other is not ATM
+      //kluge as 500/40x errors have different json connotations, one is parsable into JSON the other is not ATM
       var t2 = performance.now();
       es.auditAPIEvent(req, t2 - t0, false);
       try {

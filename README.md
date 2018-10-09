@@ -23,10 +23,13 @@ npm install
 //install elasticsearch
 brew install elasticsearch
 brew services start elasticsearch
+curl http://local.byzanti.ne:9200
 
-//install kibana
+//install kibana (needed for design time es crud operations)
 brew install kibana
 brew services start kibana
+localhost:5601
+use the 'dev tools' icon to use the query editor and execute estemplates/keys_template.txt
 
 //setup loopback interface
 vi ~/etc/hosts (add loopback interface: 127.0.0.1	local.byzanti.ne)
