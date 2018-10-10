@@ -2,7 +2,8 @@
 var SwaggerExpress = require('swagger-express-mw');
 var SwaggerUi = require('swagger-tools/middleware/swagger-ui');
 var es = require("./api/es");
-var path = require('path')
+var path = require('path');
+var cors = require('cors');
 
 //exports for swagger-ui middleware
 var swStats = require('swagger-stats');
@@ -16,11 +17,18 @@ var parser = new swaggerParser();
 require('events').EventEmitter.defaultMaxListeners = 50;
 
 var app = require('express')();
+//app.all(cors()); //? is it default?
+// app.all((req, res, next) => {
+//   req.header('Access-Control-Allow-Origin', '*');
+//   req.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+//   next();
+// });
+
 module.exports = app; // for testing
 
-// app.get('/', (req, res) => {
-//   res.sendFile(path.resolve(__dirname, './thin-wallet-client/dist/index.html'));
-// });
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './thin-wallet-client/dist/index.html'));
+});
 
 app.get('/main.js', (req, res) => {
   res.sendFile(path.resolve(__dirname, './thin-wallet-client/dist/main.js'));
@@ -109,7 +117,6 @@ SwaggerExpress.create(config, function (err, swaggerExpress) {
   // load swagger ui mw
   app.use(SwaggerUi(swaggerExpress.runner.swagger));
 
-  //app.use(cors()); ? is it default?
   //install swagger-stats and configure middleware
   parser.validate(specLocation, function (err, api) {
     if (!err) {
