@@ -96,23 +96,23 @@ SwaggerExpress.create(config, function (err, swaggerExpress) {
     throw err;
   }
 
-  // Using socket.io to get the nonce
-  var server = require('http').Server(app);
-  const io = require('socket.io')(server, {
-    origins: '*:*'
-  });
-  io.listen(process.env.WS_SOCKET_SERVER_PORT);
+  // // Using socket.io to get the nonce
+  // var server = require('http').Server(app);
+  // const io = require('socket.io')(server, {
+  //   origins: '*:*'
+  // });
+  // io.listen(process.env.WS_SOCKET_SERVER_PORT);
 
-  //Listen to clients connections
-  io.on('connection', (client) => {
-    client.on('user', async (data) => {
-      console.log(data[0]);
-      let apiKeySet = await es.getApiKeySet(data[0]);
-      console.log("nonce: ", apiKeySet.hits.hits[0]._source.nonce);
-      let nonce = apiKeySet.hits.hits[0]._source.nonce;
-      client.emit(data[1], nonce);
-    });
-  });
+  // //Listen to clients connections
+  // io.on('connection', (client) => {
+  //   client.on('user', async (data) => {
+  //     console.log(data[0]);
+  //     let apiKeySet = await es.getApiKeySet(data[0]);
+  //     console.log("nonce: ", apiKeySet.hits.hits[0]._source.nonce);
+  //     let nonce = apiKeySet.hits.hits[0]._source.nonce;
+  //     client.emit(data[1], nonce);
+  //   });
+  // });
 
   // load swagger ui mw
   app.use(SwaggerUi(swaggerExpress.runner.swagger));
