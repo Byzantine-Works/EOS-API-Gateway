@@ -14,7 +14,6 @@ var swaggerParser = require('swagger-parser');
 var specLocation = "./api/swagger/swagger.yaml"
 var swaggerSpec = null;
 var parser = new swaggerParser();
-var clients = require('./api/controllers/clients')
 require('events').EventEmitter.defaultMaxListeners = 50;
 
 var app = require('express')();
