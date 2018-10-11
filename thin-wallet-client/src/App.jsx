@@ -16,9 +16,6 @@ import encrypt from './enc.js';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 const socket = openSocket(process.env.SOCKET);
 
-//initialize socket
-const socket = openSocket(process.env.SOCKET);
-
 let scatter = ScatterJS.scatter;
 console.log("Eos: ", EosApi);
 
@@ -105,15 +102,8 @@ class App extends React.Component {
     }
 
     send(e) {
-<<<<<<< HEAD
-     
         this.props.updateState(["loading", true]);
         // const socket = openSocket(process.env.SOCKET);
-=======
-
-        this.props.updateState(["loading", true]);
-        
->>>>>>> 3e97192c0b94604a6bd5d401c54c1df23f7228c8
         let randChannel = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         socket.emit(process.env.CHANNEL, [Config.apiKey, randChannel]);
 
