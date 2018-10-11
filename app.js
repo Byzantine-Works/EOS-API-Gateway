@@ -3,6 +3,7 @@ var SwaggerExpress = require('swagger-express-mw');
 var SwaggerUi = require('swagger-tools/middleware/swagger-ui');
 var es = require("./api/es");
 var path = require('path');
+var checkTransac = require('./api/controllers/isTransactionIrreversible');
 var cors = require('cors');
 
 //exports for swagger-ui middleware
@@ -111,7 +112,6 @@ SwaggerExpress.create(config, function (err, swaggerExpress) {
   //     console.log("nonce: ", apiKeySet.hits.hits[0]._source.nonce);
   //     let nonce = apiKeySet.hits.hits[0]._source.nonce;
   //     client.emit(data[1], nonce);
-  //   });
   // });
 
   // load swagger ui mw

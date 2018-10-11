@@ -22,12 +22,16 @@ const updateState = (state = new State(), action) => {
                 updatedState.fiatAm = Number(action.payload.data[1]);
             } 
             else if(action.payload.data[0] === 'fiatAmRend') {
-                updatedState[action.payload.data[0]] = Number(action.payload.data[1]).toFixed(2);
+                updatedState[action.payload.data[0]] = Number(action.payload.data[1]).toFixed(4);
             }
 
             else if(action.payload.data[0] === 'amRend') {
                 if(state.USD) updatedState[action.payload.data[0]] = Number(action.payload.data[1]).toFixed(state.balance[state.token].precision);
                 else updatedState[action.payload.data[0]] = Number(action.payload.data[1]).toFixed(4);
+            }
+            else if(action.payload.data[0] === 'transactionID') {
+                let newTransactionIDS = [...state.transactionID, action.payload.data[1]];
+                updatedState = {...updatedState, transactionID: newTransactionIDS};
             }
 
             else {

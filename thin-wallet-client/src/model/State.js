@@ -1,4 +1,4 @@
-import { isNull } from "util";
+
 
 export default class State {
     constructor() {
@@ -13,7 +13,7 @@ export default class State {
 
         this.message = false,
 
-        this.transactionID = null;
+        this.transactionID = [];
         
         this.scatter = false;
 
