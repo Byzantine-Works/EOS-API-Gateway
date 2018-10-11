@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production",
-    "start": "webpack; webpack-dev-server --color --open --watch --hot --inline",
+    "start": "webpack; webpack-dev-server --color --open --watch --hot --inline && node wsServer/server.js",
     "transpile": "babel src -d dist --copy-files",
     "prepublishOnly": "npm run transpile"
   },

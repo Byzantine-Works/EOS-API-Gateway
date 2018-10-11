@@ -12,18 +12,19 @@ module.exports = {
 
 function isTransactionIrreversible(req, res) {
   var t0 = performance.now();
-  var trxid = req.swagger.params.id.value;
+  var trxid = req.swagger ? req.swagger.params.id.value : req;
   console.log("isTransactionIrreversible-req:=> " + trxid);
-  eosapi.getTransaction(trxid).then(function (result) {
-    console.log("isTransactionIrreversible-res => " + result);
+  return eosapi.getTransaction(trxid).then(function (result) {
+    console.log("isTransactionIrreversible-res => " + JSON.stringify(result));
     var transaction = {
       last_irreversible_block_num: result.last_irreversible_block,
       transaction_block_num: result.block_num,
       is_irreversible: result.last_irreversible_block >= result.block_num
     };
-    var t1 = performance.now();
-    es.auditAPIEvent(req, t1 - t0, true);
-    res.json(transaction);
+    // var t1 = performance.now();
+    // es.auditAPIEvent(req, t1 - t0, true);
+    if(req.swagger === undefined) return transaction;
+    else res.json(transaction);
   }, function (err) {
     console.log("Error in isTransactionIrreversible:=>" + err);
     var t2 = performance.now();

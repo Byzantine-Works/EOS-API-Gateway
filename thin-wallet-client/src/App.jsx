@@ -14,6 +14,7 @@ import Loader from 'react-spinners/BounceLoader';
 import Dialog from './Dialog.jsx';
 import encrypt from './enc.js';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+const socket = openSocket(process.env.SOCKET);
 
 //initialize socket
 const socket = openSocket(process.env.SOCKET);
@@ -103,12 +104,16 @@ class App extends React.Component {
         this.toolTip = this.toolTip.bind(this);
     }
 
-
-
     send(e) {
+<<<<<<< HEAD
      
         this.props.updateState(["loading", true]);
         // const socket = openSocket(process.env.SOCKET);
+=======
+
+        this.props.updateState(["loading", true]);
+        
+>>>>>>> 3e97192c0b94604a6bd5d401c54c1df23f7228c8
         let randChannel = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         socket.emit(process.env.CHANNEL, [Config.apiKey, randChannel]);
 
@@ -146,24 +151,18 @@ class App extends React.Component {
                         that.props.updateState(["loading", false]);
                         that.props.updateState(["message", "transacSuccess"]);
                         that.props.updateState(['transactionID', response.data.transaction_id]);
+                        socket.emit('irrevers', response.data.transaction_id);
+                        socket.on('irrevers', function(data) {
+                            console.log(data);
+                        })
+
                     }
                   } catch(error) {
                       console.log(error);
                   }
 
 
-        
-                // .then(response => {
-                //     if (response.status !== 200) that.props.updateState(["message", "transacRefused"]);
-                //     else that.props.updateState(["message", "transacSuccess"])
-                //     console.log(response);
 
-                // }).catch((err) => {
-                //     this.props.updateState(["message", "transacRefused"]);
-                //     this.props.updateState(["loading", false])
-
-                //     console.log(err)
-                // })
     
             socket.on('disconnect');
             }
@@ -274,7 +273,7 @@ class App extends React.Component {
                 this.props.updateState(["loading", false]);
                 console.log(err)
                 if(typeof err === 'string'){
-                var code = JSON.parse(err).error.code
+                var code = JSON.parse(err).error.code;
                 if (code === 3080004) return this.props.updateState(["message", "cpuExceeded"]);
                 if (code === 3050003) return this.props.updateState(["message", "mustPositive"]);
                 } else {
@@ -441,14 +440,14 @@ class App extends React.Component {
                 {this.props.tooltip ? this.props.tooltipMessage[this.props.tooltip] : null}
             </Tooltip>
 
-        let transacLink = `https://eosflare.io/tx/${this.props.transactionID}`
+        
 
         const inputs = [
             <select key="token" id="token" placeholder="token" onChange={this.changeInput} ></select>,
             <input key="fiat" id="fiat" value={this.props.fiatAmRend} onChange={this.changeInput}></input>,
             <button id="send" key="send" onClick={this.props.scatter ? this.scatterSend : this.send}>Send</button>,
             <label className="Scatter" key="scatterBox"><input type="checkbox" id="scatter" onChange={this.scatterPair}></input><span className="checkmark"></span><OverlayTrigger placement="top" overlay={tooltip}><p id="scatterBox" onMouseOver={this.toolTip}>Pair with Scatter</p></OverlayTrigger></label>,
-            <a key="transactionId" id="transactionId" href={transacLink} target="_blank" onMouseOver={this.toolTip}>{this.props.transactionID}</a>
+            <a key="transactionId" id="transactionId" target="_blank" onMouseOver={this.toolTip}></a>
         ];
 
         let gradient = this.props.token ? this.props.amount / this.props.balance[this.props.token].balance : 0;
@@ -492,6 +491,8 @@ class App extends React.Component {
             margin: 0 auto;
             z-index: 5;`;
 
+        let transactions = this.props.transactionID.slice();
+
 
         return (
             <span>
@@ -507,8 +508,13 @@ class App extends React.Component {
                         } else if (el.key === 'fiat' && this.props.token !== null) {
                             return fiatSelec;
                         } else if (el.key === "send" || el.key === "scatterBox") {
-                            if (this.props.transactionID === null) return el;
-                        } else if (el.key === 'transactionId' && this.props.transactionID !== null) return <OverlayTrigger placement="top" overlay={tooltip}>{el}</OverlayTrigger>;
+                            return el;
+                        } else if (el.key === 'transactionId' && this.props.transactionID.length) {
+                            return <ul id="transacs">{transactions.map(t => {
+                                let transacLink = `https://eosflare.io/tx/${t}`
+                                return <li id="transactionId"><a key="transactionId"  href={transacLink} target="_blank" onMouseOver={this.toolTip}>{t}</a></li>
+                            })}</ul>
+                        }
                     })}
 
                     <OverlayTrigger placement="top" overlay={tooltip}><input key="from" id="from" placeholder="From" value={this.props.from} onChange={this.changeInput} onMouseOver={this.toolTip} required></input></OverlayTrigger>

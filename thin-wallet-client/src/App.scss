@@ -17,7 +17,8 @@
     "i i i"
     "j j k"
     "n l p"
-    "o o m";
+    "o o m"
+    "q q q";
     // background: linear-gradient(360deg, #949494 10%, #efefef 90%);
     // background: #efefef;
     // justify-content: center;
@@ -101,10 +102,16 @@ select, option {
     grid-area: l;
 }
 
+#transacs {
+    grid-area: q;
+}
+
 #transactionId {
+    list-style-type: none;
+}
+
+#transactionId a {
     color: white;
-    grid-area: n;
-    width: 200px;
     &:focus {
         text-decoration: none;
         color: white;
