@@ -3,7 +3,10 @@ var SwaggerExpress = require('swagger-express-mw');
 var SwaggerUi = require('swagger-tools/middleware/swagger-ui');
 var es = require("./api/es");
 var path = require('path');
-var cors = require('cors');
+// var cors = require('cors');
+// var server = require('http').Server(app);
+// const io = require('socket.io')(server);
+// io.listen(process.env.WS_SOCKET_SERVER_PORT);
 
 //exports for swagger-ui middleware
 var swStats = require('swagger-stats');
@@ -17,12 +20,6 @@ var parser = new swaggerParser();
 require('events').EventEmitter.defaultMaxListeners = 50;
 
 var app = require('express')();
-//app.all(cors()); //? is it default?
-// app.all((req, res, next) => {
-//   req.header('Access-Control-Allow-Origin', '*');
-//   req.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-//   next();
-// });
 
 module.exports = app; // for testing
 
@@ -95,24 +92,6 @@ SwaggerExpress.create(config, function (err, swaggerExpress) {
   if (err) {
     throw err;
   }
-
-  // // Using socket.io to get the nonce
-  // var server = require('http').Server(app);
-  // const io = require('socket.io')(server, {
-  //   origins: '*:*'
-  // });
-  // io.listen(process.env.WS_SOCKET_SERVER_PORT);
-
-  // //Listen to clients connections
-  // io.on('connection', (client) => {
-  //   client.on('user', async (data) => {
-  //     console.log(data[0]);
-  //     let apiKeySet = await es.getApiKeySet(data[0]);
-  //     console.log("nonce: ", apiKeySet.hits.hits[0]._source.nonce);
-  //     let nonce = apiKeySet.hits.hits[0]._source.nonce;
-  //     client.emit(data[1], nonce);
-  //   });
-  // });
 
   // load swagger ui mw
   app.use(SwaggerUi(swaggerExpress.runner.swagger));

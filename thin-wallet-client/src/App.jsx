@@ -15,6 +15,9 @@ import Dialog from './Dialog.jsx';
 import encrypt from './enc.js';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
+//initialize socket
+const socket = openSocket(process.env.SOCKET);
+
 let scatter = ScatterJS.scatter;
 console.log("Eos: ", EosApi);
 
@@ -103,9 +106,9 @@ class App extends React.Component {
 
 
     send(e) {
-        console.log("in send")
+     
         this.props.updateState(["loading", true]);
-        const socket = openSocket(process.env.SOCKET);
+        // const socket = openSocket(process.env.SOCKET);
         let randChannel = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         socket.emit(process.env.CHANNEL, [Config.apiKey, randChannel]);
 
