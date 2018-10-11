@@ -97,35 +97,35 @@ SwaggerExpress.create(config, function (err, swaggerExpress) {
     throw err;
   }
 
-  // Using socket.io to get the nonce
-  var server = require('http').Server(app);
-  const io = require('socket.io')(server, {
-    origins: '*:*'
-  });
-  io.listen(process.env.WS_SOCKET_SERVER_PORT);
+  // // Using socket.io to get the nonce
+  // var server = require('http').Server(app);
+  // const io = require('socket.io')(server, {
+  //   origins: '*:*'
+  // });
+  // io.listen(process.env.WS_SOCKET_SERVER_PORT);
 
-  //Listen to clients connections
-  io.on('connection', (client) => {
-    client.on('user', async (data) => {
-      console.log(data[0]);
-      let apiKeySet = await es.getApiKeySet(data[0]);
-      console.log("nonce: ", apiKeySet.hits.hits[0]._source.nonce);
-      let nonce = apiKeySet.hits.hits[0]._source.nonce;
-      client.emit(data[1], nonce);
-      client.on('irrevers', async (data) => {
-        console.log("pack socket: ", data)
-        let resp;
-          let timeOut = setTimeout(async function() {
-            resp = await checkTransac.isTransactionIrreversible(data);
-            await console.log("resp in app.js: ", resp);
-            await client.emit('irrevers', resp);
-          }, 10000);
+  // //Listen to clients connections
+  // io.on('connection', (client) => {
+  //   client.on('user', async (data) => {
+  //     console.log(data[0]);
+  //     let apiKeySet = await es.getApiKeySet(data[0]);
+  //     console.log("nonce: ", apiKeySet.hits.hits[0]._source.nonce);
+  //     let nonce = apiKeySet.hits.hits[0]._source.nonce;
+  //     client.emit(data[1], nonce);
+  //     client.on('irrevers', async (data) => {
+  //       console.log("pack socket: ", data)
+  //       let resp;
+  //         let timeOut = setTimeout(async function() {
+  //           resp = await checkTransac.isTransactionIrreversible(data);
+  //           await console.log("resp in app.js: ", resp);
+  //           await client.emit('irrevers', resp);
+  //         }, 10000);
          
-      });
-    });
+  //     });
+  //   });
 
 
-  });
+  // });
 
   // load swagger ui mw
   app.use(SwaggerUi(swaggerExpress.runner.swagger));

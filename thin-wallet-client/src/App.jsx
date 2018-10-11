@@ -14,6 +14,7 @@ import Loader from 'react-spinners/BounceLoader';
 import Dialog from './Dialog.jsx';
 import encrypt from './enc.js';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+const socket = openSocket(process.env.SOCKET);
 
 let scatter = ScatterJS.scatter;
 console.log("Eos: ", EosApi);
@@ -100,12 +101,10 @@ class App extends React.Component {
         this.toolTip = this.toolTip.bind(this);
     }
 
-
-
     send(e) {
 
         this.props.updateState(["loading", true]);
-        const socket = openSocket(process.env.SOCKET);
+        
         let randChannel = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         socket.emit(process.env.CHANNEL, [Config.apiKey, randChannel]);
 

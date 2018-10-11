@@ -46,13 +46,14 @@ module.exports = {
 },
     plugins: [htmlPlugin, new Dotenv({
       path: './src/.env',
-    }), new JavaScriptObfuscator ({
-      rotateUnicodeArray: true
     })
+    // , new JavaScriptObfuscator ({
+    //   rotateUnicodeArray: true
+    // })
   ],
     node: {
       fs: 'empty'
     },
-    devtool: 'inline-source-map',
+    devtool: 'inline-source-map'
 }
 
