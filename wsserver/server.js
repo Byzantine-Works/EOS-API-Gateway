@@ -9,16 +9,9 @@
   const PORT  = 9000;
   app.listen(PORT, () => console.log('Listening on ', PORT));
 
-//   app.all((req, res, next) => {
-//   req.header('Access-Control-Allow-Origin', '*');
-//   req.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-//   next();
-// });
   
 
-  io.listen(9090);
-
-
+  io.listen(9090, {timeout: 50000});
 
   //Listen to clients connections
   io.on('connection', (client) => {
@@ -29,14 +22,20 @@
       let nonce = apiKeySet.hits.hits[0]._source.nonce;
       client.emit(data[1], nonce);
       client.on('irrevers', async (data) => {
-        console.log("pack socket: ", data)
-        let resp;
-          let timeOut = setTimeout(async function() {
-            resp = await checkTransac.isTransactionIrreversible(data);
+
+        console.log("pack socket: ", data);
+
+        let int = setInterval(reqTrans, 15000);
+        
+        async function reqTrans() {
+          let resp = await checkTransac.isTransactionIrreversible(data);
             await console.log("resp in app.js: ", resp);
-            await client.emit('irrevers', resp);
-          }, 10000);
-         
+            if(resp.is_irreversible){
+              clearInterval(int);
+              await client.emit('irrevers', [data, resp.is_irreversible]);
+            }
+        }
+
       });
     });
 

@@ -96,22 +96,27 @@ select, option {
     grid-area: k;
 }
 
-
-
 #send {
     grid-area: l;
 }
 
 #transacs {
     grid-area: q;
+    text-align: left;
 }
 
 #transactionId {
     list-style-type: none;
+    // display: inline-block;
+}
+
+#transacLink {
+    display: inline-block;
 }
 
 #transactionId a {
     color: white;
+    display: inline-block;
     &:focus {
         text-decoration: none;
         color: white;

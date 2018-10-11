@@ -30,22 +30,6 @@ const network = {
     chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
 }
 
-// const network = {
-//     blockchain:'eos',
-//     protocol:'https',
-//     host: 'mainnet.libertyblock.io',
-//     port: 7777,
-//     chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-// }
-
-
-// const network = {
-//     blockchain:'eos',
-//     protocol:'https',
-//     host:'nodes.get-scatter.com',
-//     port:443,
-//     chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-// }
 
 
 
@@ -55,6 +39,7 @@ const eos = EosApi(network);
 const mapStateToProps = store => ({
     scatterID: store.scatterID,
     tooltip: store.tooltip,
+    transacIrrevers: store.transacIrrevers,
     tooltipMessage: store.tooltipMessage,
     transactionID: store.transactionID,
     message: store.message,
@@ -142,8 +127,11 @@ class App extends React.Component {
                         that.props.updateState(["loading", false]);
                         that.props.updateState(["message", "transacSuccess"]);
                         that.props.updateState(['transactionID', response.data.transaction_id]);
+                        that.props.updateState(['transacIrrevers', [response.data.transaction_id, false]]);
                         socket.emit('irrevers', response.data.transaction_id);
                         socket.on('irrevers', function(data) {
+                            that.props.updateState(['transacIrrevers', [data[0], data[1]]]);
+
                             console.log(data);
                         })
 
@@ -255,6 +243,10 @@ class App extends React.Component {
                 this.props.updateState(["loading", false]);
                 this.props.updateState(["message", "transacSuccess"]);
                 this.props.updateState(["transactionID", trx.transaction_id])
+                socket.emit('irrevers', trx.transaction_id);
+                socket.on('irrevers', function(data) {
+                            console.log(data);
+                        })
                 // .catch(error => {
                 //     console.log("error scatter send: ", JSON.parse(error));
                 //     this.props.updateState(["message", "transacRefused"]);
@@ -501,9 +493,17 @@ class App extends React.Component {
                         } else if (el.key === "send" || el.key === "scatterBox") {
                             return el;
                         } else if (el.key === 'transactionId' && this.props.transactionID.length) {
-                            return <ul id="transacs">{transactions.map(t => {
+                            return <ul id="transacs">{transactions.map((t, i) => {
                                 let transacLink = `https://eosflare.io/tx/${t}`
-                                return <li id="transactionId"><a key="transactionId"  href={transacLink} target="_blank" onMouseOver={this.toolTip}>{t}</a></li>
+                                let styleT = {color: '#14466C'}
+                                return <span><li id="transactionId">{i+1}.  <a key="transactionId"  id="transacLink" href={transacLink} target="_blank" onMouseOver={this.toolTip}><p style={this.props.transacIrrevers[t] ? styleT : null}>{t}</p></a>{this.props.transacIrrevers[t] ? <p style={{position: 'relative', float: 'right'}}>&#10003;</p> : null}<div className='sweet-loading'>
+                                <Loader
+                                    className={css`position: relative; float: right; top: -27px;`}
+                                    sizeUnit={"px"}
+                                    size={16}
+                                    color={'white'}
+                                    loading={!this.props.transacIrrevers[t]} /></div>
+                                    </li></span>
                             })}</ul>
                         }
                     })}
@@ -534,9 +534,6 @@ class App extends React.Component {
                         size={70}
                         color={'#14466C'}
                         loading={this.props.loading} />
-
-
-
 
                 </div>
                 {dialogBox}

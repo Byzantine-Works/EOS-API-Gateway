@@ -9,7 +9,6 @@ const updateState = (state = new State(), action) => {
     switch (type) {
         case types.UPDATE_STATE: {
             updatedState = { ...state };
-            updatedState[action.payload.data[0]] = action.payload.data[1];
 
             if(action.payload.data[0] === 'amount') {
                 updatedState.amRend = action.payload.data[1];
@@ -32,6 +31,12 @@ const updateState = (state = new State(), action) => {
             else if(action.payload.data[0] === 'transactionID') {
                 let newTransactionIDS = [...state.transactionID, action.payload.data[1]];
                 updatedState = {...updatedState, transactionID: newTransactionIDS};
+            }
+            else if(action.payload.data[0] === 'transacIrrevers') {
+                let newTransacIrrevers = {...state.transacIrrevers};
+                if(action.payload.data[1][1]) newTransacIrrevers[action.payload.data[1][0]] = true;
+                else newTransacIrrevers[action.payload.data[1][0]] = false;
+                updatedState = {...updatedState, transacIrrevers: newTransacIrrevers};
             }
 
             else {

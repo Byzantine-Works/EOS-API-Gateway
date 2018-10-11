@@ -15,7 +15,7 @@ function isTransactionIrreversible(req, res) {
   var trxid = req.swagger ? req.swagger.params.id.value : req;
   console.log("isTransactionIrreversible-req:=> " + trxid);
   return eosapi.getTransaction(trxid).then(function (result) {
-    console.log("isTransactionIrreversible-res => " + JSON.stringify(result));
+    // console.log("isTransactionIrreversible-res => " + JSON.stringify(result));
     var transaction = {
       last_irreversible_block_num: result.last_irreversible_block,
       transaction_block_num: result.block_num,
