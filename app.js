@@ -112,19 +112,6 @@ SwaggerExpress.create(config, function (err, swaggerExpress) {
   //     console.log("nonce: ", apiKeySet.hits.hits[0]._source.nonce);
   //     let nonce = apiKeySet.hits.hits[0]._source.nonce;
   //     client.emit(data[1], nonce);
-  //     client.on('irrevers', async (data) => {
-  //       console.log("pack socket: ", data)
-  //       let resp;
-  //         let timeOut = setTimeout(async function() {
-  //           resp = await checkTransac.isTransactionIrreversible(data);
-  //           await console.log("resp in app.js: ", resp);
-  //           await client.emit('irrevers', resp);
-  //         }, 10000);
-         
-  //     });
-  //   });
-
-
   // });
 
   // load swagger ui mw
