@@ -1,11 +1,15 @@
 {
-  "name": "MBAEX-EOS-API-Gateway",
+  "name": "EOS-API-Gateway",
   "version": "0.0.1",
   "private": true,
-  "description": "MBAEX API Gateway Project",
+  "description": "Byzantine EOS API Gateway Project",
   "keywords": [],
-  "author": "",
-  "license": "",
+  "author": "Byzantine Works",
+  "license": "(ISC OR GPL-3.0)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Byzantine-Works/EOS-API-Gateway.git"
+  },
   "main": "app.js",
   "dependencies": {
     "bignumber.js": "^7.2.1",
