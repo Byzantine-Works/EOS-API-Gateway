@@ -14,6 +14,7 @@ import Loader from 'react-spinners/BounceLoader';
 import Dialog from './Dialog.jsx';
 import encrypt from './enc.js';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+
 const socket = openSocket(process.env.SOCKET);
 
 let scatter = ScatterJS.scatter;
@@ -30,31 +31,13 @@ const network = {
     chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
 }
 
-// const network = {
-//     blockchain:'eos',
-//     protocol:'https',
-//     host: 'mainnet.libertyblock.io',
-//     port: 7777,
-//     chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-// }
-
-
-// const network = {
-//     blockchain:'eos',
-//     protocol:'https',
-//     host:'nodes.get-scatter.com',
-//     port:443,
-//     chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-// }
-
-
-
 const eos = EosApi(network);
 
 
 const mapStateToProps = store => ({
     scatterID: store.scatterID,
     tooltip: store.tooltip,
+    transacIrrevers: store.transacIrrevers,
     tooltipMessage: store.tooltipMessage,
     transactionID: store.transactionID,
     message: store.message,
@@ -90,6 +73,10 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            blocking: this.props.message ? true : false,
+          };
 
         this.send = this.send.bind(this);
         this.changeInput = this.changeInput.bind(this);
@@ -141,20 +128,20 @@ class App extends React.Component {
                         that.props.updateState(["loading", false]);
                         that.props.updateState(["message", "transacSuccess"]);
                         that.props.updateState(['transactionID', response.data.transaction_id]);
-                        socket.emit('irrevers', response.data.transaction_id);
-                        socket.on('irrevers', function(data) {
+                        that.props.updateState(['transacIrrevers', [response.data.transaction_id, false]]);
+                        console.log("transac status: ", )
+                        socket.emit(process.env.WS_SOCKET_CHANNEL_TRANSAC_STATUS, response.data.transaction_id);
+                        socket.on(process.env.WS_SOCKET_CHANNEL_TRANSAC_STATUS, function(data) {
+                            that.props.updateState(['transacIrrevers', [data[0], data[1]]]);
+
                             console.log(data);
                         })
 
-                    }
+                    } else that.props.updateState(["message", "Please try again"]);
                   } catch(error) {
-                      console.log(error);
+                      console.log(response);
+                      that.props.updateState(["message", "Please try again"]);
                   }
-
-
-
-    
-            socket.on('disconnect');
             }
         });
         this.props.updateState(["loading", false])
@@ -229,7 +216,7 @@ class App extends React.Component {
 
         const eosOptions = { expireInSeconds: 60 };
 
-        //     // Get a proxy reference to eosjs which you can use to sign transactions with a user's Scatter.
+        // Get a proxy reference to eosjs which you can use to sign transactions with a user's Scatter.
         const eos = scatter.eos(network, Eos, eosOptions);
         console.log("eos: ", eos);
 
@@ -250,10 +237,15 @@ class App extends React.Component {
                     trx = await contract.transfer(...arReq);
                 }
                     // That's it!
-                console.log(`Transaction ID: ${trx.transaction_id}`);
+                console.log(`response scatter: ${trx}`);
                 this.props.updateState(["loading", false]);
                 this.props.updateState(["message", "transacSuccess"]);
                 this.props.updateState(["transactionID", trx.transaction_id])
+                let that = this;
+                socket.emit(process.env.WS_SOCKET_CHANNEL_TRANSAC_STATUS, trx.transaction_id);
+                socket.on(process.env.WS_SOCKET_CHANNEL_TRANSAC_STATUS, function(data) {
+                    that.props.updateState(['transacIrrevers', [data[0], data[1]]]);
+                        })
                 // .catch(error => {
                 //     console.log("error scatter send: ", JSON.parse(error));
                 //     this.props.updateState(["message", "transacRefused"]);
@@ -261,15 +253,20 @@ class App extends React.Component {
                 // });
             } catch (err) {
                 this.props.updateState(["loading", false]);
-                console.log(err)
-                if(typeof err === 'string'){
-                var code = JSON.parse(err).error.code;
+                let error;
+                if(typeof err === 'string') error = JSON.parse(err);
+                var code = error.error.code;
+                
+                console.log(error)
                 if (code === 3080004) return this.props.updateState(["message", "cpuExceeded"]);
-                if (code === 3050003) return this.props.updateState(["message", "mustPositive"]);
-                } else {
+                // if (code === 3050003) return this.props.updateState(["message", "mustPositive"]);
+                else {
                     console.log("scatter send: ", err);
                     if (err.code === 402) this.props.updateState(["message", "transacDenied"]);
-                    else this.props.updateState(["message", "transacRefused"]);
+                    else {
+                        console.log("message error: ", error.error.details[0].message);
+                        this.props.updateState(["message", error.error.details[0].message]);
+                    }
                     
                 }
             }
@@ -483,6 +480,11 @@ class App extends React.Component {
 
         let transactions = this.props.transactionID.slice();
 
+        const styleGlobal = {
+            zindex: '15',
+            background: 'black',
+        }
+
 
         return (
             <span>
@@ -500,9 +502,17 @@ class App extends React.Component {
                         } else if (el.key === "send" || el.key === "scatterBox") {
                             return el;
                         } else if (el.key === 'transactionId' && this.props.transactionID.length) {
-                            return <ul id="transacs">{transactions.map(t => {
+                            return <ul id="transacs">{transactions.map((t, i) => {
                                 let transacLink = `https://eosflare.io/tx/${t}`
-                                return <li id="transactionId"><a key="transactionId"  href={transacLink} target="_blank" onMouseOver={this.toolTip}>{t}</a></li>
+                                let styleT = {color: '#14466C'}
+                                return <span><li id="transactionId">{i+1}.  <a key="transactionId"  id="transacLink" href={transacLink} target="_blank" onMouseOver={this.toolTip}><p style={this.props.transacIrrevers[t] ? styleT : null}>{t}</p></a>{this.props.transacIrrevers[t] ? <p style={{position: 'relative', float: 'right'}}>&#10003;</p> : null}<div className='sweet-loading'>
+                                <Loader
+                                    className={css`position: relative; float: right; top: -27px;`}
+                                    sizeUnit={"px"}
+                                    size={16}
+                                    color={'white'}
+                                    loading={!this.props.transacIrrevers[t]} /></div>
+                                    </li></span>
                             })}</ul>
                         }
                     })}
@@ -533,9 +543,6 @@ class App extends React.Component {
                         size={70}
                         color={'#14466C'}
                         loading={this.props.loading} />
-
-
-
 
                 </div>
                 {dialogBox}

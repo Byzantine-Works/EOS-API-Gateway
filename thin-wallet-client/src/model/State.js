@@ -14,6 +14,8 @@ export default class State {
         this.message = false,
 
         this.transactionID = [];
+
+        this.transacIrrevers = {};
         
         this.scatter = false;
 

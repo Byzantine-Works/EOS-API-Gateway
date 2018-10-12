@@ -96,22 +96,27 @@ select, option {
     grid-area: k;
 }
 
-
-
 #send {
     grid-area: l;
 }
 
 #transacs {
     grid-area: q;
+    text-align: left;
 }
 
 #transactionId {
     list-style-type: none;
+    // display: inline-block;
+}
+
+#transacLink {
+    display: inline-block;
 }
 
 #transactionId a {
     color: white;
+    display: inline-block;
     &:focus {
         text-decoration: none;
         color: white;
@@ -255,7 +260,7 @@ input {
 }
 
 #dialog {
-    position: absolute;
+    position: relative;
     margin: 0 auto;
     transform: translateY(-200%);
     border-color:  #14466C;
@@ -267,8 +272,9 @@ input {
     letter-spacing: 1px;
     line-height: 200%;
     font-weight: 200;
+    top: 470px;
     width: 700px;
-    height: 40%;
+    height: 500px;
     z-index: 20;
 }
 
@@ -278,12 +284,17 @@ input {
     width: 20%;
     color: #14466C;
     background-color: white;
+    border: solid;
+    border-color: #14466C;
+    border-width: 2px;
 }
 
 #success button {
     display: inline-block;
     margin: 15px;
     color: white;
+    border: solid;
+    border-color: #14466C;
     background-color:  #14466C;
     &:focus {
         color: white;
