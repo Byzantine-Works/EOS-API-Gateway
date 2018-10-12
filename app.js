@@ -65,7 +65,7 @@ var config = {
           callCount: 0,
         },
         "TNHX1PC-3T5460M-JNSCD1F-8KMKQSH": {
-          name: 'COIN.US',
+          name: 'PAYBOOK',
           isEnabled: true,
           callCount: 0,
         }
