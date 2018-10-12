@@ -260,7 +260,7 @@ input {
 }
 
 #dialog {
-    position: absolute;
+    position: relative;
     margin: 0 auto;
     transform: translateY(-200%);
     border-color:  #14466C;
@@ -272,8 +272,9 @@ input {
     letter-spacing: 1px;
     line-height: 200%;
     font-weight: 200;
+    top: 470px;
     width: 700px;
-    height: 40%;
+    height: 500px;
     z-index: 20;
 }
 

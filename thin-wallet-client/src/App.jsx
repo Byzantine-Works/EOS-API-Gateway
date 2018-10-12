@@ -480,6 +480,11 @@ class App extends React.Component {
 
         let transactions = this.props.transactionID.slice();
 
+        const styleGlobal = {
+            zindex: '15',
+            background: 'black',
+        }
+
 
         return (
             <span>
