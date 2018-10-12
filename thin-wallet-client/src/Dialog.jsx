@@ -37,7 +37,7 @@ const Dialog = (props) => {
 
     return (
     <div className="Dialog" style={props.message === "transacSuccess" ? successStyle : errorStyle} >
-        <p>{message[props.message]}</p>
+        <p>{message[props.message] ? message[props.message] : "The transaction has not been performed: " + props.message+"."}</p>
         <button onClick={messageFalse}>OK</button>
         
     </div>

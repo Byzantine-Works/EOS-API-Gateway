@@ -283,12 +283,17 @@ input {
     width: 20%;
     color: #14466C;
     background-color: white;
+    border: solid;
+    border-color: #14466C;
+    border-width: 2px;
 }
 
 #success button {
     display: inline-block;
     margin: 15px;
     color: white;
+    border: solid;
+    border-color: #14466C;
     background-color:  #14466C;
     &:focus {
         color: white;
