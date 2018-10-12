@@ -23,8 +23,8 @@ var app = require('express')();
 
 module.exports = app; // for testing
 
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, './thin-wallet-client/dist/index.html'));
+app.get('/wallet', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './thin-wallet-client/dist/wallet.html'));
 });
 
 app.get('/main.js', (req, res) => {
