@@ -71,10 +71,10 @@ async function getTokensByAccount(code, account, symbol) {
     });
 }
 
-async function transfer(code, from, to, amount, memo, sig) {
+async function transfer(code, from, to, amount, memo, sig, nonce) {
     eos = Eos(loadBalance(sig));
     //console.log("eosapi:transferin with key: =>" + eos.fc.types.config.keyProvider);
-    console.log("eosapi:transfer=> contract:from:to:amount:memo  =>" + JSON.stringify(code) + " : " + JSON.stringify(from) + " : " + JSON.stringify(to) + " : " + JSON.stringify(amount) + " : " + JSON.stringify(memo));
+    console.log("eosapi:transfer=> contract:from:to:amount:memo  =>" + JSON.stringify(code) + " : " + JSON.stringify(from) + " : " + JSON.stringify(to) + " : " + JSON.stringify(amount) + " : " + JSON.stringify(memo) + " with nonce =>" + nonce);
     var trxDeposit = await eos.transaction(code, contractuser => {
         contractuser.transfer({
             from: from,
@@ -82,11 +82,12 @@ async function transfer(code, from, to, amount, memo, sig) {
             quantity: amount,
             memo: memo
         }, {
+            nonce: nonce,
             authorization: [from]
             //authorization:[{ actor: account, permission:'active' }]
         });
     });
-    console.log("eosapi:transfer=> " + JSON.stringify(trxDeposit));
+    //console.log("eosapi:transfer=> " + JSON.stringify(trxDeposit));
     return (trxDeposit);
 }
 

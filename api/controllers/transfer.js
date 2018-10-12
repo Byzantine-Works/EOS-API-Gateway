@@ -27,9 +27,9 @@ function transfer(req, res) {
 
   console.log("transfer-req:contract-from-to-amount-memo-sig=> " + contract + ":" + from + ":" + to + ":" + amount + ":" + memo + ":" + sig);
   //decipher sig
-  cipher.decryptXStrong(apiKey, sig).then(function (decipheredKey) { 
+  cipher.decryptXStrong(apiKey, sig).then(function (decipheredKey) {
     //transfer action
-    eosapi.transfer(contract, from, to, amount, memo, decipheredKey[1]).then(function (result) {
+    eosapi.transfer(contract, from, to, amount, memo, decipheredKey[1], decipheredKey[0]).then(function (result) {
       console.log("transfer-res => " + JSON.stringify(result));
       es.incrementNonce(apiKey, Number(decipheredKey[0]));
       var t1 = performance.now();
