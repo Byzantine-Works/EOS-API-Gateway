@@ -92,7 +92,7 @@ function addApiKey4Keygen(body) {
 async function incrementNonce(apikey, nonce) {
     if (apikey == null || nonce == null)
         throw new Error(" Cannot increment nonce for null apiKey!");
-    var updateNonce = nonce + 1;
+    var updateNonce = nonce;
     return await client.updateByQuery({
         index: apiKeyIndexName,
         type: apiKeyIndexType,
