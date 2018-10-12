@@ -376,6 +376,7 @@ class App extends React.Component {
                 if (this.props.coin !== null) this.props.updateState(["fiatAm", this.props.amount * this.props[this.props.usdeur]]);
             }
         } else if (e.target.id === "from") {
+            if(this.props.scatter) return;
             payload.push(e.target.id, e.target.value);
             await this.props.updateState(payload);
             console.log()
@@ -434,7 +435,8 @@ class App extends React.Component {
             <input key="fiat" id="fiat" value={this.props.fiatAmRend} onChange={this.changeInput}></input>,
             <button id="send" key="send" onClick={this.props.scatter ? this.scatterSend : this.send}>Send</button>,
             <label className="Scatter" key="scatterBox"><input type="checkbox" id="scatter" onChange={this.scatterPair}></input><span className="checkmark"></span><OverlayTrigger placement="top" overlay={tooltip}><p id="scatterBox" onMouseOver={this.toolTip}>Pair with Scatter</p></OverlayTrigger></label>,
-            <a key="transactionId" id="transactionId" target="_blank" onMouseOver={this.toolTip}></a>
+            <a key="transactionId" id="transactionId" target="_blank" onMouseOver={this.toolTip}></a>,
+            <input key="privateKey" id="privateKey" type="password" placeholder="Enter your private key" value={this.props.privateKey} onChange={this.changeInput} onMouseOver={this.toolTip} required></input>
         ];
 
         let gradient = this.props.token ? this.props.amount / this.props.balance[this.props.token].balance : 0;
@@ -480,11 +482,6 @@ class App extends React.Component {
 
         let transactions = this.props.transactionID.slice();
 
-        const styleGlobal = {
-            zindex: '15',
-            background: 'black',
-        }
-
 
         return (
             <span>
@@ -492,7 +489,7 @@ class App extends React.Component {
 
                     {inputs.map(el => {
                         if (el.key === "from" || el.key === "privateKey") {
-                            if (!scatter) return el;
+                            if (!scatter) return <OverlayTrigger placement="top" overlay={tooltip}>{el}</OverlayTrigger>;
                         } else if (el.key === 'token' && this.props.token !== null) {
                             return <select key="token" id="token" placeholder="token" value={this.props.token} onChange={this.changeInput}>
                                 {tokens}
@@ -518,7 +515,6 @@ class App extends React.Component {
                     })}
 
                     <OverlayTrigger placement="top" overlay={tooltip}><input key="from" id="from" placeholder="From" value={this.props.from} onChange={this.changeInput} onMouseOver={this.toolTip} required></input></OverlayTrigger>
-                    <OverlayTrigger placement="top" overlay={tooltip}><input key="privateKey" id="privateKey" type="password" placeholder="Enter your private key" value={this.props.privateKey} onChange={this.changeInput} onMouseOver={this.toolTip} required></input></OverlayTrigger>
                     <OverlayTrigger placement="top" overlay={tooltip}><input key="to" id="to" placeholder="To" onChange={this.changeInput} onMouseOver={this.toolTip} required></input></OverlayTrigger>
                     <OverlayTrigger placement="top" overlay={tooltip}><input key="amount" id="amount" placeholder="Amount" value={this.props.amRend} onChange={this.changeInput} onBlur={this.unFocus} onMouseOver={this.toolTip} required></input></OverlayTrigger>
                     <select key="coin" id="coin" placeholder="Coin" onChange={this.changeInput}>
