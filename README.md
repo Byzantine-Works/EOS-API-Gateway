@@ -51,9 +51,16 @@ npm start
 //For a demo of the wallet go on http://api.byzanti.ne:8902/wallet
 
 //To embed the EOS pocket wallet on your web page
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>EOS Wallet</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <div id="wallet" style="transform: translateY(150px); margin: 0 auto; width:700px"></div>
-<script type="text/javascript" src="main.js"></script>
+<script type="text/javascript" src="http://api.byzanti.ne:8902/main.js"></script>
+</html>
 ```
 
 # Validate
