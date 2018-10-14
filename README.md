@@ -160,6 +160,11 @@ curl -X GET --header 'Content-Type: application/json'  --header 'api_key: FQK0SY
 
 //Scatter based transfer
 curl -X POST -H "Content-Type:application/json"  -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"from":"gi3dcnjshege","to":"randomgooppy","amount":"0.0001 EOS","memo":"offline test","sig":"c77ac47879b2a8e622f9f301c98959cce5b97a53e4d42f5038d0d2d7cb78a0c3e3a135728fb5f5969a81f92cb0412727a040b143e12f57b533c7e0cc595ce965a6318cab00710549c3bc8984ec22b1c9c38f2db7e7e4cb6ba3bb48a3211db082c5315913977262004a4b8e0c052a8ee2","transactionHeaders":{"expiration": "2018-09-19T00:20:40", "ref_block_num": 19055, "ref_block_prefix": 4239914415}}' http://local.byzanti.ne:8901/transferWithScatter | json_pp
+
+// DEX Functions
+//get active trading symbols
+curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/symbols?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
+
 ```
 
 ### Todos

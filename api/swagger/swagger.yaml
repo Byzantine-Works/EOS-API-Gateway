@@ -86,6 +86,22 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /symbols:
+    x-swagger-router-controller: dsymbols
+    get:
+      tags:
+        - DEX API {symbols,ticker,orders,trades}
+      description: Returns All *legit EOS Derivative Token Pairs for Trading DEX
+      operationId: symbols
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/symbolResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /tokensByAccount/{account}:
     x-swagger-router-controller: tokensByAccount
     get:
@@ -687,6 +703,11 @@ definitions:
     items:
       type: object
       example: { name: Everipedia, contract: everipediaiq, symbol: IQ }
+  symbolResponse:
+    type: array
+    items:
+      type: object
+      example: { symbol: iq_eos, contract: everipediaiq, currency: IQ, last: 0.00178, change: 0, high: 0.00188, low: 0.00173, amount: 1210563.5455, volume: 2182982.0000 }
   tokensByAccountResponse:
     type: array
     items:
