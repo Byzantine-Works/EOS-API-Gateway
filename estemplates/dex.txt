@@ -1,0 +1,57 @@
+PUT tickers
+{
+      "template": "ticker",
+    "settings": {
+        "index.refresh_interval": "1s",
+        "analysis": {
+            "analyzer": {
+                "default": {
+                    "type": "standard",
+                    "stopwords": "_none_"
+                }
+            }
+        }
+    },
+
+  "version": 1,
+  "mappings": {
+    "ticker": {
+      "properties": {
+        "symbol": {
+          "type": "keyword"
+        },
+        "contract": {
+          "type": "keyword"
+        },
+        "hashcode": {
+          "type": "keyword"
+        },
+        "currency": {
+          "type": "integer"
+        },
+        "last": {
+          "type": "float"
+        },
+        "change": {
+          "type": "float"
+        },
+        "high": {
+          "type": "float"
+        },
+        "low": {
+          "type": "float"
+        },
+        "amount": {
+          "type": "float"
+        },
+        "volume": {
+          "type": "float"
+        },
+        "ts": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}
