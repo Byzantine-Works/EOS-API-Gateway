@@ -42,16 +42,21 @@ function loadTickers() {
     for (var i = 0, len = dexconfig.symbols.length; i < len; i++) {
         console.log(dexconfig.symbols[i].symbol);
         // request.get('https://jsonplaceholder.typicode.com/todos/1', function (err, res, body) {
-        request.get('https://api.newdex.io/v1/ticker?symbol=' + dexconfig.symbols[i].symbol, function (err, res, body) {
+        request.get('https://api.newdex.io/v1/ticker?symbol=' + dexconfig.symbols[i].tradingpair, function (err, res, body) {
             if (err) //TODO: handle err
             {
                 console.log(err);
             } else {
-                console.log(body);
+                var indexableData = JSON.parse(body);
+                indexableData.data.tradingpair = indexableData.data.symbol;
+                indexableData.data.symbol = indexableData.data.currency;
+                delete indexableData.data.currency;               
+                //console.log(indexableData);
+                //process.exit();
                 client.index({
                     index: 'tickers',
                     type: 'ticker',
-                    body: body
+                    body: indexableData
                 }, function (err, resp, status) {
                     console.log(resp);
                 });

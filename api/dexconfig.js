@@ -45,7 +45,7 @@ config.symbols = [{
   "tradingpair": "itecoin_eos",
   "contract": "itecointoken",
   "symbol": "ITECOIN",
-  "price_precision": 6,
+  "price_precision": 7,
   "currency_precision": 4
 }, {
   "tradingpair": "tea_eos",
@@ -63,7 +63,7 @@ config.symbols = [{
   "tradingpair": "lucky_eos",
   "contract": "eoslucktoken",
   "symbol": "LUCKY",
-  "price_precision": 4,
+  "price_precision": 5,
   "currency_precision": 4
 }, {
   "tradingpair": "luck_eos",
@@ -87,7 +87,7 @@ config.symbols = [{
   "tradingpair": "btn_eos",
   "contract": "eosbuttonbtn",
   "symbol": "BTN",
-  "price_precision": 7,
+  "price_precision": 8,
   "currency_precision": 4
 }, {
   "tradingpair": "shape_eos",
@@ -105,7 +105,7 @@ config.symbols = [{
   "tradingpair": "toe_eos",
   "contract": "talkoneos123",
   "symbol": "TOE",
-  "price_precision": 6,
+  "price_precision": 7,
   "currency_precision": 4
 }, {
   "tradingpair": "dice_eos",
@@ -123,7 +123,7 @@ config.symbols = [{
   "tradingpair": "seven_eos",
   "contract": "xxxsevensxxx",
   "symbol": "SEVEN",
-  "price_precision": 7,
+  "price_precision": 8,
   "currency_precision": 4
 }, {
   "tradingpair": "pso_eos",
@@ -183,7 +183,7 @@ config.symbols = [{
   "tradingpair": "atd_eos",
   "contract": "eosatidiumio",
   "symbol": "ATD",
-  "price_precision": 6,
+  "price_precision": 7,
   "currency_precision": 4
 }, {
   "tradingpair": "meetone_eos",

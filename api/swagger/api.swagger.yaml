@@ -749,9 +749,9 @@ definitions:
       type: object
       example:
         {
-          symbol: iq_eos,
+          symbol: IQ,
           contract: everipediaiq,
-          currency: IQ,
+          tradingpair: eos_iq,
           last: 0.00178,
           change: 0,
           high: 0.00188,
