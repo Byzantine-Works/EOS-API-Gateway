@@ -426,7 +426,7 @@ paths:
     x-swagger-router-controller: getProducers
     get:
       tags:
-        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price} *mainnet
+        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
       description: Returns the list of 21 producers.
       operationId: getProducers
       responses:
@@ -442,7 +442,7 @@ paths:
     x-swagger-router-controller: voteProducer
     post:
       tags:
-        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price} *mainnet
+        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
       description: Lets you vote for a specific producer account
       operationId: voteProducer
       parameters:
@@ -475,7 +475,7 @@ paths:
     x-swagger-router-controller: delegate
     post:
       tags:
-        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price} *mainnet
+        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
       description: Delegate specific NET and CPU bandwidth for a user
       operationId: delegate
       parameters:
@@ -512,7 +512,7 @@ paths:
     x-swagger-router-controller: undelegate
     post:
       tags:
-        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price} *mainnet
+        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
       description: Undelegate specific NET and CPU bandwidth
       operationId: undelegate
       parameters:
@@ -549,7 +549,7 @@ paths:
     x-swagger-router-controller: getBandwidth
     get:
       tags:
-        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price} *mainnet
+        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
       description: Returns account bandwidth staked in EOS for network and cpu.
       operationId: getBandwidth
       parameters:
@@ -570,7 +570,7 @@ paths:
     x-swagger-router-controller: buyRam
     post:
       tags:
-        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price} *mainnet
+        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
       description: Buy Ram
       operationId: buyRam
       parameters:
@@ -605,7 +605,7 @@ paths:
     x-swagger-router-controller: buyRamBytes
     post:
       tags:
-        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price} *mainnet
+        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
       description: Buy Ram in specified bytes
       operationId: buyRamBytes
       parameters:
@@ -640,7 +640,7 @@ paths:
     x-swagger-router-controller: sellRamBytes
     post:
       tags:
-        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price} *mainnet
+        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
       description: Sell Ram in specified bytes
       operationId: sellRamBytes
       parameters:
@@ -673,7 +673,7 @@ paths:
     x-swagger-router-controller: getRamPrice
     get:
       tags:
-        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price} *mainnet
+        - Block Producer API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
       description: Returns RAM prices based on supply/quote and the Bancor algorithm
       operationId: getRamPrice
       responses:
@@ -723,16 +723,23 @@ definitions:
     type: array
     items:
       type: object
-      example: { name: Everipedia, contract: everipediaiq, symbol: IQ }
+      example:
+        {
+          symbol: IQ,
+          contract: everipediaiq,
+          precision: 3,
+          name: Everipedia,
+          hash: 42206a89a3873c8b15bda5178ca0e2da6b223597177bc9abe3980c43c860e3fa,
+        }
   symbolResponse:
     type: array
     items:
       type: object
       example:
         {
-          symbol: iq_eos,
+          tradingpair: iq_eos,
           contract: everipediaiq,
-          currency: IQ,
+          symbol: IQ,
           price_precision: 5,
           currency_precision: 3,
         }
@@ -761,7 +768,9 @@ definitions:
           account: gi3dcnjshege,
           contract: everipediaiq,
           symbol: IQ,
-          balance: "5223.0000",
+          balance: 824.365,
+          precision: 3,
+          hash: 42206a89a3873c8b15bda5178ca0e2da6b223597177bc9abe3980c43c860e3fa,
         }
   transferResponse:
     type: object
