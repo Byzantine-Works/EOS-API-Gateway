@@ -20,19 +20,23 @@ function ping() {
     });
 }
 
+
 function read(indexName, indexType) {
     client.search({
         index: indexName,
         type: indexType
     }).then(function (resp) {
         var hits = resp.hits.hits;
-        console.log(JSON.stringify(hits,null,4));
+        console.log(JSON.stringify(hits, null, 4));
         //return hits;
     }, function (err) {
         console.log(err);
     });
 }
 
+function readTickers() {
+    read('tickers', 'ticker');
+}
 
 function loadTickers() {
     for (var i = 0, len = dexconfig.symbols.length; i < len; i++) {
@@ -74,12 +78,7 @@ function index(indexName, indexType, object) {
 //index();
 //read();
 
-//run dex load functions
-loadTickers();
-
-//read('tickers','ticker');
-
-
-
+module.exports.loadTickers = loadTickers;
+module.exports.readTickers = readTickers;
 module.exports.read = read;
 module.exports.index = index;
