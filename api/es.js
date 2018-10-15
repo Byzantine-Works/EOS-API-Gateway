@@ -25,15 +25,18 @@ function ping() {
     });
 }
 
-function read() {
-    client.search({
+async function read(indexName, indexType, symbol) {
+    return await client.search({
         index: indexName,
-        type: indexType
-    }).then(function (resp) {
-        var hits = resp.hits.hits;
-        console.log(hits);
-    }, function (err) {
-        console.trace(err.message);
+        type: indexType,
+        q: symbol,
+        size: 10000
+        // }).then(function (resp) {
+        //     var hits = resp.hits.hits;
+        //     return hits;
+        //     //console.log(hits);
+        // }, function (err) {
+        //     console.log(err.message);
     });
 }
 
@@ -170,3 +173,4 @@ module.exports.addApiKey = addApiKey;
 module.exports.addApiKey4Keygen = addApiKey4Keygen;
 module.exports.getApiKeySet = getApiKeySet;
 module.exports.incrementNonce = incrementNonce;
+module.exports.readIndex = read;

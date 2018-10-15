@@ -27,8 +27,9 @@ function read(indexName, indexType) {
     }).then(function (resp) {
         var hits = resp.hits.hits;
         console.log(JSON.stringify(hits,null,4));
+        //return hits;
     }, function (err) {
-        console.trace(err.message);
+        console.log(err);
     });
 }
 
@@ -74,9 +75,9 @@ function index(indexName, indexType, object) {
 //read();
 
 //run dex load functions
-//loadTickers();
+loadTickers();
 
-read('tickers','ticker');
+//read('tickers','ticker');
 
 
 

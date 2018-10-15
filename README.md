@@ -165,6 +165,11 @@ curl -X POST -H "Content-Type:application/json"  -H 'api_key: FQK0SYR-W4H4NP2-HX
 //get active trading symbols
 curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/symbols?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
 
+//get ticker (market data + all tokens)
+curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/ticker?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
+
+//get ticker (market data for specific token)
+curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/ticker?symbol=IQ&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
 ```
 
 ### Todos
