@@ -1,16 +1,48 @@
 # Synopsis
 
-- Byzantine API gateway enables EOS on-chain integration of DEX's, Centralized Exchanges, Wallets and DAPPs, in a secure, scalable and reliable manner, without the need to run mainnet eos chain locally
-- Provides an abstraction from token contracts, replay attacks, validation of tokens with their respective contract hashes and ensures a secure transaction
-- The API gateway runs its own mainnet and also load balances across 21 block producers when the local mainnet blocks are delayed by >500ms
-- Provides an unified access to history-api and thereby access to transactions made through the API gateway are guaranteed to have an audit trace forever
-- Security is enabled through a combination of nonce, private salt, api-security-key and a cipher used by both the client and server for signature. This prevents both the replay attack as well as a secure exchange of keys for signature
-- Provides an easy abstraction for getting balances across various EOS derivative airgrabs and airdrops and token specific contract validation with hashcodes
-- Prevents the following attacks which were in recent news:
-
+- Powered By [Liberty Block](https://libertyblock.io/), the [Byzantine API gateway](http://api.byzanti.ne:8902/docs/) enables EOS on-chain integration of DEX's, Centralized Exchanges, Wallets and DAPPs, in a secure, scalable and reliable manner, without the need to run mainnet for EOS chain locally
+- Provides a simplified abstraction from individual token contract integrations and transfers while preventing replay attacks, validation of tokens with their respective contract hashes and ensures the transaction is secure and used the least latency route to chain
+- The API gateway runs its own mainnet and also load balances across 21 block producers when the local mainnet blocks are delayed by >100ms
+- For high throughput, the gateway also provides an optional request/response compression using Zstandard
+- Provides access to eos-rpc api, history-api as well as custom api collection to simplify interacting with complex actions such as namebids,rambuys,getAllTokenBalances etc.
+- Provides NPI action, data traceability to transactions made through the API gateway
+- Provides ELK style Kibana Analytics Dashboard for monitoring your transactions, throughput etc
+- Security is enabled through a combination of nonce, a private salt and the api-security-key. Using the latter 2 arguments, the client creates a 256-bit cipher which is used for signature. This prevents both replay attacks as well as a secure exchange of keys for signature
+- Provides an easy abstraction for:
+- - Get Airdrop/Airgrab Tokens with verifiable hashcodes, precision, contracts
+- - Create Account, (Un)Delegate, Vote, RAM price, Buy/Sell RAM, Refunds, Account history
+- - Transfer across any token with/without scatter
+- - A web embeddable ['stripe' wallet for EOS](http://api.byzanti.ne:8902/wallet), that can be customized to work with QR codes on web, mobile or POS systems for accepting EOS/derivative digital assets
+- - A DEX market aggregation data across EOS/Derivative assets
+- - Reduces the complexity of rampup on EOS chain and prevents issues like the following:
 - - [EosBetDice hacked using eosio.token transfer exploit](https://www.zdnet.com/article/blockchain-betting-app-mocks-competitor-for-getting-hacked-gets-hacked-four-days-later/)
 
 - - [NewDEX hacked with fake EOS tokens](https://thenextweb.com/hardfork/2018/09/18/eos-hackers-exchange-fake/)
+
+# [EOS 'Stripe' Wallet](http://api.byzanti.ne:8902/wallet)
+
+```sh
+//To embed wallet on your web site to accept any EOS/Derivative assets copy this snippet
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>EOS Wallet</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<div id="wallet" style="transform: translateY(150px); margin: 0 auto; width:700px"></div>
+<script type="text/javascript" src="http://api.byzanti.ne:8902/main.js"></script>
+</html>
+```
+
+# Design
+The high-level design shown below provides an unified interface for all on-chain EOS operations.
+
+- The key components are the API itself, which encapsulates the EOS-chain rpc/api/table methods and encapsulates the nuances by using eosjs and ecc.
+- It uses cryptographic nonce to secure customers from replay attack.
+- The design necessitates customers to aquire an API-KEY/SALT which is a one time excercise. The api-key is then used to fetch nonce for signing write-transactions and transmit the "sig" attribute as shown in curl examples.
+
+![Alt text](/images/byzapi.png?raw=true "Byzantine API Gateway")
 
 # Build
 
@@ -47,20 +79,6 @@ node -e 'require("./api/controllers/apiKey").keygen()'
 ```sh
 cd thin-wallet-client
 npm start
-
-//For a demo of the wallet go on http://api.byzanti.ne:8902/wallet
-
-//To embed the EOS pocket wallet on your web page
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>EOS Wallet</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<div id="wallet" style="transform: translateY(150px); margin: 0 auto; width:700px"></div>
-<script type="text/javascript" src="http://api.byzanti.ne:8902/main.js"></script>
-</html>
 ```
 
 # Validate
@@ -71,16 +89,6 @@ npm start
 - API-stats: http://api.byzanti.ne:8902/swagger-stats/ui#sws_summary
 - swagger-apidocs: http://api.byzanti.ne:8902/api-docs
 - swagger-editor: https://editor.swagger.io/
-
-# Design
-
-The high-level design shown below provides an unified interface for all on-chain EOS operations.
-
-- The key components are the API itself, which encapsulates the EOS-chain methods and nuances by using eosjs and ecc.
-- It uses cryptographic nonce to secure customers from replay attack.
-- The design necessitates customers to aquire an API-KEY/SALT which is a one time excercise. The api-key is then used to fetch the nonce for signing write-transactions and transmit the "sig" attribute as shown in curl examples.
-
-![Alt text](/images/byzapi.png?raw=true "Byzantine API Gateway")
 
 # API cheat sheet for mainnet
 

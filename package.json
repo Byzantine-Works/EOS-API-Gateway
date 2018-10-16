@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "description": "Byzantine EOS API Gateway Project",
-  "keywords": [],
-  "author": "Byzantine Works",
+  "keywords": ["EOS","API Gateway"],
+  "author": "M.Reddy <reddy@byzanti.ne>",
   "license": "(ISC OR GPL-3.0)",
   "repository": {
     "type": "git",
