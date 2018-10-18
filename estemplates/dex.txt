@@ -1,3 +1,109 @@
+GET orders/_search?size=1000
+
+
+
+POST /orders/order/_search
+{
+    "query": {
+        "term" : {
+            "assetBuy.keyword": "IQ"
+        }
+    }
+}
+
+DELETE orders
+
+GET orders
+
+PUT orders
+{
+      "template": "order",
+    "settings": {
+        "index.refresh_interval": "1s",
+        "analysis": {
+            "analyzer": {
+                "default": {
+                    "type": "standard",
+                    "stopwords": "_none_"
+                }
+            }
+        }
+    },
+
+  "version": 1,
+  "mappings": {
+    "ticker": {
+      "properties": {
+        "source": {
+          "type": "keyword"
+        },
+        "chain": {
+          "type": "keyword"
+        },
+        "assetBuy": {
+          "type": "keyword"
+        },
+        "amountBuy": {
+          "type": "float"
+        },
+        "assetSell": {
+          "type": "keyword"
+        },
+        "amountSell": {
+          "type": "float"
+        },
+        "price": {
+          "type": "float"
+        },
+        "expires": {
+          "type": "keyword"
+        },
+        "type": {
+          "type": "integer"
+        },
+        "hash": {
+          "type": "keyword"
+        },
+        "useraccount": {
+          "type": "keyword"
+        },
+        "side": {
+          "type": "keyword"
+        },
+        "filled": {
+          "type": "integer"
+        },
+        "cancelled": {
+          "type": "integer"
+        },
+        "new": {
+          "type": "integer"
+        },
+        "created": {
+          "type": "date"
+        },
+        "updated": {
+          "type": "date"
+        },
+        "feediscount": {
+          "type": "integer"
+        },
+        "timestamp": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}
+
+
+GET tickers/_search?size=10000
+
+DELETE tickers
+
+GET tickers
+
 PUT tickers
 {
       "template": "ticker",
@@ -27,7 +133,7 @@ PUT tickers
           "type": "keyword"
         },
         "currency": {
-          "type": "integer"
+          "type": "keyword"
         },
         "last": {
           "type": "float"
@@ -55,3 +161,627 @@ PUT tickers
     }
   }
 }
+
+
+
+
+
+
+GET apikeys/_search
+
+GET apikeys
+
+DELETE apikeys
+
+PUT apikeys
+{
+      "template": "apikey",
+    "settings": {
+        "index.refresh_interval": "1s",
+        "analysis": {
+            "analyzer": {
+                "default": {
+                    "type": "standard",
+                    "stopwords": "_none_"
+                }
+            }
+        }
+    },
+
+  "version": 1,
+  "mappings": {
+    "apikey": {
+      "properties": {
+        "name": {
+          "type": "keyword"
+        },
+        "key": {
+          "type": "keyword"
+        },
+        "webhook": {
+          "type": "keyword"
+        },
+        "nonce": {
+          "type": "integer"
+        },
+        "rate": {
+          "type": "integer"
+        },
+        "salt": {
+          "type": "keyword"
+        },
+        "ts": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}
+
+GET eosapievents/_search
+
+DELETE eosapievents
+
+GET eosapievents
+
+DELETE eosapievents
+
+PUT eosapievents
+{
+      "template": "eosapievents",
+    "settings": {
+        "index.refresh_interval": "1s",
+        "analysis": {
+            "analyzer": {
+                "default": {
+                    "type": "standard",
+                    "stopwords": "_none_"
+                }
+            }
+        }
+    },
+
+  "version": 1,
+  "mappings": {
+    "eosapievent": {
+      "properties": {
+        "method": {
+          "type": "keyword"
+        },
+        "sla": {
+          "type": "float"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "ts": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}
+
+GET api-2018.09.30/_search
+DELETE api-2018.09.10
+GET api-2018.09.30
+PUT _template/swaggerapitemplate
+{
+    "template": "api-*",
+    "settings": {
+        "index.refresh_interval": "1s",
+        "analysis": {
+            "analyzer": {
+                "default": {
+                    "type": "standard",
+                    "stopwords": "_none_"
+                }
+            }
+        }
+    },
+
+    "version": 107,
+    "mappings": {
+
+        "api": {
+
+            "dynamic_templates": [
+                {
+                    "reqheaders": {
+                        "path_match": "http.request.headers.*",
+                        "mapping": {
+                            "type": "keyword"
+                        }
+                    }
+                },
+                {
+                    "reqparams": {
+                        "path_match": "http.request.params.*",
+                        "mapping": {
+                            "type": "keyword"
+                        }
+                    }
+                },
+                {
+                    "reqquery": {
+                        "path_match": "http.request.query.*",
+                        "mapping": {
+                            "type": "keyword"
+                        }
+                    }
+                },
+                {
+                    "reqbody": {
+                        "path_match": "http.request.body.*",
+                        "mapping": {
+                            "type": "keyword"
+                        }
+                    }
+                },
+                {
+                    "resheaders": {
+                        "path_match": "http.response.headers.*",
+                        "mapping": {
+                            "type": "keyword"
+                        }
+                    }
+                },
+                {
+                    "apiparams": {
+                        "path_match": "api.params.*",
+                        "mapping": {
+                            "type": "keyword"
+                        }
+                    }
+                },
+                {
+                    "attrs": {
+                        "path_match": "attrs.*",
+                        "mapping": {
+                            "type": "keyword"
+                        }
+                    }
+                },
+                {
+                    "attrsint": {
+                        "path_match": "attrsint.*",
+                        "mapping": {
+                            "type": "long"
+                        }
+                    }
+                }
+            ],
+
+            "properties": {
+
+                "@timestamp":{
+                    "type": "date"
+                },
+                "startts": {
+                    "type": "date"
+                },
+                "endts": {
+                    "type": "date"
+                },
+                "responsetime": {
+                    "type": "long"
+                },
+                "path": {
+                    "type": "keyword"
+                },
+                "method": {
+                    "type": "keyword"
+                },
+                "query": {
+                    "type": "keyword"
+                },
+                "ip": {
+                    "type": "keyword"
+                },
+                "real_ip": {
+                    "type": "keyword"
+                },
+                "port": {
+                    "type": "long"
+                },
+
+                "node": {
+                    "properties": {
+                        "name": {
+                            "type": "keyword"
+                        },
+                        "version": {
+                            "type": "keyword"
+                        },
+                        "hostname": {
+                            "type": "keyword"
+                        },
+                        "ip": {
+                            "type": "keyword"
+                        }
+                    }
+                },
+
+                "http": {
+                    "properties": {
+                        "request": {
+                            "properties": {
+                                "clength": {
+                                    "type": "long"
+                                },
+                                "url": {
+                                    "type": "keyword"
+                                }
+                            }
+                        },
+                        "response": {
+                            "properties": {
+                                "clength": {
+                                    "type": "long"
+                                },
+                                "code": {
+                                    "type": "long"
+                                },
+                                "class": {
+                                    "type": "keyword"
+                                },
+                                "phrase": {
+                                    "type": "keyword"
+                                }
+                            }
+                        }
+                    }
+                },
+
+                "api": {
+                    "properties": {
+                        "operationId": {
+                            "type": "keyword"
+                        },
+                        "path": {
+                            "type": "keyword"
+                        },
+                        "query": {
+                            "type": "keyword"
+                        },
+                        "swagger": {
+                            "type": "boolean"
+                        },
+                        "deprecated": {
+                            "type": "boolean"
+                        },
+                        "tags": {
+                            "type": "keyword"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+//SWAGGER-STATS
+DELETE api-2018.09.24
+
+//NGIPLUS events
+GET ngiplusevents/_search?pretty
+
+POST ngiplusevents/_update_by_query?conflicts=proceed
+{
+  "script" : {
+        "source": "ctx._source.success = true"
+    },
+  "query": { 
+    "term": {
+      "success": false
+    }
+  }
+}
+
+DELETE /ngiplusevents
+
+PUT ngiplusevents
+{
+  "mappings": {
+    "ngiplusevent": {
+      "properties": {
+        "message": {
+          "type": "keyword"
+        },
+        "sla": {
+          "type": "float"
+        },
+        "node": {
+          "type": "keyword"
+        },
+        "core": {
+          "type": "keyword"
+        },
+        "fi": {
+          "type": "keyword"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "created": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}
+
+
+GET events/_search
+
+DELETE /events
+
+PUT events
+{
+  "mappings": {
+    "event": {
+      "properties": {
+        "message": {
+          "type": "keyword"
+        },
+        "sla": {
+          "type": "float"
+        },
+        "broker": {
+          "type": "keyword"
+        },
+        "core": {
+          "type": "keyword"
+        },
+        "slave": {
+          "type": "keyword"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "created": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}
+
+
+
+//INDEX PERF EVENTS
+
+GET /perfevents/_search
+
+DELETE /perfevents
+
+//REMOVE DIIS-NGI and NATIVE-FISERV records
+POST perfevents/_delete_by_query
+{
+  "query": { 
+    "match": {
+      "adaptor": "IPlat-Native-Fiserv(SBX)"
+    }
+  }
+}
+
+
+
+<!-- find distinct messages -->
+GET /perfevents/_search
+{
+  "size": 0,
+  "aggs": {
+    "distinct_labels": {
+      "terms": {
+        "field": "adaptor",
+        "size": 1000
+      }
+    }
+  }
+}
+
+<!-- find distinct messages that failed-->
+GET perfevents/_search?pretty
+{
+  "query": {
+    "bool": {
+      "must_not": [
+        {
+          "term": {
+            "responseCode": "200"
+          }
+        }
+      ]
+    }
+  },
+  "aggs": {
+    "distinct": {
+      "terms": {
+        "field": "label"
+      }
+    }
+  }
+}
+
+GET perfevents/_search?pretty
+{
+  "query": {
+    "bool": {
+      "must_not": [
+        {
+          "term": {
+            "responseCode": "500"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+//for perf events
+PUT perfevents 
+{
+    "mappings": {
+        "perfevent": {
+            "properties": {
+                "elapsed": {
+                    "type": "float"
+                },
+                "label": {
+                    "type": "keyword"
+                },
+                "responseCode": {
+                    "type": "keyword"
+                },
+                "responseMessage": {
+                    "type": "keyword"
+                },
+                "threadName": {
+                    "type": "keyword"
+                },
+                "timeStamp": {
+                    "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+                },
+                "dataType": {
+                    "type": "keyword"
+                },
+                "success": {
+                    "type": "keyword"
+                },
+                "failureMessage": {
+                    "type": "keyword"
+                },
+                "bytes": {
+                    "type": "keyword"
+                },
+                "sentBytes": {
+                    "type": "keyword"
+                },
+                "grpThreads": {
+                    "type": "float"
+                },
+                "allThreads": {
+                    "type": "keyword"
+                },
+
+                "URL": {
+                    "type": "keyword"
+                },
+
+                "adaptor": {
+                    "type": "keyword"
+                },
+
+                "Latency": {
+                    "type": "float"
+                },
+
+                "SampleCount": {
+                    "type": "keyword"
+                },
+
+                "ErrorCount": {
+                    "type": "keyword"
+                },
+
+                "Hostname": {
+                    "type": "keyword"
+                },
+
+                "IdleTime": {
+                    "type": "keyword"
+                },
+                "Connect": {
+                    "type": "keyword"
+                }
+            }
+        }
+    }
+}
+
+
+//for perf events V2
+PUT perfeventsv2 
+{
+    "mappings": {
+        "perfeventv2": {
+            "properties": {
+                "elapsed": {
+                    "type": "float"
+                },
+                "message": {
+                    "type": "keyword"
+                },
+                "timeStamp": {
+                    "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+                },
+                "min": {
+                    "type": "float"
+                },
+                "max": {
+                    "type": "float"
+                },
+                "avg": {
+                    "type": "float"
+                },
+                "err": {
+                    "type": "keyword"
+                },
+                "tps": {
+                    "type": "float"
+                },
+                "bytes": {
+                    "type": "float"
+                },
+                "threads": {
+                    "type": "float"
+                },
+                "adaptor": {
+                    "type": "keyword"
+                }
+            }
+        }
+    }
+}
+
+PUT perfeventsv2/_mapping/perfeventv2
+{
+  "properties": {
+    "adaptor": { 
+      "type":     "text",
+      "fielddata": true
+    }
+  }
+}
+
+PUT perfeventsv2/_mapping/perfeventv2
+{
+  "properties": {
+    "message": { 
+      "type":     "text",
+      "fielddata": true
+    }
+  }
+}
+
+//REMOVE spurious records
+POST perfeventsv2/_delete_by_query
+{
+  "query": { 
+    "match": {
+      "adaptor": ".DS_Store[undefined]"
+    }
+  }
+}
+
+
+GET /perfeventsv2/_search
+
+DELETE /perfeventsv2
