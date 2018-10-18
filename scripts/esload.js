@@ -85,7 +85,7 @@ function loadOrders() {
             } else {
                 console.log(body);
                 var orders = [];
-                for (var j = 0, len = 1000; j < len; j++) {
+                for (var j = 0, len = 3800; j < len; j++) {
                     //create 1000 orders per symbol
                     // sleep.sleep(2);
                     var order = {};
@@ -94,6 +94,9 @@ function loadOrders() {
                     //set up randomizers
                     var items = [1, 2];
                     var expires = ["1d", "2d", "3d", "7d"];
+                    var sources = ["UberDEX", "UberDEX", "A-DEX", "B-DEX", "MBAEX"];
+                    var source = sources[Math.floor(Math.random() * sources.length)];
+
                     var item = items[Math.floor(Math.random() * items.length)];
                     var expire = expires[Math.floor(Math.random() * expires.length)];
                     var randomOrderPrice = ((Math.random() * (1.12 - 0.95) + 0.95) * parseFloat(ticker[0].last)).toFixed(7);
@@ -102,7 +105,7 @@ function loadOrders() {
                     var randomSell = (randomOrderPrice * randomAmountBuy).toFixed(4);
 
                     //construct order
-                    order.source = "UberDEX";
+                    order.source = source;
                     order.price = parseFloat(randomOrderPrice);
                     order.side = (order.price > (parseFloat(ticker[0].last)).toFixed(7)) ? "SELL" : "BUY"; //BUY/SELL
                     order.chain = BASE_SYMBOL;
