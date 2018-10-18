@@ -103,24 +103,24 @@ function loadOrders() {
 
                     //construct order
                     order.source = "UberDEX";
-                    order.price = randomOrderPrice;
+                    order.price = parseFloat(randomOrderPrice);
                     order.side = (order.price > (parseFloat(ticker[0].last)).toFixed(7)) ? "SELL" : "BUY"; //BUY/SELL
                     order.chain = BASE_SYMBOL;
                     if (order.side.includes("BUY")) {
                         // console.log("BUY ORDER");
                         order.assetBuy = ticker[0].symbol;
                         order.assetSell = BASE_SYMBOL;
-                        order.amountBuy = randomAmountBuy;
-                        order.amountSell = randomSell;
+                        order.amountBuy = parseFloat(randomAmountBuy);
+                        order.amountSell = parseFloat(randomSell);
                     } else {
                         // console.log("SELL ORDER");
                         order.assetBuy = BASE_SYMBOL;
                         order.assetSell = ticker[0].symbol;
-                        order.amountBuy = randomSell;
-                        order.amountSell = randomAmountBuy;
+                        order.amountBuy = parseFloat(randomSell);
+                        order.amountSell = parseFloat(randomAmountBuy);
                     }
                     order.expires = expire; // 1d, 2d, 3d, 7d?
-                    order.type = item; //1 = MARKET, 2 = LIMIT
+                    order.type = 2; //1 = MARKET, 2 = LIMIT
 
                     // order.nonce = 2434;
                     order.hash = getHash();
@@ -192,7 +192,7 @@ function index(indexName, indexType, object) {
 //ping();
 //index();
 //read();
-loadOrders();
+//loadOrders();
 //console.log (getAccountName());
 
 module.exports.loadOrders = loadOrders;

@@ -123,6 +123,35 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /orders:
+    x-swagger-router-controller: dorders
+    get:
+      tags:
+        - DEX API {symbols,ticker,orders,trades}
+      description: Returns order books for a given symbol on DEX
+      operationId: orders
+      parameters:
+        - in: query
+          name: symbol
+          required: true
+          type: string
+        - in: query
+          name: side
+          required: true
+          type: string
+        - in: query
+          name: size
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/ordersResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /tokensByAccount/{account}:
     x-swagger-router-controller: tokensByAccount
     get:
@@ -758,6 +787,32 @@ definitions:
           low: 0.00173,
           amount: 1210563.5455,
           volume: 2182982.0000,
+        }
+  ordersResponse:
+    type: array
+    items:
+      type: object
+      example:
+        {
+          source: IQ,
+          price: 0.0018647,
+          side: BUY,
+          chain: EOS,
+          assetBuy: IQ,
+          assetSell: 0.4294,
+          amountBuy: 230.239,
+          amountSell: 0.4294,
+          expires: 1d,
+          type: 2,
+          hash: cf583f7ef02852845247953b45f8abce4ea7e134,
+          useraccount: randomgooppy,
+          filled: 2,
+          cancelled: 2,
+          new: 2,
+          created: 2018-10-17 13:24:21,
+          updated: 2018-10-17 14:59:11,
+          feediscount: 2,
+          timestamp: 1539813551,
         }
   tokensByAccountResponse:
     type: array

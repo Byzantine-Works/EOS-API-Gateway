@@ -40,6 +40,86 @@ async function read(indexName, indexType, symbol) {
     });
 }
 
+async function getOrders(indexName, indexType, symbol, side, size) {
+    // if (side.toString().trim() === 'BUY')
+
+
+    //TODO : Seems like attribute name cannot be passed dymanically
+    //TODO : Figure and fix this later
+    if (side.toString().trim() === 'BUY') {
+        return await client.search({
+            index: indexName,
+            type: indexType,
+            size: size,
+            sort: 'price:desc',
+            // chain: "EOS",
+            body: {
+                query: {
+                    "bool": {
+                        "must": [{
+                                "match": {
+                                    "assetBuy.keyword": symbol
+                                }
+                            },
+                            {
+                                "match": {
+                                    "side.keyword": side
+                                }
+                            },
+                            {
+                                "match": {
+                                    "filled": 2
+                                }
+                            },
+                            {
+                                "match": {
+                                    "cancelled": 2
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        });
+    } else {
+        return await client.search({
+            index: indexName,
+            type: indexType,
+            size: size,
+            sort: 'price:asc',
+            // chain: "EOS",
+            body: {
+                query: {
+                    "bool": {
+                        "must": [{
+                                "match": {
+                                    "assetSell.keyword": symbol
+                                }
+                            },
+                            {
+                                "match": {
+                                    "side.keyword": side
+                                }
+                            },
+                            {
+                                "match": {
+                                    "filled": 2
+                                }
+                            },
+                            {
+                                "match": {
+                                    "cancelled": 2
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        });
+    }
+
+}
+
 function testAuditEvent() {
     client.index({
         index: indexName,
@@ -174,3 +254,4 @@ module.exports.addApiKey4Keygen = addApiKey4Keygen;
 module.exports.getApiKeySet = getApiKeySet;
 module.exports.incrementNonce = incrementNonce;
 module.exports.readIndex = read;
+module.exports.getOrders = getOrders;

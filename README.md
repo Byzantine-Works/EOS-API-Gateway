@@ -186,6 +186,13 @@ curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/ti
 
 //get ticker (market data for specific token)
 curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/ticker?symbol=IQ&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
+
+//get BUY side orders for IQ
+curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/orders?symbol=IQ&side=BUY&size=10&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
+
+//get SELL side orders for IQ
+curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/orders?symbol=IQ&side=SELL&size=10&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
+
 ```
 
 ### Todos
