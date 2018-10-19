@@ -117,7 +117,96 @@ async function getOrders(indexName, indexType, symbol, side, size) {
             }
         });
     }
+}
 
+async function getOrderBook(indexName, indexType, symbol, size) {
+    const buyOrderBook = await client.search({
+        index: indexName,
+        type: indexType,
+        size: size,
+        sort: 'price:desc',
+        // chain: "EOS",
+        body: {
+            query: {
+                "bool": {
+                    "must": [{
+                            "match": {
+                                "assetBuy.keyword": symbol
+                            }
+                        },
+                        {
+                            "match": {
+                                "side.keyword": "BUY"
+                            }
+                        },
+                        {
+                            "match": {
+                                "filled": 2
+                            }
+                        },
+                        {
+                            "match": {
+                                "cancelled": 2
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    });
+
+    const sellOrderBook = await client.search({
+        index: indexName,
+        type: indexType,
+        size: size,
+        sort: 'price:asc',
+        // chain: "EOS",
+        body: {
+            query: {
+                "bool": {
+                    "must": [{
+                            "match": {
+                                "assetSell.keyword": symbol
+                            }
+                        },
+                        {
+                            "match": {
+                                "side.keyword": "SELL"
+                            }
+                        },
+                        {
+                            "match": {
+                                "filled": 2
+                            }
+                        },
+                        {
+                            "match": {
+                                "cancelled": 2
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    });
+    console.log("buyOrderBook size => " + buyOrderBook.hits.hits.length);
+    console.log("sellOrderBook size => " + sellOrderBook.hits.hits.length);
+    var buyOrderData = [];
+    for (var i = 0, len = buyOrderBook.hits.hits.length; i < len; i++) {
+        buyOrderData.push(buyOrderBook.hits.hits[i]._source)
+    }
+
+    var sellOrderData = [];
+    for (var i = 0, len = sellOrderBook.hits.hits.length; i < len; i++) {
+        sellOrderData.push(sellOrderBook.hits.hits[i]._source)
+    }
+
+    var orderbook = {};
+    orderbook.asks = sellOrderData;
+    orderbook.bids = buyOrderData;
+    //console.log("orderbook => " + JSON.stringify(orderbook));
+
+    return orderbook;
 }
 
 function testAuditEvent() {
@@ -255,3 +344,4 @@ module.exports.getApiKeySet = getApiKeySet;
 module.exports.incrementNonce = incrementNonce;
 module.exports.readIndex = read;
 module.exports.getOrders = getOrders;
+module.exports.getOrderBook = getOrderBook;

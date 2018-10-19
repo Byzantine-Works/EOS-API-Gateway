@@ -152,6 +152,35 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /orderbook:
+    x-swagger-router-controller: dorderbook
+    get:
+      tags:
+        - DEX API {symbols,ticker,orders,trades}
+      description: Returns order books for a given symbol on DEX
+      operationId: orderbook
+      parameters:
+        - in: query
+          name: symbol
+          required: true
+          type: string
+        - in: query
+          name: ticksize
+          required: false
+          type: integer
+        - in: query
+          name: size
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/orderBookResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /tokensByAccount/{account}:
     x-swagger-router-controller: tokensByAccount
     get:
@@ -718,6 +747,16 @@ paths:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
 definitions:
+  orderBookResponse:
+    properties:
+      asks:
+        type: array
+        items:
+          type: object
+      bids:
+        type: array
+        items:
+          type: object
   infoResponse:
     properties:
       server_version:
