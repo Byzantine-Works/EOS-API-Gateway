@@ -193,6 +193,9 @@ curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/or
 //get SELL side orders for IQ
 curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/orders?symbol=IQ&side=SELL&size=10&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
 
+//get complete order book for IQ with depth =n
+curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/orderbook?symbol=IQ&size=10&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' |json_pp
+
 ```
 
 ### Todos
