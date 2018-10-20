@@ -24,7 +24,7 @@ function orders(req, res) {
   es.getOrders(indexName, indexType, symbol, side, size).then(function (orders) {
     var order = util.sanitizeOrderData(orders.hits.hits);
 
-    console.log('order data => ' + JSON.stringify(order));
+    // console.log('order data => ' + JSON.stringify(order));
     var t1 = performance.now();
     es.auditAPIEvent(req, t1 - t0, true);
     res.json(order);

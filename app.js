@@ -36,7 +36,7 @@ var config = {
   swaggerSecurityHandlers: {
     // Allow for Query in addition to Headers
     APIKeyQueryParam: function (req, authOrSecDef, scopesOrApiKey, cb) {
-      console.log('~~ In APIKeyQueryParam\n')
+      // console.log('~~ In APIKeyQueryParam\n')
       config.swaggerSecurityHandlers.APIKeyHeaderParam(req, authOrSecDef, scopesOrApiKey, cb)
     },
     APIKeyHeaderParam: function (req, authOrSecDef, scopesOrApiKey, cb) {
