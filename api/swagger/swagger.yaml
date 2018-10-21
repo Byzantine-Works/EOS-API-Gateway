@@ -197,7 +197,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/infoResponse"
+            $ref: "#/definitions/orderBookResponse"
         "400":
           description: Error
           schema:
@@ -209,6 +209,39 @@ paths:
         - DEX API {symbols,ticker,orders,trades}
       description: Deposit EOS DACs to the exchange account {from account}  {amount as extended asset}
       operationId: deposit
+      parameters:
+        - name: body
+          in: body
+          description: Body should encapsulate {from=Account to transfer from}, {amount=amout to transfer such as 1.0000 EOS or 1.000 IQ}}
+          required: true
+          schema:
+            properties:
+              from:
+                type: string
+              amount:
+                type: string
+              sig:
+                type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/transferResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Error
+          schema:
+            $ref: "#/definitions/TransferErrorResponse"
+  /exwithdraw:
+    x-swagger-router-controller: dwithdraw
+    post:
+      tags:
+        - DEX API {symbols,ticker,orders,trades}
+      description: Withdraw EOS DACs from the exchange account {from user account}  {amount as extended asset}
+      operationId: withdraw
       parameters:
         - name: body
           in: body

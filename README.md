@@ -204,8 +204,11 @@ curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/or
 curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/orderbooktick?symbol=IQ&ticksize=0.0000010&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' |json_pp
 
 
-//deposit into UberDEX exchange contract>
+//deposit into UberDEX exchange contract
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"from":"reddy","amount":"0.0001 EOS","sig":"21E5D718BDF2BC83FEC192116DE6AEBC9B310039D75965076BEA4F1DD0745D7F57794A48D33F4D94F2679F973DC793D63D9E16CE457FDB3F6F2B06836A641480"}' 'http://local.byzanti.ne:8901/exdeposit?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' |json_pp
+
+//withdraw from UberDEX exchange contract
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"from":"reddy","amount":"0.0001 EOS","sig":"4A265092CC236908F99F25247AF94C03F8EB1DB0A05F599235CCC41CB47E6A1220AD91347854AF7417D367771F8E1D93ED4F83075DEBACAB974D4DD01327668B"}' 'http://local.byzanti.ne:8901/exwithdraw?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N'
 ```
 
 ### Todos
