@@ -165,10 +165,6 @@ paths:
           required: true
           type: string
         - in: query
-          name: ticksize
-          required: false
-          type: integer
-        - in: query
           name: size
           required: true
           type: integer
@@ -177,6 +173,31 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/orderBookResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /orderbooktick:
+    x-swagger-router-controller: dorderbooktick
+    get:
+      tags:
+        - DEX API {symbols,ticker,orders,trades}
+      description: Ticksize based return of order book price aggregation for a given symbol on DEX
+      operationId: orderbooktick
+      parameters:
+        - in: query
+          name: symbol
+          required: true
+          type: string
+        - in: query
+          name: ticksize
+          required: true
+          type: number
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/infoResponse"
         "400":
           description: Error
           schema:
