@@ -1,3 +1,9 @@
+# Simple index search queries
+GET symbols/_search
+GET tickers/_search
+GET orders/_search
+
+# Testing LDAR orderbooktick search tempate inputs are symbol and ticksize currency precision returns asks and bids as aggregation for the entire dataset in orders index
 GET _search/template
 {
   "id": "orderbooktemplate",
@@ -7,8 +13,10 @@ GET _search/template
   }
 }
 
+# Retreive orderbook template for schema and query DSL inspection
 GET _scripts/orderbooktemplate
 
+# Register orderbooktemplate for ticksize driven orderbook retreival aggs query
 POST _scripts/orderbooktemplate
 {
   "script": {
@@ -109,6 +117,7 @@ POST _scripts/orderbooktemplate
   }
 }
 
+# dummy scratchpad for testing orders
 GET orders/_search
 {
   "size": 1,

@@ -6,7 +6,7 @@ const config = require('./chainsnapshot.js');
 const elasticsearch = require('elasticsearch');
 const dexconfig = require('../api/dexconfig');
 const nodeDateTime = require('node-datetime');
-const sleep = require('sleep');
+// const sleep = require('sleep');
 
 const client = new elasticsearch.Client({
     host: process.env.ES_HOST_INFO

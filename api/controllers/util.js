@@ -23,6 +23,7 @@ function sanitizeTickerData(rawTickerData) {
 function sanitizeOrderData(orderData) {
     var order = [];
     for (var i = 0, len = orderData.length; i < len; i++) {
+        orderData[i]._source.orderId = orderData[i]._id;
         order.push(orderData[i]._source)
     }
     return order;
