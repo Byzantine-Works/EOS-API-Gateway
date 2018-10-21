@@ -36,6 +36,7 @@
 ```
 
 # Design
+
 The high-level design shown below provides an unified interface for all on-chain EOS operations.
 
 - The key components are the API itself, which encapsulates the EOS-chain rpc/api/table methods and encapsulates the nuances by using eosjs and ecc.
@@ -91,13 +92,16 @@ npm start
 - swagger-editor: https://editor.swagger.io/
 
 # API cheat sheet
-*** The FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N apikey used to illustrate the methods is for test purpose only. If you require a key for industrial-grade calls/low latency please reach out to us with a few bytes on intended purpose at hello@byzanti.ne
+
+\*\*\* The FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N apikey used to illustrate the methods is for test purpose only. If you require a key for industrial-grade calls/low latency please reach out to us with a few bytes on intended purpose at hello@byzanti.ne
 
 ### EOS API Endpoint
+
 - [API Explorer](http://api.byzanti.ne:8902/docs)
 - [API json Docs](http://api.byzanti.ne:8902/api-docs)
 
 ### EOS API Analytics
+
 [OpenAPI Analytics](http://api.byzanti.ne:8902/swagger-stats/ui#sws_summary)
 
 ```sh
@@ -196,6 +200,8 @@ curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/or
 //get complete order book for IQ with depth =n
 curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/orderbook?symbol=IQ&size=10&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' |json_pp
 
+//get complete order book for IQ with depth =n and ticksize=0.0000010
+curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/orderbooktick?symbol=IQ&ticksize=0.0000010&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' |json_pp
 ```
 
 ### Todos
