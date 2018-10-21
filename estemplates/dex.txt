@@ -1,6 +1,310 @@
-GET orders/_search?size=1000
+GET _search/template
+{
+  "id": "orderbooktemplate",
+  "params": {
+    "symbol": "IQ",
+    "ticksize": 0.000001
+  }
+}
+
+GET _scripts/orderbooktemplate
+
+POST _scripts/orderbooktemplate
+{
+  "script": {
+    "lang": "mustache",
+    "source": {
+      "query": {
+        "bool": {
+          "should": [
+            {
+              "bool": {
+                "must": [
+                  {
+                    "match": {
+                      "assetSell": "{{symbol}}"
+                    }
+                  },
+                  {
+                    "match": {
+                      "assetBuy": "EOS"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "bool": {
+                "must": [
+                  {
+                    "match": {
+                      "assetSell": "EOS"
+                    }
+                  },
+                  {
+                    "match": {
+                      "assetBuy": "{{symbol}}"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "size": 0,
+      "aggs": {
+        "asks-aggs": {
+          "terms": {
+            "field": "side",
+            "include": "SELL"
+          },
+          "aggs": {
+            "asks": {
+              "histogram": {
+                "field": "price",
+                "interval": "{{ticksize}}",
+                "order": {
+                  "_key": "asc"
+                },
+                "min_doc_count": 1
+              },
+              "aggs": {
+                "sumAmountSell": {
+                  "sum": {
+                    "field": "amountSell"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "bids-aggs": {
+          "terms": {
+            "field": "side",
+            "include": "BUY"
+          },
+          "aggs": {
+            "bids": {
+              "histogram": {
+                "field": "price",
+                "interval": "{{ticksize}}",
+                "order": {
+                  "_key": "desc"
+                },
+                "min_doc_count": 1
+              },
+              "aggs": {
+                "sumAmountSell": {
+                  "sum": {
+                    "field": "amountBuy"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+GET orders/_search
+{
+  "size": 1,
+  "_source": {
+    "excludes": []
+  },
+  "aggs": {},
+  "stored_fields": [
+    "*"
+  ],
+  "script_fields": {},
+  "docvalue_fields": [
+    "timestamp"
+  ],
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match_all": {}
+        }
+      ],
+      "filter": [],
+      "should": [],
+      "must_not": []
+    }
+  }
+}
+
+GET symbols/_search?size=1000
+
+POST orders/order
+{
+  "source": "B-DEX",
+  "price": 0.0000086,
+  "side": "SELL",
+  "chain": "EOS",
+  "assetBuy": "EOS",
+  "assetSell": "BTN",
+  "amountBuy": 0,
+  "amountSell": 0.3046,
+  "expires": "3d",
+  "type": 2,
+  "hash": "72a88a84d25464e44c2f2c38fed29d81bd0c98ec",
+  "useraccount": "gi2dqmjrgyge",
+  "filled": 2,
+  "cancelled": 2,
+  "new": 2,
+  "created": "2018-10-20 15:39:22",
+  "updated": "2018-10-20 15:39:22",
+  "feediscount": 2,
+  "timestamp": 1540075162
+}
+
+GET orders/_mapping
+GET orders/_count
+GET orders/_search
+ 
+POST orders/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "assetSell": "IQ"
+          }
+        },
+        {
+          "range": {
+            "price": {
+              "gte": 0.001912,
+              "lt": 0.001913
+            }
+          }
+        }
+      ]
+    }
+  },
+  "aggs": {
+    "totalavail": {
+      "sum": {
+        "field": "amountBuy"
+      }
+    }
+  }
+}
+
+GET orders/_search
+{
+  "size": 0, 
+  "aggs": {
+    "NAME": {
+      "terms": {
+        "field": "assetSell",
+        "size": 10,
+        "include": "IQ"
+      }
+    }
+  }
+}
 
 
+GET orders/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "bool": {
+            "must": [
+              {
+                "match": {
+                  "assetSell": "IQ"
+                }
+              },
+              {
+                "match": {
+                  "assetBuy": "EOS"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "bool": {
+            "must": [
+              {
+                "match": {
+                  "assetSell": "EOS"
+                }
+              },
+              {
+                "match": {
+                  "assetBuy": "IQ"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "size": 0,
+  "aggs": {
+    "asks-aggs": {
+      "terms": {
+        "field": "side",
+        "include": "SELL"
+      },
+      "aggs": {
+        "asks": {
+          "histogram": {
+            "field": "price",
+            "interval": 0.000001,
+            "order": {
+              "_key": "asc"
+            },
+            "min_doc_count": 1
+          },
+          "aggs": {
+            "sumAmountSell": {
+              "sum": {
+                "field": "amountSell"
+              }
+            }
+          }
+        }
+      }
+    },
+    "bids-aggs": {
+      "terms": {
+        "field": "side",
+        "include": "BUY"
+      },
+      "aggs": {
+        "bids": {
+          "histogram": {
+            "field": "price",
+            "interval": 0.000001,
+            "order": {
+              "_key": "desc"
+            },
+            "min_doc_count": 1
+          },
+          "aggs": {
+            "sumAmountSell": {
+              "sum": {
+                "field": "amountBuy"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
 POST /orders/order/_search
 {
@@ -17,7 +321,7 @@ GET orders
 
 PUT orders
 {
-      "template": "order",
+      "template": "orders",
     "settings": {
         "index.refresh_interval": "1s",
         "analysis": {
@@ -32,7 +336,7 @@ PUT orders
 
   "version": 1,
   "mappings": {
-    "ticker": {
+    "order": {
       "properties": {
         "source": {
           "type": "keyword"
@@ -80,10 +384,10 @@ PUT orders
           "type": "integer"
         },
         "created": {
-          "type": "date"
+          "type": "keyword"
         },
         "updated": {
-          "type": "date"
+          "type": "keyword"
         },
         "feediscount": {
           "type": "integer"
@@ -100,7 +404,7 @@ PUT orders
 
 GET tickers/_search?size=10000
 
-DELETE tickers
+DELETE /tickers
 
 GET tickers
 
@@ -139,7 +443,8 @@ PUT tickers
           "type": "float"
         },
         "change": {
-          "type": "float"
+          "type": "scaled_float",
+          "scaling_factor": 100
         },
         "high": {
           "type": "float"

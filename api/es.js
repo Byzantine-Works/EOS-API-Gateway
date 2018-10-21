@@ -58,12 +58,12 @@ async function getOrders(indexName, indexType, symbol, side, size) {
                     "bool": {
                         "must": [{
                                 "match": {
-                                    "assetBuy.keyword": symbol
+                                    "assetBuy": symbol
                                 }
                             },
                             {
                                 "match": {
-                                    "side.keyword": side
+                                    "side": side
                                 }
                             },
                             {
@@ -93,12 +93,12 @@ async function getOrders(indexName, indexType, symbol, side, size) {
                     "bool": {
                         "must": [{
                                 "match": {
-                                    "assetSell.keyword": symbol
+                                    "assetSell": symbol
                                 }
                             },
                             {
                                 "match": {
-                                    "side.keyword": side
+                                    "side": side
                                 }
                             },
                             {
@@ -119,6 +119,18 @@ async function getOrders(indexName, indexType, symbol, side, size) {
     }
 }
 
+async function getOrderBookTick(symbol, ticksize) {
+    return await client.searchTemplate({
+        body: {
+            id: "orderbooktemplate",
+            params: {
+                "symbol": symbol,
+                "ticksize": ticksize
+            }
+        }
+    });
+}
+
 async function getOrderBook(indexName, indexType, symbol, size) {
     const buyOrderBook = await client.search({
         index: indexName,
@@ -131,12 +143,12 @@ async function getOrderBook(indexName, indexType, symbol, size) {
                 "bool": {
                     "must": [{
                             "match": {
-                                "assetBuy.keyword": symbol
+                                "assetBuy": symbol
                             }
                         },
                         {
                             "match": {
-                                "side.keyword": "BUY"
+                                "side": "BUY"
                             }
                         },
                         {
@@ -166,12 +178,12 @@ async function getOrderBook(indexName, indexType, symbol, size) {
                 "bool": {
                     "must": [{
                             "match": {
-                                "assetSell.keyword": symbol
+                                "assetSell": symbol
                             }
                         },
                         {
                             "match": {
-                                "side.keyword": "SELL"
+                                "side": "SELL"
                             }
                         },
                         {
@@ -345,3 +357,4 @@ module.exports.incrementNonce = incrementNonce;
 module.exports.readIndex = read;
 module.exports.getOrders = getOrders;
 module.exports.getOrderBook = getOrderBook;
+module.exports.getOrderBookTick = getOrderBookTick;

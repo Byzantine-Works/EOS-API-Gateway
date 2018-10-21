@@ -51,8 +51,8 @@ function readTickers(symbol) {
     return read('tickers', 'ticker', symbol);
 }
 
-function readOrders(symbol) {
-    return read('orders', 'order', "IQ");
+function readOrders() {
+    return read('orders', 'order');
 }
 
 async function readSymbols() {
@@ -161,7 +161,7 @@ function loadOrders() {
 
                         var item = items[Math.floor(Math.random() * items.length)];
                         var expire = expires[Math.floor(Math.random() * expires.length)];
-                        var randomOrderPrice = ((Math.random() * (1.12 - 0.95) + 0.95) * parseFloat(ticker[0].last)).toFixed(7);
+                        var randomOrderPrice = ((Math.random() * (1.12 - 0.98) + 0.98) * parseFloat(ticker[0].last)).toFixed(7);
                         var randomAmount = (Math.random() * (649678.1234 - 12312.1234) + 12312.10).toFixed(4);
                         var randomAmountBuy = (randomAmount * randomOrderPrice).toFixed(4);
                         var randomSell = (randomOrderPrice * randomAmountBuy).toFixed(4);
@@ -197,8 +197,8 @@ function loadOrders() {
                         order.updated = nodeDateTime.create().format('Y-m-d H:M:S');
                         order.feediscount = item; //1 = FEE DISCOUNT else NOT (if the participant dex pays outside the exec window)?
                         order.timestamp = Math.floor(new Date() / 1000);
-                        // console.log(" Order is => " + JSON.stringify(order, null, 4));
-                        // process.exit(-23);
+                        //console.log(" Order is => " + JSON.stringify(order, null, 4));
+                        //process.exit(-23);
                         orders.push({
                             index: {
                                 _index: 'orders',
