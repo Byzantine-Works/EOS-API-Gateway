@@ -205,11 +205,13 @@ async function getOrderBook(indexName, indexType, symbol, size) {
     console.log("sellOrderBook size => " + sellOrderBook.hits.hits.length);
     var buyOrderData = [];
     for (var i = 0, len = buyOrderBook.hits.hits.length; i < len; i++) {
+        buyOrderBook.hits.hits[i]._source.orderId = buyOrderBook.hits.hits[i]._id;
         buyOrderData.push(buyOrderBook.hits.hits[i]._source)
     }
 
     var sellOrderData = [];
     for (var i = 0, len = sellOrderBook.hits.hits.length; i < len; i++) {
+        sellOrderBook.hits.hits[i]._source.orderId = sellOrderBook.hits.hits[i]._id;
         sellOrderData.push(sellOrderBook.hits.hits[i]._source)
     }
 
