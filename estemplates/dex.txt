@@ -54,7 +54,7 @@ POST _scripts/orderbooktemplate
       },
       "size": 0,
       "aggs": {
-        "asks-aggs": {
+        "asks_aggs": {
           "terms": {
             "field": "side",
             "include": "SELL"
@@ -79,7 +79,7 @@ POST _scripts/orderbooktemplate
             }
           }
         },
-        "bids-aggs": {
+        "bids_aggs": {
           "terms": {
             "field": "side",
             "include": "BUY"
