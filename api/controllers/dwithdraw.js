@@ -31,6 +31,7 @@ function withdraw(req, res) {
     exchangeapi.exwithdraw("admin", from, amount + "@" + contract, decipheredKey[0]).then(function (result) {
       console.log("withdraw-res => " + JSON.stringify(result));
       es.incrementNonce(apiKey, Number(decipheredKey[0]));
+      es.updateBalanceRecord(from, amount.toString().split(' ')[0], amount.toString().split(' ')[1], "withdraw");
       var t1 = performance.now();
       es.auditAPIEvent(req, t1 - t0, true);
       res.json(result);

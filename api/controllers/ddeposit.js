@@ -33,7 +33,8 @@ function deposit(req, res) {
     exchangeapi.exdeposit(contract, from, amount, decipheredKey[1], decipheredKey[0]).then(function (result) {
       console.log("exdeposit-res => " + JSON.stringify(result));
       es.incrementNonce(apiKey, Number(decipheredKey[0]));
-      var t1 = performance.now();
+      es.updateBalanceRecord(from, amount.toString().split(' ')[0], amount.toString().split(' ')[1], "deposit");
+      var t1 = performance.now(from.amount);
       es.auditAPIEvent(req, t1 - t0, true);
       res.json(result);
     }).catch(err => {

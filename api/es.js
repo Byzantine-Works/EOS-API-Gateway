@@ -332,7 +332,7 @@ function index(object, indexName, indexType) {
     }
 }
 
-async function addBalanceRecord(user, amount, symbol, type) {
+async function updateBalanceRecord(user, amount, symbol, type) {
     var dtFormatted = datetime.create().format('Y-m-d H:M:S');
     var amount = parseFloat(amount);
     console.log("addBalanceRecord :: user:amount:symbol => " + user + ":" + amount + ":" + symbol);
@@ -357,7 +357,17 @@ async function addBalanceRecord(user, amount, symbol, type) {
 
     if (accountAndSymbolExists.hits.hits.length > 0) {
         //case of account and symbol exist, perform update
-        var updateAmount = (parseFloat(amount) + parseFloat(accountAndSymbolExists.hits.hits[0]._source.amount)).toFixed(4);
+        var updateAmount;
+        if (type.toString().trim() === EX_ACTION_TYPE_DEPOSIT) {
+            updateAmount = (parseFloat(amount) + parseFloat(accountAndSymbolExists.hits.hits[0]._source.amount)).toFixed(4);
+        } else if (type.toString().trim() === EX_ACTION_TYPE_WITHDRAW) {
+            if ((parseFloat(amount)) > parseFloat(accountAndSymbolExists.hits.hits[0]._source.amount)) {
+                throw new Error("Withdrawal amount cannot exceed balance")
+            }
+            updateAmount = (parseFloat(accountAndSymbolExists.hits.hits[0]._source.amount) - parseFloat(amount)).toFixed(4);
+        } else {
+            throw new Error("Unknown updateBalanceRecord Type => " + type);
+        }
         console.log("Total Sum => " + updateAmount);
         console.log("Updating account:" + user + " with amount=" + amount + " for symbol=" + symbol + " for previous amount = " + accountAndSymbolExists.hits.hits[0]._source.amount);
         return await client.update({
@@ -389,8 +399,11 @@ async function addBalanceRecord(user, amount, symbol, type) {
         });
 }
 
-// addWithdrawalRecord
-addBalanceRecord("reddy", "0.1234", "REDDY"); // "EOS5zr5ypz1KA7Atj2GVwBL5pWUk8cjpKGhDygFhr2VaZVwvXB6of");
+//withdrawal
+//updateBalanceRecord("reddy", "0.0003", "EOS", EX_ACTION_TYPE_WITHDRAW);
+
+//deposit
+//updateBalanceRecord("reddy", "2.0001", "EOS",EX_ACTION_TYPE_DEPOSIT); // "EOS5zr5ypz1KA7Atj2GVwBL5pWUk8cjpKGhDygFhr2VaZVwvXB6of");
 //ping();
 //index();
 //write();
@@ -398,23 +411,6 @@ addBalanceRecord("reddy", "0.1234", "REDDY"); // "EOS5zr5ypz1KA7Atj2GVwBL5pWUk8c
 //testAuditEvent();
 //addApiKey('Byzantine Skinny(Stripe) Web Wallet','FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N','http://local.byzanti.ne:8905/webhook',0,'bf32eb1e0b28d4b75bb1da9eaa4c5b02',0);
 
-// getApiKeySet('FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N').then(function (result) {
-//     console.log("getApiKeySet => " + JSON.stringify(result.hits.hits[0]._source));
-// }, function (err) {
-//     console.log("getApiKeyset => error: " + err);
-// });
-
-// incrementNonce('FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N',16).then(function (result) {
-//     console.log("incrementNonce => " + JSON.stringify(result));
-// }, function (err) {
-//     console.log("incrementNonce => error: " + err);
-// });
-
-//Export Methods
-// module.exports.ping = ping;
-// module.exports.read = read;
-// module.exports.index = index;
-// module.exports.testAuditEvent = testAuditEvent;
 module.exports.auditAPIEvent = auditAPIEvent;
 module.exports.addApiKey = addApiKey;
 module.exports.addApiKey4Keygen = addApiKey4Keygen;
@@ -424,4 +420,4 @@ module.exports.readIndex = read;
 module.exports.getOrders = getOrders;
 module.exports.getOrderBook = getOrderBook;
 module.exports.getOrderBookTick = getOrderBookTick;
-module.exports.addBalanceRecord = addBalanceRecord;
+module.exports.updateBalanceRecord = updateBalanceRecord;

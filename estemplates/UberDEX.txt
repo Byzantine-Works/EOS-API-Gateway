@@ -2,6 +2,46 @@
 GET symbols/_search
 GET tickers/_search
 GET orders/_search
+GET accounts/_search
+
+GET orders/_search
+{
+  "query": {
+    "match": {
+      "price": 0.0021002
+    }
+  }
+}
+
+POST orders/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "assetSell": "IQ"
+          }
+        },
+        {
+          "range": {
+            "price": {
+              "gte": 0.0,
+              "lte": 0.001
+            }
+          }
+        }
+      ]
+    }
+  },
+  "aggs": {
+    "totalavail": {
+      "sum": {
+        "field": "amountBuy"
+      }
+    }
+  }
+}
 
 # Testing LDAR orderbooktick search tempate inputs are symbol and ticksize currency precision returns asks and bids as aggregation for the entire dataset in orders index
 GET _search/template
@@ -10,6 +50,93 @@ GET _search/template
   "params": {
     "symbol": "IQ",
     "ticksize": 0.000001
+  }
+}
+
+
+GET accounts/_search?size=1000
+
+DELETE /accounts
+
+GET accounts
+
+PUT accounts
+{
+      "template": "account",
+    "settings": {
+        "index.refresh_interval": "1s",
+        "analysis": {
+            "analyzer": {
+                "default": {
+                    "type": "standard",
+                    "stopwords": "_none_"
+                }
+            }
+        }
+    },
+
+  "version": 1,
+  "mappings": {
+    "account": {
+      "properties": {
+        "symbol": {
+          "type": "keyword"
+        },
+        "user": {
+          "type": "keyword"
+        },
+        "balance": {
+          "type": "float"
+        },
+        "confirmed": {
+          "type": "integer"
+        },
+        "created": {
+          "type": "keyword"
+        },
+        "updated": {
+          "type": "keyword"
+        },
+        "timestamp": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}
+
+
+# Test orders that have matched on price
+GET orders/_search
+{
+  "query": {
+        "bool": {
+          "should": [
+            {
+              "bool": {
+                "must": [
+                  {
+                    "match": {
+                      "side": "BUY"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "bool": {
+                "must": [
+                  {
+                    "match": {
+                      "side": "SELL"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
   }
 }
 
