@@ -28,6 +28,8 @@ function deposit(req, res) {
   //decipher sig
   cipher.decryptXStrong(apiKey, sig).then(function (decipheredKey) {
     //deposit action
+    //TODO Add a check for depositing only accepted tokens
+
     exchangeapi.exdeposit(contract, from, amount, decipheredKey[1], decipheredKey[0]).then(function (result) {
       console.log("exdeposit-res => " + JSON.stringify(result));
       es.incrementNonce(apiKey, Number(decipheredKey[0]));

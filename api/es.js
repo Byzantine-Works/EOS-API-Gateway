@@ -1,5 +1,6 @@
 'use strict';
 
+var datetime = require('node-datetime');
 const elasticsearch = require('elasticsearch');
 const client = new elasticsearch.Client({
     host: process.env.ES_HOST_INFO
@@ -8,8 +9,13 @@ const client = new elasticsearch.Client({
 
 const indexName = "eosapievents";
 const indexType = "eosapievent";
-const apiKeyIndexName = "apikeys"
-const apiKeyIndexType = "apikey"
+const apiKeyIndexName = "apikeys";
+const apiKeyIndexType = "apikey";
+const accounts_indexName = "accounts";
+const accounts_indexType = "account";
+
+const EX_ACTION_TYPE_DEPOSIT = "deposit";
+const EX_ACTION_TYPE_WITHDRAW = "withdraw";
 
 // TODO @reddy - clean this up with proper templated calls
 
@@ -42,8 +48,6 @@ async function read(indexName, indexType, symbol) {
 
 async function getOrders(indexName, indexType, symbol, side, size) {
     // if (side.toString().trim() === 'BUY')
-
-
     //TODO : Seems like attribute name cannot be passed dymanically
     //TODO : Figure and fix this later
     if (side.toString().trim() === 'BUY') {
@@ -327,6 +331,66 @@ function index(object, indexName, indexType) {
         console.log("******************************************");
     }
 }
+
+async function addBalanceRecord(user, amount, symbol, type) {
+    var dtFormatted = datetime.create().format('Y-m-d H:M:S');
+    var amount = parseFloat(amount);
+    console.log("addBalanceRecord :: user:amount:symbol => " + user + ":" + amount + ":" + symbol);
+    //check if account exists
+    //if account for token+user exists update balance
+    //if not add new record with token+user
+    //TODO Add a check for depositing only accepted tokens
+    var accountAndSymbolExists = await client.search({
+        index: accounts_indexName,
+        type: accounts_indexType,
+        body: {
+            query: {
+                match: {
+                    user: user
+                },
+                match: {
+                    symbol: symbol
+                }
+            }
+        }
+    });
+
+    if (accountAndSymbolExists.hits.hits.length > 0) {
+        //case of account and symbol exist, perform update
+        var updateAmount = (parseFloat(amount) + parseFloat(accountAndSymbolExists.hits.hits[0]._source.amount)).toFixed(4);
+        console.log("Total Sum => " + updateAmount);
+        console.log("Updating account:" + user + " with amount=" + amount + " for symbol=" + symbol + " for previous amount = " + accountAndSymbolExists.hits.hits[0]._source.amount);
+        return await client.update({
+            index: accounts_indexName,
+            type: accounts_indexType,
+            id: accountAndSymbolExists.hits.hits[0]._id,
+            body: {
+                doc: {
+                    amount: parseFloat(updateAmount),
+                    confirmed: 0,
+                    updated: dtFormatted,
+                    timestamp: datetime.create().epoch()
+                }
+            }
+        });
+    } else
+        return await client.index({
+            index: accounts_indexName,
+            type: accounts_indexType,
+            body: {
+                user,
+                amount,
+                symbol,
+                confirmed: 0,
+                created: dtFormatted,
+                updated: dtFormatted,
+                timestamp: datetime.create().epoch()
+            }
+        });
+}
+
+// addWithdrawalRecord
+addBalanceRecord("reddy", "0.1234", "REDDY"); // "EOS5zr5ypz1KA7Atj2GVwBL5pWUk8cjpKGhDygFhr2VaZVwvXB6of");
 //ping();
 //index();
 //write();
@@ -360,3 +424,4 @@ module.exports.readIndex = read;
 module.exports.getOrders = getOrders;
 module.exports.getOrderBook = getOrderBook;
 module.exports.getOrderBookTick = getOrderBookTick;
+module.exports.addBalanceRecord = addBalanceRecord;
