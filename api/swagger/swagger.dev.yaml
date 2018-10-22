@@ -90,7 +90,7 @@ paths:
     x-swagger-router-controller: dsymbols
     get:
       tags:
-        - DEX API {symbols,ticker,orders,trades}
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
       description: Returns All *legit EOS Derivative Token Pairs for Trading DEX
       operationId: symbols
       responses:
@@ -106,7 +106,7 @@ paths:
     x-swagger-router-controller: dticker
     get:
       tags:
-        - DEX API {symbols,ticker,orders,trades}
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
       description: Returns ticker of all tradable EOS Derivative Token Pairs on DEX
       operationId: ticker
       parameters:
@@ -127,7 +127,7 @@ paths:
     x-swagger-router-controller: dorders
     get:
       tags:
-        - DEX API {symbols,ticker,orders,trades}
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
       description: Returns order books for a given symbol on DEX
       operationId: orders
       parameters:
@@ -156,7 +156,7 @@ paths:
     x-swagger-router-controller: dorderbook
     get:
       tags:
-        - DEX API {symbols,ticker,orders,trades}
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
       description: Returns order books for a given symbol on DEX
       operationId: orderbook
       parameters:
@@ -181,7 +181,7 @@ paths:
     x-swagger-router-controller: dorderbooktick
     get:
       tags:
-        - DEX API {symbols,ticker,orders,trades}
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
       description: Ticksize based return of order book price aggregation for a given symbol on DEX
       operationId: orderbooktick
       parameters:
@@ -206,7 +206,7 @@ paths:
     x-swagger-router-controller: ddeposit
     post:
       tags:
-        - DEX API {symbols,ticker,orders,trades}
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
       description: Deposit EOS DACs to the exchange account {from account}  {amount as extended asset}
       operationId: deposit
       parameters:
@@ -239,7 +239,7 @@ paths:
     x-swagger-router-controller: dwithdraw
     post:
       tags:
-        - DEX API {symbols,ticker,orders,trades}
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
       description: Withdraw EOS DACs from the exchange account {from user account}  {amount as extended asset}
       operationId: withdraw
       parameters:
@@ -268,6 +268,27 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/TransferErrorResponse"
+  /exbalance:
+    x-swagger-router-controller: dbalance
+    get:
+      tags:
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Returns exchange balances of EOS Derivative Tokens on DEX
+      operationId: balance
+      parameters:
+        - in: query
+          name: account
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/balanceResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /tokensByAccount/{account}:
     x-swagger-router-controller: tokensByAccount
     get:
@@ -897,6 +918,21 @@ definitions:
           symbol: IQ,
           price_precision: 5,
           currency_precision: 3,
+        }
+  balanceResponse:
+    type: array
+    items:
+      type: object
+      example:
+        {
+          orderId: 7eBZmmYBJNEeaSKiV4yG,
+          user: reddy,
+          symbol: IQ,
+          amount: 7.9992,
+          confirmed: 1,
+          created: 2018-10-22 05:57:18,
+          updated: 2018-10-22 06:00:58,
+          timestamp: 1540188058,
         }
   tickerResponse:
     type: array

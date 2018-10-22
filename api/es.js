@@ -332,6 +332,27 @@ function index(object, indexName, indexType) {
     }
 }
 
+async function getUserBalances(user) {
+    var userAccount = await client.search({
+        index: accounts_indexName,
+        type: accounts_indexType,
+        body: {
+            query: {
+                match: {
+                    user: user
+                }
+            }
+        }
+    });
+    var accounts = [];
+    for (var i = 0, len = userAccount.hits.hits.length; i < len; i++) {
+        userAccount.hits.hits[i]._source.orderId = userAccount.hits.hits[i]._id;
+        accounts.push(userAccount.hits.hits[i]._source)
+    }
+    console.log("getUserBalances :: user:" + user + " has distinct token balances = " + accounts.length);
+    return accounts;
+}
+
 async function updateBalanceRecord(user, amount, symbol, type) {
     var dtFormatted = datetime.create().format('Y-m-d H:M:S');
     var amount = parseFloat(amount);
@@ -399,11 +420,13 @@ async function updateBalanceRecord(user, amount, symbol, type) {
         });
 }
 
+//TODO Quick Tests - Move to Mocha + Chai when appropriate
+//getUserBalances("reddy");
 //withdrawal
 //updateBalanceRecord("reddy", "0.0003", "EOS", EX_ACTION_TYPE_WITHDRAW);
 
 //deposit
-//updateBalanceRecord("reddy", "2.0001", "EOS",EX_ACTION_TYPE_DEPOSIT); // "EOS5zr5ypz1KA7Atj2GVwBL5pWUk8cjpKGhDygFhr2VaZVwvXB6of");
+//updateBalanceRecord("reddy", "2.0001", "IQ",EX_ACTION_TYPE_DEPOSIT); // "EOS5zr5ypz1KA7Atj2GVwBL5pWUk8cjpKGhDygFhr2VaZVwvXB6of");
 //ping();
 //index();
 //write();
@@ -421,3 +444,4 @@ module.exports.getOrders = getOrders;
 module.exports.getOrderBook = getOrderBook;
 module.exports.getOrderBookTick = getOrderBookTick;
 module.exports.updateBalanceRecord = updateBalanceRecord;
+module.exports.getUserBalances = getUserBalances;
