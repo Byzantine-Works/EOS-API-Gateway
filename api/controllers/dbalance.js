@@ -1,6 +1,5 @@
 'use strict';
 const es = require('../es.js');
-const dexconfig = require('../dexconfig.js');
 const util = require('./util.js');
 const {
   performance
@@ -17,7 +16,16 @@ function balance(req, res) {
     console.log('account data => ' + JSON.stringify(accounts));
     var t1 = performance.now();
     es.auditAPIEvent(req, t1 - t0, true);
-    res.json(accounts);
+    if (accounts.length == 0) {
+      var error = {
+        statusCode: 401,
+        message: account + " user does not have an exchange account!",
+        code: 'exchange_balance_error'
+      };
+      res.status(401).json(error);
+    } else {
+      res.json(accounts);
+    }
   }).catch(err => {
     console.log("Error in balance:=>" + err);
     var t2 = performance.now();

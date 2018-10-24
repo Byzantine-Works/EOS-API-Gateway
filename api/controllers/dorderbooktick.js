@@ -1,6 +1,5 @@
 'use strict';
 const es = require('../es.js');
-const dexconfig = require('../dexconfig.js');
 const util = require('./util.js');
 const {
   performance

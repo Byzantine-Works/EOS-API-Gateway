@@ -4,7 +4,7 @@ function sanitizeTickerData(rawTickerData) {
     var ticker = [];
     for (var i = 0, len = rawTickerData.length; i < len; i++) {
         var rndMuxer = (Math.random() * (0.0412 - 0.0267) + 0.0267).toFixed(4);
-        console.log (rndMuxer);
+        console.log(rndMuxer);
         var volume = Math.round(rawTickerData[i]._source.data.amount * 10000) / 10000;
         var amount = Math.round(rawTickerData[i]._source.data.volume * 10000) / 10000;
         rawTickerData[i]._source.data.volume = volume + volume * rndMuxer;
@@ -20,6 +20,7 @@ function sanitizeTickerData(rawTickerData) {
     }
     return ticker;
 }
+
 function sanitizeOrderData(orderData) {
     var order = [];
     for (var i = 0, len = orderData.length; i < len; i++) {
@@ -28,5 +29,19 @@ function sanitizeOrderData(orderData) {
     }
     return order;
 }
+
+function sanitizeSymbols(symbolData) {
+    var symbol = [];
+    for (var i = 0, len = symbolData.hits.hits.length; i < len; i++) {
+        symbolData.hits.hits[i]._source.id = symbolData.hits.hits[i]._id;
+        symbolData.hits.hits[i]._source.tradingpair = symbolData.hits.hits[i]._source.symbol;
+        symbolData.hits.hits[i]._source.symbol = (symbolData.hits.hits[i]._source.symbol).split("_")[0].toUpperCase();
+        delete symbolData.hits.hits[i]._source.currency;
+        symbol.push(symbolData.hits.hits[i]._source);
+    }
+    return symbol;
+}
+
 module.exports.sanitizeTickerData = sanitizeTickerData;
 module.exports.sanitizeOrderData = sanitizeOrderData;
+module.exports.sanitizeSymbols = sanitizeSymbols;

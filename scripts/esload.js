@@ -4,7 +4,6 @@ const crypto = require('crypto');
 const request = require('request');
 const config = require('./chainsnapshot.js');
 const elasticsearch = require('elasticsearch');
-const dexconfig = require('../api/dexconfig');
 const nodeDateTime = require('node-datetime');
 // const sleep = require('sleep');
 
@@ -126,11 +125,16 @@ function loadTickers() {
     });
 }
 
+function deleteOrders() {
+    console.log("Deleting Tickers...!");
+    deleteRecords('orders', 'order');
+}
+
 function loadOrders() {
     var BASE_SYMBOL = "EOS";
 
-    console.log("Deleting Tickers...!");
-    deleteRecords('orders', 'order');
+    // console.log("Deleting Tickers...!");
+    // deleteRecords('orders', 'order');
     console.log("Loading Tickers...!");
     readSymbols().then(function (symbols) {
         console.log("Symbol data size is " + JSON.stringify(symbols.hits.hits.length));
@@ -249,7 +253,7 @@ function deleteRecords(indexName, indexType) {
         type: indexType,
         q: "*"
     }).then(function (resp) {
-        console.log("deleteRecords: status => " + resp);
+        console.log("deleteRecords: status => " + JSON.stringify(resp));
     }, function (err) {
         console.log("Error in deleteRecords: => " + err);
     });
@@ -277,6 +281,7 @@ function index(indexName, indexType, object) {
 
 module.exports.loadSymbols = loadSymbols;
 module.exports.loadOrders = loadOrders;
+module.exports.deleteOrders = deleteOrders;
 // module.exports.readOrders = readOrders;
 module.exports.loadTickers = loadTickers;
 module.exports.readTickers = readTickers;
