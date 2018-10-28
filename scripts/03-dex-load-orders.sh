@@ -1,4 +1,4 @@
-# Delete current index for tickers
+# Delete current index for orders
 # curl -XDELETE http://localhost:9200/orders/
 
 node -e 'require("./esload.js").deleteOrders()'

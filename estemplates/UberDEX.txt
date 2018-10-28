@@ -1,8 +1,66 @@
 # Simple index search queries
 GET symbols/_search
 GET tickers/_search
-GET orders/_search
+GET orders/_search?q=IQ
 GET accounts/_search
+GET exchanges/_search
+
+# exchanges mappings
+GET exchanges/_search?size=1000
+
+DELETE /exchanges
+
+GET exchanges
+
+PUT exchanges
+{
+      "template": "exchange",
+    "settings": {
+        "index.refresh_interval": "1s",
+        "analysis": {
+            "analyzer": {
+                "default": {
+                    "type": "standard",
+                    "stopwords": "_none_"
+                }
+            }
+        }
+    },
+
+  "version": 1,
+  "mappings": {
+    "account": {
+      "properties": {
+        "name": {
+          "type": "keyword"
+        },
+        "makerfee": {
+          "type": "float"
+        },
+        "takerfee": {
+          "type": "float"
+        },
+        "makerfeeaccount": {
+          "type": "keyword"
+        },
+        "takerfeeaccount": {
+          "type": "keyword"
+        },
+        "created": {
+          "type": "keyword"
+        },
+        "updated": {
+          "type": "keyword"
+        },
+        "timestamp": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}
+
 
 GET orders/_search
 {

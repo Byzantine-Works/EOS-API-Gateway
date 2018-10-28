@@ -31,7 +31,7 @@
     "lodash": "^4.17.11",
     "morgan": "^1.9.1",
     "node-datetime": "^2.1.2",
-    "nodemon": "^1.18.4",
+    "nodemon": "^1.18.5",
     "path": "^0.12.7",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",

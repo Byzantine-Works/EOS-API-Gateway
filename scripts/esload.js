@@ -54,6 +54,10 @@ function readOrders() {
     return read('orders', 'order');
 }
 
+function readExchanges() {
+    return read('exchanges', 'exchange');
+}
+
 async function readSymbols() {
     return await client.search({
         index: "symbols",
@@ -125,14 +129,46 @@ function loadTickers() {
     });
 }
 
+function deleteExchanges() {
+    console.log("Deleting Exchanges...");
+    deleteRecords("exchanges", "exchange");
+}
+
 function deleteOrders() {
     console.log("Deleting Tickers...!");
     deleteRecords('orders', 'order');
 }
 
+function loadExchanges() {
+    //TODO Do we need supported symbols per exchange?
+    //TODO Do we need suported order types, LIMIT and MARKET?
+    var exchanges = ['UberDEX', "A-DEX", 'B-DEX', 'MBAEX'];
+    console.log("Loading Exchanges of size => " + exchanges.length);
+    var indexableExchange = [];
+    for (var i = 0, len = exchanges.length; i < len; i++) {
+        var exchange = {};
+        exchange.name = exchanges[i];
+        exchange.makerFee = 0.01;
+        exchange.takerFee = 0.02;
+        exchange.created = nodeDateTime.create().format('Y-m-d H:M:S');
+        exchange.updated = nodeDateTime.create().format('Y-m-d H:M:S');
+        exchange.timestamp = Math.floor(new Date() / 1000);
+        client.index({
+            index: 'exchanges',
+            type: 'exchange',
+            body: exchange
+        }, function (err, resp, status) {
+            console.log(status);
+            if (err)
+                console.log("loadExchanges err => " + err);
+            else
+                console.log("loadExchanges resp => " + (resp));
+        });
+    }
+}
+
 function loadOrders() {
     var BASE_SYMBOL = "EOS";
-
     // console.log("Deleting Tickers...!");
     // deleteRecords('orders', 'order');
     console.log("Loading Tickers...!");
@@ -278,6 +314,10 @@ function index(indexName, indexType, object) {
 //read();
 //loadOrders();
 //console.log (getAccountName());
+
+module.exports.loadExchanges = loadExchanges;
+module.exports.deleteExchanges = deleteExchanges;
+module.exports.readExchanges = readExchanges;
 
 module.exports.loadSymbols = loadSymbols;
 module.exports.loadOrders = loadOrders;
