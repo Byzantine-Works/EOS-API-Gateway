@@ -231,7 +231,7 @@ function loadTrades() {
                         trade.created = nodeDateTime.create().format('Y-m-d H:M:S');
                         trade.updated = nodeDateTime.create().format('Y-m-d H:M:S');
                         trade.feediscount = asks[arr[j]].feediscount;
-                        trade.timestamp = Math.floor(new Date() / 1000);
+                        trade.timestamp = Math.floor(new Date() / 1000) + Math.floor(Math.random() * 60) + 1;
                         console.log(trade);
                         //execute the trade on chain
                         //update the orderbook
@@ -275,7 +275,7 @@ function loadTrades() {
                         trade.created = nodeDateTime.create().format('Y-m-d H:M:S');
                         trade.updated = nodeDateTime.create().format('Y-m-d H:M:S');
                         trade.feediscount = bids[arr[j]].feediscount;
-                        trade.timestamp = Math.floor(new Date() / 1000);
+                        trade.timestamp = Math.floor(new Date() / 1000) + Math.floor(Math.random() * 60) + 1;
                         console.log(trade);
                         //execute the trade on chain
                         //update the orderbook

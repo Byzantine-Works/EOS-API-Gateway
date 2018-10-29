@@ -177,6 +177,31 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /tradebook:
+    x-swagger-router-controller: dtradebook
+    get:
+      tags:
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Returns trade book for a given symbol on DEX
+      operationId: tradebook
+      parameters:
+        - in: query
+          name: symbol
+          required: true
+          type: string
+        - in: query
+          name: size
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/tradesResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /orderbooktick:
     x-swagger-router-controller: dorderbooktick
     get:
@@ -956,7 +981,7 @@ definitions:
       type: object
       example:
         {
-          source: IQ,
+          source: UberDEX,
           price: 0.0018647,
           side: BUY,
           chain: EOS,
@@ -975,6 +1000,33 @@ definitions:
           updated: 2018-10-17 14:59:11,
           feediscount: 2,
           timestamp: 1539813551,
+          orderId: mw6FvmYBuQ5feLjDKeCp
+        }
+  tradesResponse:
+    type: array
+    items:
+      type: object
+      example:
+        {
+          chain: EOS,
+          assetBuy: IQ,
+          assetSell: EOS,
+          amountBuy: 230.239,
+          amountSell: 0.4294,
+          price: 0.0018747,
+          type: 2,
+          hash: cf583f7ef02852845247953b45f8abce4ea7e134,
+          maker: randomgooppy,
+          taker: g4ydemjzhage,
+          makerExchange: "UberDEX",
+          takerExchange: "MBAEX",
+          makerFee: 0.01,
+          takerFee: 0.02,
+          created: 2018-10-17 13:24:21,
+          updated: 2018-10-17 14:59:11,
+          feediscount: 2,
+          timestamp: 1540799349,
+          tradeId: IhHLvmYBuQ5feLjDanCS
         }
   tokensByAccountResponse:
     type: array
