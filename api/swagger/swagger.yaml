@@ -188,7 +188,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/infoResponse"
+            $ref: "#/definitions/transferResponse"
         "400":
           description: Error
           schema:

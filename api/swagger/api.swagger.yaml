@@ -152,6 +152,47 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /orderMake:
+    x-swagger-router-controller: dordermake
+    post:
+      tags:
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Adds a new Order for a given symbol on DEX
+      operationId: ordermake
+      parameters:
+        - name: body
+          in: body
+          description: Body should encapsulate {side=BUY/SELL side}, {assetBuy}, {assetSell},{amountBuy},{amountSell},{expires},{type =1/2 for market/limit},{hash},{useraccount}}
+          required: true
+          schema:
+            properties:
+              side:
+                type: string
+              assetBuy:
+                type: string
+              assetSell:
+                type: string
+              amountBuy:
+                type: number
+              amountSell:
+                type: number
+              price:
+                type: number
+              expires:
+                type: string
+              type:
+                type: integer
+              useraccount:
+                type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/transferResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /orderbook:
     x-swagger-router-controller: dorderbook
     get:
