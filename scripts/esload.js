@@ -54,6 +54,10 @@ function readOrders() {
     return read('orders', 'order');
 }
 
+function readTrades() {
+    return read('trades', 'trade');
+}
+
 
 function readExchanges() {
     return read('exchanges', 'exchange');
@@ -494,5 +498,7 @@ module.exports.loadTickers = loadTickers;
 module.exports.readTickers = readTickers;
 module.exports.readSymbols = readSymbols;
 module.exports.readOrders = readOrders;
+module.exports.readTrades = readTrades;
+
 module.exports.read = read;
 module.exports.index = index;
