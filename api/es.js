@@ -463,6 +463,16 @@ async function updateBalanceRecord(user, amount, symbol, type) {
         });
 }
 
+async function orderMake(order) {
+    order.timestamp = datetime.create().epoch();
+    order.created = datetime.create().format('Y-m-d H:M:S');
+    order.updated = datetime.create().format('Y-m-d H:M:S');
+    return await client.index({
+        index: 'orders',
+        type: 'order',
+        body: order
+    });
+}
 //TODO Quick Tests - Move to Mocha + Chai when appropriate
 //getTradeBook("IQ",100);
 //getUserBalances("reddy");
@@ -490,3 +500,4 @@ module.exports.getOrderBookTick = getOrderBookTick;
 module.exports.updateBalanceRecord = updateBalanceRecord;
 module.exports.getUserBalances = getUserBalances;
 module.exports.getTradeBook = getTradeBook;
+module.exports.orderMake = orderMake;

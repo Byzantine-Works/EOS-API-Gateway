@@ -203,6 +203,19 @@ curl -X GET --header 'Accept: application/json' 'http://api.byzanti.ne:8902/orde
 //get complete order book for IQ with depth =n and ticksize=0.0000010
 curl -X GET --header 'Accept: application/json' 'http://api.byzanti.ne:8902/orderbooktick?symbol=IQ&ticksize=0.0000010&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' |json_pp
 
+//POST create an order [BUY/SELL side ++ MARKET/LIMIT]
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
+	"side": "SELL",
+	"assetBuy": "EOS",
+	"assetSell": "IQ",
+	"amountBuy": 9.056,
+	"amountSell": 4889.970,
+	"price": 0.001852,
+	"expires": "1d",
+	"type": 2,
+	"useraccount": "reddy"
+}' 'http://api.byzanti.ne:8902/orderMake?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N'
+
 //get trade book for IQ with depth=n
 curl -X GET --header 'Accept: application/json' 'http://api.byzanti.ne:8902/tradebook?symbol=IQ&size=10&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
 
