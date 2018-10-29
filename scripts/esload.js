@@ -109,21 +109,26 @@ function loadTickers() {
                 {
                     console.log(err);
                 } else {
-                    var indexableData = JSON.parse(body);
-                    console.log("Raw Ticker for Symbol is  => " + body);
-                    console.log("Loading Ticker data => " + indexableData);
-                    indexableData.data.tradingpair = indexableData.data.symbol;
-                    indexableData.data.symbol = indexableData.data.currency;
-                    delete indexableData.data.currency;
-                    //console.log(indexableData);
-                    //process.exit();
-                    client.index({
-                        index: 'tickers',
-                        type: 'ticker',
-                        body: indexableData
-                    }, function (err, resp, status) {
-                        console.log(resp);
-                    });
+                    if (typeof body !== 'undefined' && body) {
+                        var indexableData = JSON.parse(body);
+                        console.log("Raw Ticker for Symbol is  => " + body);
+                        console.log("Loading Ticker data => " + JSON.stringify(indexableData));
+                        console.log("STatus code => " + indexableData.code);
+                        if (indexableData.code != 501 && indexableData.data.last) {
+                            indexableData.data.tradingpair = indexableData.data.symbol;
+                            indexableData.data.symbol = indexableData.data.currency;
+                            delete indexableData.data.currency;
+                            //console.log(indexableData);
+                            //process.exit();
+                            client.index({
+                                index: 'tickers',
+                                type: 'ticker',
+                                body: indexableData
+                            }, function (err, resp, status) {
+                                console.log(resp);
+                            });
+                        }
+                    }
                 }
             });
         }
@@ -351,59 +356,62 @@ function loadOrders() {
                         var order = {};
                         var ticker = JSON.parse(body);
 
-                        //set up randomizers
-                        var items = [1, 2];
-                        var expires = ["1d", "2d", "3d", "7d"];
-                        var sources = ["UberDEX", "UberDEX", "A-DEX", "B-DEX", "MBAEX"];
-                        var source = sources[Math.floor(Math.random() * sources.length)];
+                        if (typeof ticker !== 'undefined' && ticker.length > 0) {
 
-                        var item = items[Math.floor(Math.random() * items.length)];
-                        var expire = expires[Math.floor(Math.random() * expires.length)];
-                        var randomOrderPrice = ((Math.random() * (1.12 - 0.98) + 0.98) * parseFloat(ticker[0].last)).toFixed(7);
-                        var randomAmount = (Math.random() * (649678.1234 - 12312.1234) + 12312.10).toFixed(4);
-                        var randomAmountBuy = (randomAmount * randomOrderPrice).toFixed(4);
-                        var randomSell = (randomOrderPrice * randomAmountBuy).toFixed(4);
+                            //set up randomizers
+                            var items = [1, 2];
+                            var expires = ["1d", "2d", "3d", "7d"];
+                            var sources = ["UberDEX", "UberDEX", "A-DEX", "B-DEX", "MBAEX"];
+                            var source = sources[Math.floor(Math.random() * sources.length)];
 
-                        //construct order
-                        order.source = source;
-                        order.price = parseFloat(randomOrderPrice);
-                        order.side = (order.price > (parseFloat(ticker[0].last)).toFixed(7)) ? "SELL" : "BUY"; //BUY/SELL
-                        order.chain = BASE_SYMBOL;
-                        if (order.side.includes("BUY")) {
-                            // console.log("BUY ORDER");
-                            order.assetBuy = ticker[0].symbol;
-                            order.assetSell = BASE_SYMBOL;
-                            order.amountBuy = parseFloat(randomAmountBuy);
-                            order.amountSell = parseFloat(randomSell);
-                        } else {
-                            // console.log("SELL ORDER");
-                            order.assetBuy = BASE_SYMBOL;
-                            order.assetSell = ticker[0].symbol;
-                            order.amountBuy = parseFloat(randomSell);
-                            order.amountSell = parseFloat(randomAmountBuy);
-                        }
-                        order.expires = expire; // 1d, 2d, 3d, 7d?
-                        order.type = 2; //1 = MARKET, 2 = LIMIT
+                            var item = items[Math.floor(Math.random() * items.length)];
+                            var expire = expires[Math.floor(Math.random() * expires.length)];
+                            var randomOrderPrice = ((Math.random() * (1.12 - 0.98) + 0.98) * parseFloat(ticker[0].last)).toFixed(7);
+                            var randomAmount = (Math.random() * (649678.1234 - 12312.1234) + 12312.10).toFixed(4);
+                            var randomAmountBuy = (randomAmount * randomOrderPrice).toFixed(4);
+                            var randomSell = (randomOrderPrice * randomAmountBuy).toFixed(4);
 
-                        // order.nonce = 2434;
-                        order.hash = getHash();
-                        order.useraccount = getAccountName();
-                        order.filled = item; //1 = FILLED 2 = NOT FILLED
-                        order.cancelled = item; //1 = CANCELLED 2 = NOT CANCELLED
-                        order.new = item; //1 = NEW 2= NOT NEW?
-                        order.created = nodeDateTime.create().format('Y-m-d H:M:S');
-                        order.updated = nodeDateTime.create().format('Y-m-d H:M:S');
-                        order.feediscount = item; //1 = FEE DISCOUNT else NOT (if the participant dex pays outside the exec window)?
-                        order.timestamp = Math.floor(new Date() / 1000);
-                        //console.log(" Order is => " + JSON.stringify(order, null, 4));
-                        //process.exit(-23);
-                        orders.push({
-                            index: {
-                                _index: 'orders',
-                                _type: 'order'
+                            //construct order
+                            order.source = source;
+                            order.price = parseFloat(randomOrderPrice);
+                            order.side = (order.price > (parseFloat(ticker[0].last)).toFixed(7)) ? "SELL" : "BUY"; //BUY/SELL
+                            order.chain = BASE_SYMBOL;
+                            if (order.side.includes("BUY")) {
+                                // console.log("BUY ORDER");
+                                order.assetBuy = ticker[0].symbol;
+                                order.assetSell = BASE_SYMBOL;
+                                order.amountBuy = parseFloat(randomAmountBuy);
+                                order.amountSell = parseFloat(randomSell);
+                            } else {
+                                // console.log("SELL ORDER");
+                                order.assetBuy = BASE_SYMBOL;
+                                order.assetSell = ticker[0].symbol;
+                                order.amountBuy = parseFloat(randomSell);
+                                order.amountSell = parseFloat(randomAmountBuy);
                             }
-                        });
-                        orders.push(order);
+                            order.expires = expire; // 1d, 2d, 3d, 7d?
+                            order.type = 2; //1 = MARKET, 2 = LIMIT
+
+                            // order.nonce = 2434;
+                            order.hash = getHash();
+                            order.useraccount = getAccountName();
+                            order.filled = item; //1 = FILLED 2 = NOT FILLED
+                            order.cancelled = item; //1 = CANCELLED 2 = NOT CANCELLED
+                            order.new = item; //1 = NEW 2= NOT NEW?
+                            order.created = nodeDateTime.create().format('Y-m-d H:M:S');
+                            order.updated = nodeDateTime.create().format('Y-m-d H:M:S');
+                            order.feediscount = item; //1 = FEE DISCOUNT else NOT (if the participant dex pays outside the exec window)?
+                            order.timestamp = Math.floor(new Date() / 1000);
+                            //console.log(" Order is => " + JSON.stringify(order, null, 4));
+                            //process.exit(-23);
+                            orders.push({
+                                index: {
+                                    _index: 'orders',
+                                    _type: 'order'
+                                }
+                            });
+                            orders.push(order);
+                        }
                     }
                     console.log("Order size => " + orders.length);
                     client.bulk({
