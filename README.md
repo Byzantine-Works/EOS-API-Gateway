@@ -108,109 +108,109 @@ npm start
 // Curl Examples for Byzanti.ne API Gateway - EOS Mainnet
 // Base API Operations
 // create EOS key sets - owner and active keys
-curl -X GET --header 'Accept: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/getKeyset' | json_pp
+curl -X GET --header 'Accept: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://api.byzanti.ne:8902/getKeyset' | json_pp
 
 //create account
-curl -X POST -H "Content-Type:application/json" -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"creator":"gi3dcnjshege","name":"randomgooppy","owner":"EOS7m36vdT6WbE6JA25z9ePGhyWuqMYSLuCxLicMa1eLZ2YqSQqfh","active":"EOS59eusHMqbvJsPsdBKMNbuVHLz8kiif9NW27HQxiuge5iupvZec","sig":"6EF0AEFBFD50850D70366D5B7A6F04346BC81B2BDE0615CED49D803F1C2F042FAA42FF33723ADCC0E73CA4616603D29C4BF544FA515FB4BC1ECD55C9CE6DCF9E"}' http://local.byzanti.ne:8901/createAccount | json_pp
+curl -X POST -H "Content-Type:application/json" -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"creator":"gi3dcnjshege","name":"randomgooppy","owner":"EOS7m36vdT6WbE6JA25z9ePGhyWuqMYSLuCxLicMa1eLZ2YqSQqfh","active":"EOS59eusHMqbvJsPsdBKMNbuVHLz8kiif9NW27HQxiuge5iupvZec","sig":"6EF0AEFBFD50850D70366D5B7A6F04346BC81B2BDE0615CED49D803F1C2F042FAA42FF33723ADCC0E73CA4616603D29C4BF544FA515FB4BC1ECD55C9CE6DCF9E"}' http://api.byzanti.ne:8902/createAccount | json_pp
 
 //get info (for testing)
-curl -X GET --header 'Content-Type: application/json'  --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/info' | json_pp
+curl -X GET --header 'Content-Type: application/json'  --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://api.byzanti.ne:8902/info' | json_pp
 
 //get all *legit EOS tokens
-curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/tokens' | json_pp
+curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://api.byzanti.ne:8902/tokens' | json_pp
 
 //get tokens by account
-curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/tokensByAccount/gi3dcnjshege' | json_pp
+curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://api.byzanti.ne:8902/tokensByAccount/gi3dcnjshege' | json_pp
 
 //get tokens by account
-curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/tokensByAccount/randomgooppy' | json_pp
+curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://api.byzanti.ne:8902/tokensByAccount/randomgooppy' | json_pp
 
 //get account
-curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/getAccount/gi3dcnjshege' | json_pp
+curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://api.byzanti.ne:8902/getAccount/gi3dcnjshege' | json_pp
 
 //get account
-curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/getAccount/randomgooppy' | json_pp
+curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://api.byzanti.ne:8902/getAccount/randomgooppy' | json_pp
 
 //get actions
-curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/getActions?account=gi3dcnjshege' | json_pp
+curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://api.byzanti.ne:8902/getActions?account=gi3dcnjshege' | json_pp
 
 //transfer with pki
-curl -X POST -H "Content-Type:application/json" -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"from":"gi3dcnjshege","to":"randomgooppy","amount":"0.0001 EOS","memo":"random test","sig":"6EF0AEFBFD50850D70366D5B7A6F04346BC81B2BDE0615CED49D803F1C2F042FAA42FF33723ADCC0E73CA4616603D29C4BF544FA515FB4BC1ECD55C9CE6DCF9E"}' http://local.byzanti.ne:8901/transfer | json_pp
+curl -X POST -H "Content-Type:application/json" -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"from":"gi3dcnjshege","to":"randomgooppy","amount":"0.0001 EOS","memo":"random test","sig":"6EF0AEFBFD50850D70366D5B7A6F04346BC81B2BDE0615CED49D803F1C2F042FAA42FF33723ADCC0E73CA4616603D29C4BF544FA515FB4BC1ECD55C9CE6DCF9E"}' http://api.byzanti.ne:8902/transfer | json_pp
 
 //get transaction
-curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/transaction/5a309398bc60d7f2849080d3b88646a22d8e9f682a5d257f1ac7672d5122688d' | json_pp
+curl -X GET --header 'Content-Type: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://api.byzanti.ne:8902/transaction/5a309398bc60d7f2849080d3b88646a22d8e9f682a5d257f1ac7672d5122688d' | json_pp
 
 //get refunds
-curl -X GET --header 'Accept: application/json'  --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/getRefunds/gi3dcnjshege' | json_pp
+curl -X GET --header 'Accept: application/json'  --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://api.byzanti.ne:8902/getRefunds/gi3dcnjshege' | json_pp
 
 //get name bids
-curl -X GET --header 'Accept: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/getNameBids/reddy' | json_pp
+curl -X GET --header 'Accept: application/json' --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://api.byzanti.ne:8902/getNameBids/reddy' | json_pp
 
 
 //Block - Producer operations
 //Get EOS producers
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/json'  --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://local.byzanti.ne:8901/getProducers' | json_pp
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/json'  --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' 'http://api.byzanti.ne:8902/getProducers' | json_pp
 
 //Vote for a producer libertyblock
-curl -X POST -H "Content-Type:application/json"  -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"voter":"gi3dcnjshege","producer":"libertyblock","sig":"XFBEk+="}' http://local.byzanti.ne:8901/voteProducer | json_pp
+curl -X POST -H "Content-Type:application/json"  -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"voter":"gi3dcnjshege","producer":"libertyblock","sig":"XFBEk+="}' http://api.byzanti.ne:8902/voteProducer | json_pp
 
 //Vote for a producer eosfishrocks
-curl -X POST -H "Content-Type:application/json"  -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"voter":"gi3dcnjshege","producer":"eosfishrocks","sig":"XFBEk+="}' http://local.byzanti.ne:8901/voteProducer | json_pp
+curl -X POST -H "Content-Type:application/json"  -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"voter":"gi3dcnjshege","producer":"eosfishrocks","sig":"XFBEk+="}' http://api.byzanti.ne:8902/voteProducer | json_pp
 
 /Delegate CPU/BW
-curl -X POST -H "Content-Type:application/json"  -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"from":"gi3dcnjshege","receiver":"gi3dcnjshege","net":"0.0001 EOS","cpu":"0.0001 EOS","sig":"6EF0AEFBFD50850D70366D5B7A6F04346BC81B2BDE0615CED49D803F1C2F042FAA42FF33723ADCC0E73CA4616603D29C4BF544FA515FB4BC1ECD55C9CE6DCF9E"}' http://local.byzanti.ne:8901/delegate | json_pp
+curl -X POST -H "Content-Type:application/json"  -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"from":"gi3dcnjshege","receiver":"gi3dcnjshege","net":"0.0001 EOS","cpu":"0.0001 EOS","sig":"6EF0AEFBFD50850D70366D5B7A6F04346BC81B2BDE0615CED49D803F1C2F042FAA42FF33723ADCC0E73CA4616603D29C4BF544FA515FB4BC1ECD55C9CE6DCF9E"}' http://api.byzanti.ne:8902/delegate | json_pp
 
 //Undelegate CPU/BW
-curl -X POST -H "Content-Type:application/json"  -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"from":"gi3dcnjshege","receiver":"gi3dcnjshege","net":"0.9188 EOS","cpu":"0.9188 EOS","sig":"XFBEk+="}' http://local.byzanti.ne:8901/undelegate | json_pp
+curl -X POST -H "Content-Type:application/json"  -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"from":"gi3dcnjshege","receiver":"gi3dcnjshege","net":"0.9188 EOS","cpu":"0.9188 EOS","sig":"XFBEk+="}' http://api.byzanti.ne:8902/undelegate | json_pp
 
 //get bandwidth
-curl -X GET --header 'Content-Type: application/json'  --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N'  'http://local.byzanti.ne:8901/getBandwidth/gi3dcnjshege' | json_pp
+curl -X GET --header 'Content-Type: application/json'  --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N'  'http://api.byzanti.ne:8902/getBandwidth/gi3dcnjshege' | json_pp
 
 //Buy Ram
-curl -X POST -H "Content-Type:application/json"  -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"payer":"gi3dcnjshege","receiver":"radomgoopy","quant":"0.0001 EOS","sig":"XFBEk+="}' http://local.byzanti.ne:8901/undelegate | json_pp
+curl -X POST -H "Content-Type:application/json"  -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"payer":"gi3dcnjshege","receiver":"radomgoopy","quant":"0.0001 EOS","sig":"XFBEk+="}' http://api.byzanti.ne:8902/undelegate | json_pp
 
 //Buy Ram in bytes
-curl -X POST -H "Content-Type:application/json"  -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"payer":"gi3dcnjshege","receiver":"gi3dcnjshege","bytes":240,"sig":"XFBEk+="}' http://local.byzanti.ne:8901/buyRamBytes | json_pp
+curl -X POST -H "Content-Type:application/json"  -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"payer":"gi3dcnjshege","receiver":"gi3dcnjshege","bytes":240,"sig":"XFBEk+="}' http://api.byzanti.ne:8902/buyRamBytes | json_pp
 
 //Sell RAM in bytes
-curl -X POST -H "Content-Type:application/json"  -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"account":"gi3dcnjshege","bytes":84,"sig":"XFBEk+="}' http://local.byzanti.ne:8901/sellRamBytes | json_pp
+curl -X POST -H "Content-Type:application/json"  -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"account":"gi3dcnjshege","bytes":84,"sig":"XFBEk+="}' http://api.byzanti.ne:8902/sellRamBytes | json_pp
 
 //Get RAM price
-curl -X GET --header 'Content-Type: application/json'  --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N'  'http://local.byzanti.ne:8901/getRamPrice' | json_pp
+curl -X GET --header 'Content-Type: application/json'  --header 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N'  'http://api.byzanti.ne:8902/getRamPrice' | json_pp
 
 //Scatter based transfer
-curl -X POST -H "Content-Type:application/json"  -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"from":"gi3dcnjshege","to":"randomgooppy","amount":"0.0001 EOS","memo":"offline test","sig":"c77ac47879b2a8e622f9f301c98959cce5b97a53e4d42f5038d0d2d7cb78a0c3e3a135728fb5f5969a81f92cb0412727a040b143e12f57b533c7e0cc595ce965a6318cab00710549c3bc8984ec22b1c9c38f2db7e7e4cb6ba3bb48a3211db082c5315913977262004a4b8e0c052a8ee2","transactionHeaders":{"expiration": "2018-09-19T00:20:40", "ref_block_num": 19055, "ref_block_prefix": 4239914415}}' http://local.byzanti.ne:8901/transferWithScatter | json_pp
+curl -X POST -H "Content-Type:application/json"  -H 'api_key: FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' -d '{"from":"gi3dcnjshege","to":"randomgooppy","amount":"0.0001 EOS","memo":"offline test","sig":"c77ac47879b2a8e622f9f301c98959cce5b97a53e4d42f5038d0d2d7cb78a0c3e3a135728fb5f5969a81f92cb0412727a040b143e12f57b533c7e0cc595ce965a6318cab00710549c3bc8984ec22b1c9c38f2db7e7e4cb6ba3bb48a3211db082c5315913977262004a4b8e0c052a8ee2","transactionHeaders":{"expiration": "2018-09-19T00:20:40", "ref_block_num": 19055, "ref_block_prefix": 4239914415}}' http://api.byzanti.ne:8902/transferWithScatter | json_pp
 
 // DEX Functions
 //get active trading symbols
-curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/symbols?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
+curl -X GET --header 'Accept: application/json' 'http://api.byzanti.ne:8902/symbols?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
 
 //get ticker (market data + all tokens)
-curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/ticker?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
+curl -X GET --header 'Accept: application/json' 'http://api.byzanti.ne:8902/ticker?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
 
 //get ticker (market data for specific token)
-curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/ticker?symbol=IQ&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
+curl -X GET --header 'Accept: application/json' 'http://api.byzanti.ne:8902/ticker?symbol=IQ&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
 
 //get BUY side orders for IQ
-curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/orders?symbol=IQ&side=BUY&size=10&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
+curl -X GET --header 'Accept: application/json' 'http://api.byzanti.ne:8902/orders?symbol=IQ&side=BUY&size=10&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
 
 //get SELL side orders for IQ
-curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/orders?symbol=IQ&side=SELL&size=10&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
+curl -X GET --header 'Accept: application/json' 'http://api.byzanti.ne:8902/orders?symbol=IQ&side=SELL&size=10&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
 
 //get complete order book for IQ with depth =n
-curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/orderbook?symbol=IQ&size=10&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' |json_pp
+curl -X GET --header 'Accept: application/json' 'http://api.byzanti.ne:8902/orderbook?symbol=IQ&size=10&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' |json_pp
 
 //get complete order book for IQ with depth =n and ticksize=0.0000010
-curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/orderbooktick?symbol=IQ&ticksize=0.0000010&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' |json_pp
+curl -X GET --header 'Accept: application/json' 'http://api.byzanti.ne:8902/orderbooktick?symbol=IQ&ticksize=0.0000010&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' |json_pp
 
 //get trade book for IQ with depth=n
-curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/tradebook?symbol=IQ&size=10&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
+curl -X GET --header 'Accept: application/json' 'http://api.byzanti.ne:8902/tradebook?symbol=IQ&size=10&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
 
 //deposit into UberDEX exchange contract
-curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"from":"reddy","amount":"0.0001 EOS","sig":"21E5D718BDF2BC83FEC192116DE6AEBC9B310039D75965076BEA4F1DD0745D7F57794A48D33F4D94F2679F973DC793D63D9E16CE457FDB3F6F2B06836A641480"}' 'http://local.byzanti.ne:8901/exdeposit?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' |json_pp
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"from":"reddy","amount":"0.0001 EOS","sig":"21E5D718BDF2BC83FEC192116DE6AEBC9B310039D75965076BEA4F1DD0745D7F57794A48D33F4D94F2679F973DC793D63D9E16CE457FDB3F6F2B06836A641480"}' 'http://api.byzanti.ne:8902/exdeposit?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' |json_pp
 
 //withdraw from UberDEX exchange contract
-curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"from":"reddy","amount":"0.0001 EOS","sig":"4A265092CC236908F99F25247AF94C03F8EB1DB0A05F599235CCC41CB47E6A1220AD91347854AF7417D367771F8E1D93ED4F83075DEBACAB974D4DD01327668B"}' 'http://local.byzanti.ne:8901/exwithdraw?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N'
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"from":"reddy","amount":"0.0001 EOS","sig":"4A265092CC236908F99F25247AF94C03F8EB1DB0A05F599235CCC41CB47E6A1220AD91347854AF7417D367771F8E1D93ED4F83075DEBACAB974D4DD01327668B"}' 'http://api.byzanti.ne:8902/exwithdraw?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N'
 ```
 
 ### Todos
