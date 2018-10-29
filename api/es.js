@@ -135,6 +135,49 @@ async function getOrderBookTick(symbol, ticksize) {
     });
 }
 
+async function getTradeBook(symbol, size) {
+    const tradeBook = await client.search({
+        index: 'trades',
+        type: 'trade',
+        size: size,
+        sort: 'timestamp:desc',
+        // chain: "EOS",
+        body: {
+            query: {
+                "bool": {
+                    "should": [{
+                            "bool": {
+                                "must": [{
+                                    "match": {
+                                        "assetBuy": symbol
+                                    }
+                                }]
+                            }
+                        },
+                        {
+                            "bool": {
+                                "must": [{
+                                    "match": {
+                                        "assetSell": symbol
+                                    }
+                                }]
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    });
+
+    console.log("tradebook size => " + tradeBook.hits.hits.length);
+    var tradeData = [];
+    for (var i = 0, len = tradeBook.hits.hits.length; i < len; i++) {
+        tradeBook.hits.hits[i]._source.tradeId = tradeBook.hits.hits[i]._id;
+        tradeData.push(tradeBook.hits.hits[i]._source)
+    }
+    return tradeData;
+}
+
 async function getOrderBook(indexName, indexType, symbol, size) {
     const buyOrderBook = await client.search({
         index: indexName,
@@ -421,6 +464,7 @@ async function updateBalanceRecord(user, amount, symbol, type) {
 }
 
 //TODO Quick Tests - Move to Mocha + Chai when appropriate
+//getTradeBook("IQ",100);
 //getUserBalances("reddy");
 //withdrawal
 //updateBalanceRecord("reddy", "0.0003", "EOS", EX_ACTION_TYPE_WITHDRAW);
@@ -445,3 +489,4 @@ module.exports.getOrderBook = getOrderBook;
 module.exports.getOrderBookTick = getOrderBookTick;
 module.exports.updateBalanceRecord = updateBalanceRecord;
 module.exports.getUserBalances = getUserBalances;
+module.exports.getTradeBook = getTradeBook;

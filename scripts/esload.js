@@ -54,6 +54,7 @@ function readOrders() {
     return read('orders', 'order');
 }
 
+
 function readExchanges() {
     return read('exchanges', 'exchange');
 }
@@ -135,8 +136,13 @@ function deleteExchanges() {
 }
 
 function deleteOrders() {
-    console.log("Deleting Tickers...!");
+    console.log("Deleting Orders...!");
     deleteRecords('orders', 'order');
+}
+
+function deleteTrades() {
+    console.log("Deleting Trades...!");
+    deleteRecords('trades', 'trade');
 }
 
 function loadExchanges() {
@@ -167,11 +173,163 @@ function loadExchanges() {
     }
 }
 
+function loadTrades() {
+    const BASE_CHAIN = "EOS";
+    var sources = ["UberDEX", "UberDEX", "A-DEX", "B-DEX", "MBAEX"];
+    console.log("Loading Symbols...!");
+    readSymbols().then(function (symbols) {
+        console.log("Symbol data size is " + JSON.stringify(symbols.hits.hits.length));
+        if (typeof symbols === 'undefined') throw new Error("Cannot load symbols");
+        for (var i = 0, len = symbols.hits.hits.length; i < len; i++) {
+            //for each symbol, load its corresponding asks/bids
+            console.log("Fetching orderbook for => " + symbols.hits.hits[i]._source.symbol.split("_")[0].toUpperCase());
+            request.get('http://local.byzanti.ne:8901/orderbook?size=150&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N&symbol=' + symbols.hits.hits[i]._source.symbol.split("_")[0].toUpperCase(), function (err, res, body) {
+                if (err) //TODO: handle err
+                {
+                    console.log(err);
+                } else {
+                    var asks = JSON.parse(body).asks;
+                    var bids = JSON.parse(body).bids;
+
+                    console.log("asks data size is => " + (asks.length));
+                    console.log("bids data size is => " + (bids.length));
+
+                    //Setup a random but unique numbers between 0-99
+                    var arr = [];
+                    while (arr.length < 20) {
+                        var randomnumber = Math.floor(Math.random() * 100) + 1;
+                        if (arr.indexOf(randomnumber) > -1) continue;
+                        arr[arr.length] = randomnumber;
+                    }
+
+                    //buy from a few asks by matching the price and amount
+                    //TODO build for case of partial fills
+                    var askTrades = [];
+                    for (var j = 0, len = arr.length; j < len; j++) {
+                        if (asks[arr[j]] === undefined) {
+                            continue;
+                        }
+                        var askTaker = getAccountName();
+                        var source = sources[Math.floor(Math.random() * sources.length)];
+                        console.log(askTaker + " about to take asks for order => " + arr[j] + " from source@" + source + " with data= " + JSON.stringify(asks[arr[j]]));
+                        var trade = {};
+                        trade.chain = BASE_CHAIN;
+                        trade.assetBuy = asks[arr[j]].assetSell;
+                        trade.assetSell = asks[arr[j]].assetBuy;
+                        trade.amountBuy = asks[arr[j]].amountSell;
+                        trade.amountSell = asks[arr[j]].amountBuy;
+                        trade.price = asks[arr[j]].price;
+                        trade.type = asks[arr[j]].type;
+                        trade.hash = getHash();
+                        trade.maker = asks[arr[j]].useraccount;
+                        trade.taker = askTaker;
+                        trade.makerExchange = asks[arr[j]].source;
+                        trade.takerExchange = source;
+                        //TODO load these from exchange specific data
+                        trade.makerFee = 0.01;
+                        trade.takerFee = 0.02;
+                        trade.created = nodeDateTime.create().format('Y-m-d H:M:S');
+                        trade.updated = nodeDateTime.create().format('Y-m-d H:M:S');
+                        trade.feediscount = asks[arr[j]].feediscount;
+                        trade.timestamp = Math.floor(new Date() / 1000);
+                        console.log(trade);
+                        //execute the trade on chain
+                        //update the orderbook
+                        console.log("Updating order with id => " + asks[arr[j]].orderId);
+                        updateOrderByOrderId(asks[arr[j]].orderId);
+                        //insert trade
+                        askTrades.push({
+                            index: {
+                                _index: 'trades',
+                                _type: 'trade'
+                            }
+                        });
+                        askTrades.push(trade);
+                    }
+
+                    //sell to a few bids by matching the price and amount
+                    //TODO build for case of partial fills
+                    for (var j = 0, len = arr.length; j < len; j++) {
+                        if (bids[arr[j]] === undefined) {
+                            continue;
+                        }
+                        var bidTaker = getAccountName();
+                        var source = sources[Math.floor(Math.random() * sources.length)];
+                        console.log(bidTaker + " about to take bids for order => " + arr[j] + " from source@" + source + " with data= " + JSON.stringify(bids[arr[j]]));
+                        var trade = {};
+                        trade.chain = BASE_CHAIN;
+                        trade.assetBuy = bids[arr[j]].assetSell;
+                        trade.assetSell = bids[arr[j]].assetBuy;
+                        trade.amountBuy = bids[arr[j]].amountSell;
+                        trade.amountSell = bids[arr[j]].amountBuy;
+                        trade.price = bids[arr[j]].price;
+                        trade.type = bids[arr[j]].type;
+                        trade.hash = getHash();
+                        trade.maker = bids[arr[j]].useraccount;
+                        trade.taker = bidTaker;
+                        trade.makerExchange = bids[arr[j]].source;
+                        trade.takerExchange = source;
+                        //TODO load these from exchange specific data
+                        trade.makerFee = 0.01;
+                        trade.takerFee = 0.02;
+                        trade.created = nodeDateTime.create().format('Y-m-d H:M:S');
+                        trade.updated = nodeDateTime.create().format('Y-m-d H:M:S');
+                        trade.feediscount = bids[arr[j]].feediscount;
+                        trade.timestamp = Math.floor(new Date() / 1000);
+                        console.log(trade);
+                        //execute the trade on chain
+                        //update the orderbook
+                        console.log("Updating order with id => " + bids[arr[j]].orderId);
+                        updateOrderByOrderId(bids[arr[j]].orderId);
+                        //insert trade
+                        askTrades.push({
+                            index: {
+                                _index: 'trades',
+                                _type: 'trade'
+                            }
+                        });
+                        askTrades.push(trade);
+                    }
+                    //bulk index bidTrades
+                    console.log("askTrades size => " + askTrades.length);
+
+                    setTimeout(function () {
+                        if (askTrades.length > 0) {
+                            client.bulk({
+                                index: 'trades',
+                                type: 'trade',
+                                body: askTrades
+                            }, function (err, resp, status) {
+                                console.log(status);
+                                if (err) {
+                                    console.log("loadTrades Trades err => " + err);
+                                } else
+                                    console.log("loadTrades Trades resp => " + ((resp)));
+                            });
+                        }
+                    }, 3000);
+                }
+            });
+        }
+    });
+}
+
+function updateOrderByOrderId(orderId) {
+    client.update({
+        index: 'orders',
+        type: 'order',
+        id: orderId,
+        body: {
+            doc: {
+                filled: 1
+            }
+        }
+    });
+}
+
 function loadOrders() {
     var BASE_SYMBOL = "EOS";
-    // console.log("Deleting Tickers...!");
-    // deleteRecords('orders', 'order');
-    console.log("Loading Tickers...!");
+    console.log("Loading Orders...!");
     readSymbols().then(function (symbols) {
         console.log("Symbol data size is " + JSON.stringify(symbols.hits.hits.length));
         //console.log("Symbol data is " + JSON.stringify(symbols.hits.hits));
@@ -187,7 +345,7 @@ function loadOrders() {
                 } else {
                     console.log(body);
                     var orders = [];
-                    for (var j = 0, len = 3800; j < len; j++) {
+                    for (var j = 0, len = 5000; j < len; j++) {
                         //create 1000 orders per symbol
                         // sleep.sleep(2);
                         var order = {};
@@ -267,7 +425,7 @@ function loadOrders() {
 
 
 function read(indexName, indexType, query) {
-    console.log("index:type:query is => " + indexName + ":" + indexType);
+    console.log("index:type:query is => " + indexName + ":" + indexType + ":" + query);
     client.search({
         index: indexName,
         type: indexType,
@@ -321,8 +479,9 @@ module.exports.readExchanges = readExchanges;
 
 module.exports.loadSymbols = loadSymbols;
 module.exports.loadOrders = loadOrders;
+module.exports.loadTrades = loadTrades;
 module.exports.deleteOrders = deleteOrders;
-// module.exports.readOrders = readOrders;
+module.exports.deleteTrades = deleteTrades;
 module.exports.loadTickers = loadTickers;
 module.exports.readTickers = readTickers;
 module.exports.readSymbols = readSymbols;

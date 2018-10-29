@@ -1,9 +1,131 @@
 # Simple index search queries
 GET symbols/_search
 GET tickers/_search
-GET orders/_search?q=IQ
+GET orders/order/lgyFvmYBuQ5feLjDKK0g
+GET orders/_search
 GET accounts/_search
 GET exchanges/_search
+GET trades/_search
+
+#check sampling of trades generated
+GET trades/_search
+{
+ "query": {
+        "bool": {
+          "should": [
+            {
+              "bool": {
+                "must": [
+                  {
+                    "match": {
+                      "assetBuy": "IQ"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "bool": {
+                "must": [
+                  {
+                    "match": {
+                      "assetSell": "IQ"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+  }
+}
+
+
+# trades mappings
+GET trades/_search
+DELETE /trades
+GET trades
+PUT trades
+{
+      "template": "trades",
+    "settings": {
+        "index.refresh_interval": "1s",
+        "analysis": {
+            "analyzer": {
+                "default": {
+                    "type": "standard",
+                    "stopwords": "_none_"
+                }
+            }
+        }
+    },
+
+  "version": 1,
+  "mappings": {
+    "trade": {
+      "properties": {
+        "chain": {
+          "type": "keyword"
+        },
+        "assetBuy": {
+          "type": "keyword"
+        },
+        "amountBuy": {
+          "type": "float"
+        },
+        "assetSell": {
+          "type": "keyword"
+        },
+        "amountSell": {
+          "type": "float"
+        },
+        "price": {
+          "type": "float"
+        },
+        "expires": {
+          "type": "keyword"
+        },
+        "type": {
+          "type": "integer"
+        },
+        "hash": {
+          "type": "keyword"
+        },
+        "maker": {
+          "type": "keyword"
+        },
+        "taker": {
+          "type": "keyword"
+        },
+        "makerexchange": {
+          "type": "keyword"
+        },
+        "takerexchange": {
+          "type": "keyword"
+        },
+        "makerfee": {
+          "type": "float"
+        },
+        "takerfee": {
+          "type": "float"
+        },
+        "created": {
+          "type": "keyword"
+        },
+        "updated": {
+          "type": "keyword"
+        },
+        "feediscount": {
+          "type": "integer"
+        },
+        "timestamp": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}
 
 # exchanges mappings
 GET exchanges/_search?size=1000
@@ -29,7 +151,7 @@ PUT exchanges
 
   "version": 1,
   "mappings": {
-    "account": {
+    "exchange": {
       "properties": {
         "name": {
           "type": "keyword"
