@@ -396,6 +396,41 @@ async function getUserBalances(user) {
     return accounts;
 }
 
+async function orderCancel(orderId, orderHash) {
+    console.log("orderCancel:orderId:orderHash => " + orderId + ":" + orderHash);
+    return await client.update({
+        index: 'orders',
+        type: 'order',
+        id: orderId,
+        body: {
+            doc: {
+                cancelled: 1
+            }
+        }
+    });
+}
+
+async function getOrders(user) {
+    var userOrders = await client.search({
+        index: 'orders',
+        type: 'order',
+        body: {
+            query: {
+                match: {
+                    useraccount: user
+                }
+            }
+        }
+    });
+    var orders = [];
+    for (var i = 0, len = userOrders.hits.hits.length; i < len; i++) {
+        userOrders.hits.hits[i]._source.orderId = userOrders.hits.hits[i]._id;
+        orders.push(userOrders.hits.hits[i]._source)
+    }
+    console.log("getUserBalances :: user:" + user + " has distinct token balances = " + accounts.length);
+    return accounts;
+}
+
 async function updateBalanceRecord(user, amount, symbol, type) {
     var dtFormatted = datetime.create().format('Y-m-d H:M:S');
     var amount = parseFloat(amount);
@@ -501,3 +536,5 @@ module.exports.updateBalanceRecord = updateBalanceRecord;
 module.exports.getUserBalances = getUserBalances;
 module.exports.getTradeBook = getTradeBook;
 module.exports.orderMake = orderMake;
+module.exports.orderCancel = orderCancel;
+module.exports.getOrders = getOrders;
