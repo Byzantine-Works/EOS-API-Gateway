@@ -220,6 +220,27 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /ordersByUser:
+    x-swagger-router-controller: dordersbyuser
+    get:
+      tags:
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Returns exchange balances of EOS Derivative Tokens on DEX
+      operationId: ordersbyuser
+      parameters:
+        - in: query
+          name: user
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/balanceResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /orderbook:
     x-swagger-router-controller: dorderbook
     get:

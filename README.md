@@ -216,6 +216,16 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 	"useraccount": "reddy"
 }' 'http://api.byzanti.ne:8902/orderMake?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N'
 
+//POST cancel an order
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
+  "orderId": "UELIwWYBkm_1qp0yYnUm",
+  "orderHash": "somehash"
+}' 'http://api.byzanti.ne:8902/orderCancel?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N'
+
+//GET fetch user orders
+curl -X GET --header 'Accept: application/json' 'http://api.byzanti.ne:8902/ordersByUser?user=reddy&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
+
+
 //get trade book for IQ with depth=n
 curl -X GET --header 'Accept: application/json' 'http://api.byzanti.ne:8902/tradebook?symbol=IQ&size=10&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
 

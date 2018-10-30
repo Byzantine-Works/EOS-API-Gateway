@@ -410,7 +410,7 @@ async function orderCancel(orderId, orderHash) {
     });
 }
 
-async function getOrders(user) {
+async function getOrdersByUser(user) {
     var userOrders = await client.search({
         index: 'orders',
         type: 'order',
@@ -427,8 +427,8 @@ async function getOrders(user) {
         userOrders.hits.hits[i]._source.orderId = userOrders.hits.hits[i]._id;
         orders.push(userOrders.hits.hits[i]._source)
     }
-    console.log("getUserBalances :: user:" + user + " has distinct token balances = " + accounts.length);
-    return accounts;
+    console.log("getOrdersByUser :: user:" + user + " has ordersize = " + userOrders.length);
+    return orders;
 }
 
 async function updateBalanceRecord(user, amount, symbol, type) {
@@ -537,4 +537,4 @@ module.exports.getUserBalances = getUserBalances;
 module.exports.getTradeBook = getTradeBook;
 module.exports.orderMake = orderMake;
 module.exports.orderCancel = orderCancel;
-module.exports.getOrders = getOrders;
+module.exports.getOrdersByUser = getOrdersByUser;
