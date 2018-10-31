@@ -225,6 +225,8 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 //GET fetch user orders
 curl -X GET --header 'Accept: application/json' 'http://api.byzanti.ne:8902/ordersByUser?user=reddy&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
 
+//GET orders by orderId
+curl -X GET --header 'Accept: application/json' 'http://api.byzanti.ne:8902/orderById?orderId=EPvUwWYBJNEeaSKiZVvG&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' |json_pp
 
 //get trade book for IQ with depth=n
 curl -X GET --header 'Accept: application/json' 'http://api.byzanti.ne:8902/tradebook?symbol=IQ&size=10&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp

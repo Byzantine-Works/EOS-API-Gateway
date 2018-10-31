@@ -225,7 +225,7 @@ paths:
     get:
       tags:
         - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
-      description: Returns exchange balances of EOS Derivative Tokens on DEX
+      description: Returns orders by user account on DEX
       operationId: ordersbyuser
       parameters:
         - in: query
@@ -237,6 +237,27 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/balanceResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /orderById:
+    x-swagger-router-controller: dorderbyid
+    get:
+      tags:
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Returns order by a given orderId on DEX
+      operationId: orderbyid
+      parameters:
+        - in: query
+          name: orderId
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/orderByIdResponse"
         "400":
           description: Error
           schema:
@@ -1035,6 +1056,21 @@ definitions:
         }
   balanceResponse:
     type: array
+    items:
+      type: object
+      example:
+        {
+          orderId: 7eBZmmYBJNEeaSKiV4yG,
+          user: reddy,
+          symbol: IQ,
+          amount: 7.9992,
+          confirmed: 1,
+          created: 2018-10-22 05:57:18,
+          updated: 2018-10-22 06:00:58,
+          timestamp: 1540188058,
+        }
+  orderByIdResponse:
+    type: object
     items:
       type: object
       example:

@@ -410,6 +410,28 @@ async function orderCancel(orderId, orderHash) {
     });
 }
 
+
+async function getOrderById(orderId) {
+    var userOrder = await client.search({
+        index: 'orders',
+        type: 'order',
+        body: {
+            "query": {
+                "match": {
+                    "_id": orderId
+                }
+            }
+        }
+    });
+    if (userOrder.hits.hits.length == 0)
+        throw new Error("Order does not exist!");
+    else {
+        // console.log(userOrder);
+        userOrder.hits.hits[0]._source.orderId = userOrder.hits.hits[0]._id;
+        return userOrder.hits.hits[0]._source;
+    }
+}
+
 async function getOrdersByUser(user) {
     var userOrders = await client.search({
         index: 'orders',
@@ -538,3 +560,4 @@ module.exports.getTradeBook = getTradeBook;
 module.exports.orderMake = orderMake;
 module.exports.orderCancel = orderCancel;
 module.exports.getOrdersByUser = getOrdersByUser;
+module.exports.getOrderById = getOrderById;
