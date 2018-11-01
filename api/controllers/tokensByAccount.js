@@ -24,6 +24,12 @@ function tokensByAccount(req, res) {
   var account = req.swagger.params.account.value;
   es.readIndex(indexName, indexType).then(function (symbols) {
     var tokenList = util.sanitizeSymbols(symbols);
+    var eosioToken = {};
+    eosioToken.symbol = "EOS";
+    eosioToken.contract = "eosio.token";
+    eosioToken.precision = "4";
+    tokenList.push(eosioToken);
+
     for (var i = 0, len = tokenList.length; i < len; i++) {
       //console.log("Processing contract => " + tokenList[i].contract + ":" + tokenList[i].symbol);
       //console.log("TokenList => " + JSON.stringify(tokenList));
