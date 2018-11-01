@@ -7,6 +7,9 @@ const elasticsearch = require('elasticsearch');
 const nodeDateTime = require('node-datetime');
 // const sleep = require('sleep');
 
+//A list of initial dexes part of LDAR
+const exchanges = ["uberdex", "mbaex", "adex", "bdex"];
+
 const client = new elasticsearch.Client({
     host: process.env.ES_HOST_INFO
     //log: 'trace'
@@ -157,7 +160,7 @@ function deleteTrades() {
 function loadExchanges() {
     //TODO Do we need supported symbols per exchange?
     //TODO Do we need suported order types, LIMIT and MARKET?
-    var exchanges = ['UberDEX', "A-DEX", 'B-DEX', 'MBAEX'];
+    var exchanges = ['uberdex', "adex", 'bdex', 'mbaex'];
     console.log("Loading Exchanges of size => " + exchanges.length);
     var indexableExchange = [];
     for (var i = 0, len = exchanges.length; i < len; i++) {
@@ -165,7 +168,7 @@ function loadExchanges() {
         exchange.name = exchanges[i];
         exchange.makerFee = 0.01;
         exchange.takerFee = 0.02;
-        exchange.feeAccount = exchanges[i] + 'fee';
+        exchange.feeAccount = exchanges[i] + '.fee';
         exchange.LDARenabled = 1; //whether the exchanges wants to settle trades from other exchanges
         // exchange.LDARmakerfee; //Do we share profits between the ex or jut leave the makler/taker fee
         // exchange.LDARtakerfee; // TODO think?
@@ -188,7 +191,6 @@ function loadExchanges() {
 
 function loadTrades() {
     const BASE_CHAIN = "EOS";
-    var sources = ["UberDEX", "UberDEX", "A-DEX", "B-DEX", "MBAEX"];
     console.log("Loading Symbols...!");
     readSymbols().then(function (symbols) {
         console.log("Symbol data size is " + JSON.stringify(symbols.hits.hits.length));
@@ -223,7 +225,7 @@ function loadTrades() {
                             continue;
                         }
                         var askTaker = getAccountName();
-                        var source = sources[Math.floor(Math.random() * sources.length)];
+                        var source = exchanges[Math.floor(Math.random() * exchanges.length)];
                         console.log(askTaker + " about to take asks for order => " + arr[j] + " from source@" + source + " with data= " + JSON.stringify(asks[arr[j]]));
                         var trade = {};
                         trade.chain = BASE_CHAIN;
@@ -267,7 +269,7 @@ function loadTrades() {
                             continue;
                         }
                         var bidTaker = getAccountName();
-                        var source = sources[Math.floor(Math.random() * sources.length)];
+                        var source = exchanges[Math.floor(Math.random() * exchanges.length)];
                         console.log(bidTaker + " about to take bids for order => " + arr[j] + " from source@" + source + " with data= " + JSON.stringify(bids[arr[j]]));
                         var trade = {};
                         trade.chain = BASE_CHAIN;
@@ -369,8 +371,7 @@ function loadOrders() {
                             //set up randomizers
                             var items = [1, 2];
                             var expires = ["1d", "2d", "3d", "7d"];
-                            var sources = ["UberDEX", "UberDEX", "A-DEX", "B-DEX", "MBAEX"];
-                            var source = sources[Math.floor(Math.random() * sources.length)];
+                            var source = exchanges[Math.floor(Math.random() * exchanges.length)];
 
                             var item = items[Math.floor(Math.random() * items.length)];
                             var expire = expires[Math.floor(Math.random() * expires.length)];
