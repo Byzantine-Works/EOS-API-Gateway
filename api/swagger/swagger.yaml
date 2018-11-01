@@ -419,7 +419,23 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/balanceResponse"
+            $ref: "#/definitions/exBalanceResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /exchanges:
+    x-swagger-router-controller: dexchanges
+    get:
+      tags:
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Returns exchanges enabled on the LDAR platform
+      operationId: exchanges
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/exchangesResponse"
         "400":
           description: Error
           schema:
@@ -1061,6 +1077,35 @@ definitions:
       example:
         {
           orderId: 7eBZmmYBJNEeaSKiV4yG,
+          user: reddy,
+          symbol: IQ,
+          amount: 7.9992,
+          confirmed: 1,
+          created: 2018-10-22 05:57:18,
+          updated: 2018-10-22 06:00:58,
+          timestamp: 1540188058,
+        }
+  exchangesResponse:
+    type: array
+    items:
+      type: object
+      example:
+        {
+          exchangeId: -RsJv2YBuQ5feLjDFJyC,
+          name: UberDEX,
+          makerfee: 0.01,
+          takerfee: 0.02,
+          created: 2018-10-22 05:57:18,
+          updated: 2018-10-22 06:00:58,
+          timestamp: 1540188058,
+        }
+  exBalanceResponse:
+    type: array
+    items:
+      type: object
+      example:
+        {
+          accountId: 7eBZmmYBJNEeaSKiV4yG,
           user: reddy,
           symbol: IQ,
           amount: 7.9992,

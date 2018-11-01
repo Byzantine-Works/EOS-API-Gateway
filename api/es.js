@@ -375,6 +375,21 @@ function index(object, indexName, indexType) {
     }
 }
 
+async function getExchanges() {
+    var theExchanges = await client.search({
+        index: 'exchanges',
+        type: 'exchange',
+        size: 10000
+    });
+    var exchanges = [];
+    for (var i = 0, len = theExchanges.hits.hits.length; i < len; i++) {
+        theExchanges.hits.hits[i]._source.exchangeId = theExchanges.hits.hits[i]._id;
+        exchanges.push(theExchanges.hits.hits[i]._source)
+    }
+    console.log("getExchanges :: has distinct accounts = " + exchanges.length);
+    return exchanges;
+}
+
 async function getUserBalances(user) {
     var userAccount = await client.search({
         index: accounts_indexName,
@@ -389,7 +404,7 @@ async function getUserBalances(user) {
     });
     var accounts = [];
     for (var i = 0, len = userAccount.hits.hits.length; i < len; i++) {
-        userAccount.hits.hits[i]._source.orderId = userAccount.hits.hits[i]._id;
+        userAccount.hits.hits[i]._source.accountId = userAccount.hits.hits[i]._id;
         accounts.push(userAccount.hits.hits[i]._source)
     }
     console.log("getUserBalances :: user:" + user + " has distinct token balances = " + accounts.length);
@@ -561,3 +576,4 @@ module.exports.orderMake = orderMake;
 module.exports.orderCancel = orderCancel;
 module.exports.getOrdersByUser = getOrdersByUser;
 module.exports.getOrderById = getOrderById;
+module.exports.getExchanges = getExchanges;
