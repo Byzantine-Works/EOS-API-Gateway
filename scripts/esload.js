@@ -165,6 +165,10 @@ function loadExchanges() {
         exchange.name = exchanges[i];
         exchange.makerFee = 0.01;
         exchange.takerFee = 0.02;
+        exchange.feeAccount = exchanges[i] + 'fee';
+        exchange.LDARenabled = 1; //whether the exchanges wants to settle trades from other exchanges
+        // exchange.LDARmakerfee; //Do we share profits between the ex or jut leave the makler/taker fee
+        // exchange.LDARtakerfee; // TODO think?
         exchange.created = nodeDateTime.create().format('Y-m-d H:M:S');
         exchange.updated = nodeDateTime.create().format('Y-m-d H:M:S');
         exchange.timestamp = Math.floor(new Date() / 1000);

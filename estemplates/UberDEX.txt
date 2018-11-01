@@ -156,17 +156,17 @@ PUT exchanges
         "name": {
           "type": "keyword"
         },
-        "makerfee": {
+        "makerFee": {
           "type": "float"
         },
-        "takerfee": {
+        "takerFee": {
           "type": "float"
         },
-        "makerfeeaccount": {
+        "feeAccount": {
           "type": "keyword"
         },
-        "takerfeeaccount": {
-          "type": "keyword"
+        "LDARenabled": {
+          "type": "integer"
         },
         "created": {
           "type": "keyword"
