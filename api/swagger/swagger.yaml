@@ -424,6 +424,27 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /balance:
+    x-swagger-router-controller: dchainbalance
+    get:
+      tags:
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Returns the user accounts balances on the chain
+      operationId: chainbalance
+      parameters:
+        - in: query
+          name: account
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/chainbalanceResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /exchanges:
     x-swagger-router-controller: dexchanges
     get:
@@ -1085,6 +1106,10 @@ definitions:
           updated: 2018-10-22 06:00:58,
           timestamp: 1540188058,
         }
+  chainbalanceResponse:
+    type: array
+    items:
+      type: string
   exchangesResponse:
     type: array
     items:
