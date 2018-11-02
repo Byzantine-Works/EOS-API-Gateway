@@ -7,6 +7,8 @@ const client = new elasticsearch.Client({
     //log: 'trace'
 });
 
+const exchangeapi = require('../../UberDEX/test/uberdexapi');
+
 const indexName = "eosapievents";
 const indexType = "eosapievent";
 const apiKeyIndexName = "apikeys";
@@ -545,6 +547,80 @@ async function orderMake(order) {
         body: order
     });
 }
+
+async function orderTake(orderId, order) {
+    order.timestamp = datetime.create().epoch();
+    order.created = datetime.create().format('Y-m-d H:M:S');
+    order.updated = datetime.create().format('Y-m-d H:M:S');
+
+    //check if the order to take exists and is NOT filled
+    var orderById = await getOrderById(orderId);
+    console.log(orderById);
+    console.log(" Order status = > " + JSON.stringify(orderById.filled));
+    if (orderById.filled == 1) throw new Error("OrderId " + orderId + " has already been filled!");
+    //take the order on-chain using 'trade' abi action
+    var amountBuy = order.amountBuy * 10000; //precision multiplier for contract?
+    var amountSell = order.amountSell * 10000; //precision multiplier for contract?
+
+    //TODO temp fix, need precision math for all symbols
+    if (order.assetBuy.indexOf("IQ") > -1)
+        amountBuy = Math.floor(amountBuy / 10);
+
+    var makerFee = Math.floor(order.makerFee * amountBuy); //precision mux
+    var takerFee = Math.floor(order.takerFee * amountSell); //precision mux
+
+    console.log("MakerFee => " + makerFee + " " + order.assetBuy);
+    console.log("TakerFee => " + takerFee + " " + order.assetSell);
+
+
+    //TODO remove for prod: 
+    // for testing purposes only: hardcode maker1 taker1 and registering keys
+    var maker = "maker1";
+    var taker = "taker1";
+    var makerPK = "EOS5zr5ypz1KA7Atj2GVwBL5pWUk8cjpKGhDygFhr2VaZVwvXB6of";
+    var takerPK = "EOS5zr5ypz1KA7Atj2GVwBL5pWUk8cjpKGhDygFhr2VaZVwvXB6of";
+
+    var registerMaker = await exchangeapi.exregisteruser(maker, makerPK);
+    var registerTaker = await exchangeapi.exregisteruser(taker, takerPK);
+
+    //on-chain trade settlement
+    var tradeApiTransaction = await exchangeapi.extrade('admin', amountBuy, amountSell, 1, amountBuy, 1, order.assetBuy, order.assetSell, makerFee, takerFee, maker, taker, "uberdex.fee");
+
+    console.log(tradeApiTransaction);
+    //Add the trade entry offchain
+    var tradeTrx = await client.index({
+        index: 'trades',
+        type: 'trade',
+        body: order
+    });
+
+    console.log("orderById.amountBuy " + orderById.amountBuy);
+    console.log("order.amountBuy " + order.amountBuy);
+    console.log("orderById.amountSell " + orderById.amountSell);
+    console.log("order.amountSell " + order.amountSell);
+
+    // Case of total fill
+    if (orderById.amountBuy == order.amountSell && orderById.amountSell == order.amountBuy) {
+        //Update the order entry set filled = 1
+        var updateOrder = await updateOrderByOrderId(orderId);
+        return tradeTrx;
+    }
+
+}
+
+async function updateOrderByOrderId(orderId) {
+    return await client.update({
+        index: 'orders',
+        type: 'order',
+        id: orderId,
+        body: {
+            doc: {
+                filled: 1
+            }
+        }
+    });
+}
+
 //TODO Quick Tests - Move to Mocha + Chai when appropriate
 //getTradeBook("IQ",100);
 //getUserBalances("reddy");
@@ -577,3 +653,4 @@ module.exports.orderCancel = orderCancel;
 module.exports.getOrdersByUser = getOrdersByUser;
 module.exports.getOrderById = getOrderById;
 module.exports.getExchanges = getExchanges;
+module.exports.orderTake = orderTake;

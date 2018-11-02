@@ -74,6 +74,26 @@ async function readSymbols() {
     });
 }
 
+function getSymbolByCurrency(currency) {
+    client.search({
+        index: 'symbols',
+        type: 'symbol',
+        body: {
+            query: {
+                match: {
+                    currency: currency
+                }
+            }
+        }
+    }).then(function (symbol) {
+        console.log("getSymbolByCurrency :: currency:" + currency + " has ordersize = " + symbol.hits.hits.length);
+        return symbol.hits.hits[0];
+    }, function (err) {
+        console.log("Error in getSymbolByCurrency " + err);
+    });
+
+}
+
 function loadSymbols() {
     console.log("Deleting symbols...!");
     deleteRecords('symbols', 'symbol');
@@ -376,11 +396,13 @@ function loadOrders() {
                             var item = items[Math.floor(Math.random() * items.length)];
                             var expire = expires[Math.floor(Math.random() * expires.length)];
                             var randomOrderPrice = ((Math.random() * (1.12 - 0.98) + 0.98) * parseFloat(ticker[0].last)).toFixed(7);
+
                             var randomAmount = (Math.random() * (649678.1234 - 12312.1234) + 12312.10).toFixed(4);
                             var randomAmountBuy = (randomAmount * randomOrderPrice).toFixed(4);
                             var randomSell = (randomOrderPrice * randomAmountBuy).toFixed(4);
 
                             //construct order
+                            // order.quantity = randomAmount;
                             order.source = source;
                             order.price = parseFloat(randomOrderPrice);
                             order.side = (order.price > (parseFloat(ticker[0].last)).toFixed(7)) ? "SELL" : "BUY"; //BUY/SELL

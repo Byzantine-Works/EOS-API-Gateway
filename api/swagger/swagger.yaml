@@ -193,6 +193,49 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /orderTake:
+    x-swagger-router-controller: dordertake
+    post:
+      tags:
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Take(buy/sell) an order for a given symbol on DEX
+      operationId: ordertake
+      parameters:
+        - name: body
+          in: body
+          description: Body should encapsulate {orderId}, {assetBuy}, {assetSell},{amountBuy},{amountSell},{price},{taker},{maker},{takerExchange},{makerExchange}
+          required: true
+          schema:
+            properties:
+              orderId:
+                type: string
+              assetBuy:
+                type: string
+              assetSell:
+                type: string
+              amountBuy:
+                type: number
+              amountSell:
+                type: number
+              price:
+                type: number
+              taker:
+                type: string
+              maker:
+                type: string
+              takerExchange:
+                type: string
+              makerExchange:
+                type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/transferResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /orderCancel:
     x-swagger-router-controller: dordercancel
     post:
