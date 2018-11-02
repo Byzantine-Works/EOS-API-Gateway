@@ -242,6 +242,20 @@ curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/ex
 
 //withdraw from UberDEX exchange contract
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"from":"reddy","amount":"0.0001 EOS","sig":"4A265092CC236908F99F25247AF94C03F8EB1DB0A05F599235CCC41CB47E6A1220AD91347854AF7417D367771F8E1D93ED4F83075DEBACAB974D4DD01327668B"}' 'http://api.byzanti.ne:8902/exwithdraw?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N'
+
+//trade api for UberDEX exchange contract
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
+  "orderId": "86yM1WYBV74w5JAyWgyO",
+  "assetBuy": "IQ",
+  "assetSell": "EOS",
+  "amountBuy": 681.44,
+  "amountSell": 1.1974,
+  "price": 0.0017572,
+  "taker": "taker1",
+  "maker": "spaintrader1",
+  "takerExchange": "uberdex",
+  "makerExchange": "mbaex"
+}' 'http://api.byzanti.ne:8902/orderTake?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N'
 ```
 
 ### Todos
