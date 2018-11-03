@@ -14,7 +14,7 @@ module.exports = {
 function chainbalance(req, res) {
   var t0 = performance.now();
   var account = req.swagger.params.account.value;
-  exchangeapi.getBalance(account, "EOS").then(function (balances) {
+  exchangeapi.getAllBalances(account, "EOS").then(function (balances) {
     console.log('account data => ' + JSON.stringify(balances));
     var t1 = performance.now();
     es.auditAPIEvent(req, t1 - t0, true);
