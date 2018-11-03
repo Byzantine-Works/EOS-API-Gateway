@@ -1173,14 +1173,9 @@ definitions:
       type: object
       example:
         {
-          accountId: 7eBZmmYBJNEeaSKiV4yG,
-          user: reddy,
-          symbol: IQ,
-          amount: 7.9992,
-          confirmed: 1,
-          created: 2018-10-22 05:57:18,
-          updated: 2018-10-22 06:00:58,
-          timestamp: 1540188058,
+          account: maker1,
+          token: 3 IQ@everipediaiq,
+          amount: 7,
         }
   orderByIdResponse:
     type: object

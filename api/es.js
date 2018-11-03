@@ -558,6 +558,13 @@ async function orderTake(orderId, order) {
     console.log(orderById);
     console.log(" Order status = > " + JSON.stringify(orderById.filled));
     if (orderById.filled == 1) throw new Error("OrderId " + orderId + " has already been filled!");
+
+    //Supported cases
+    //Case 1: Non-partial fills
+    if (orderById.amountBuy != order.amountSell && orderById.amountSell != order.amountBuy)
+        throw new Error("UberDEX currently does not support partial fills at the moment!");
+
+
     //take the order on-chain using 'trade' abi action
     var amountBuy = order.amountBuy * 10000; //precision multiplier for contract?
     var amountSell = order.amountSell * 10000; //precision multiplier for contract?
@@ -599,13 +606,9 @@ async function orderTake(orderId, order) {
     console.log("orderById.amountSell " + orderById.amountSell);
     console.log("order.amountSell " + order.amountSell);
 
-    // Case of total fill
-    if (orderById.amountBuy == order.amountSell && orderById.amountSell == order.amountBuy) {
-        //Update the order entry set filled = 1
-        var updateOrder = await updateOrderByOrderId(orderId);
-        return tradeTrx;
-    }
-
+    //Update the order entry set filled = 1
+    var updateOrder = await updateOrderByOrderId(orderId);
+    return tradeTrx;
 }
 
 async function updateOrderByOrderId(orderId) {

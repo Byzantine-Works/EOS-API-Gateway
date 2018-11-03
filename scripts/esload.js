@@ -271,7 +271,11 @@ function loadTrades() {
                         //execute the trade on chain
                         //update the orderbook
                         console.log("Updating order with id => " + asks[arr[j]].orderId);
-                        updateOrderByOrderId(asks[arr[j]].orderId);
+                        try {
+                            updateOrderByOrderId(asks[arr[j]].orderId);
+                        } catch (err) {
+                            console.log(err);
+                        }
                         //insert trade
                         askTrades.push({
                             index: {
@@ -315,7 +319,11 @@ function loadTrades() {
                         //execute the trade on chain
                         //update the orderbook
                         console.log("Updating order with id => " + bids[arr[j]].orderId);
-                        updateOrderByOrderId(bids[arr[j]].orderId);
+                        try {
+                            updateOrderByOrderId(bids[arr[j]].orderId);
+                        } catch (err) {
+                            console.log(err);
+                        }
                         //insert trade
                         askTrades.push({
                             index: {

@@ -1,6 +1,8 @@
 'use strict';
 const es = require('../es.js');
 const util = require('./util.js');
+const exchangeapi = require('../../../UberDEX/test/uberdexapi');
+
 const {
   performance
 } = require('perf_hooks');
@@ -12,8 +14,9 @@ module.exports = {
 function balance(req, res) {
   var t0 = performance.now();
   var account = req.swagger.params.account.value;
-  es.getUserBalances(account).then(function (accounts) {
-    console.log('account data => ' + JSON.stringify(accounts));
+  // es.getUserBalances(account).then(function (accounts) {
+    exchangeapi.getExBalances(account).then(function (accounts) {
+    console.log('exchange account response data => ' + (accounts));
     var t1 = performance.now();
     es.auditAPIEvent(req, t1 - t0, true);
     if (accounts.length == 0) {
