@@ -3,7 +3,7 @@ info:
   version: "1.5"
   title: "Byzanti.ne API Gateway - Powered by Liberty Block"
 # during dev, should point to your local machine
-host: api.byzanti.ne:8902
+host: api.byzanti.ne
 # basePath prefixes all resource paths
 basePath: /
 securityDefinitions:
