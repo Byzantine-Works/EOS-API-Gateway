@@ -1,5 +1,6 @@
 'use strict';
 
+const BN = require("bignumber.js");
 var datetime = require('node-datetime');
 const elasticsearch = require('elasticsearch');
 const client = new elasticsearch.Client({
@@ -566,12 +567,15 @@ async function orderTake(orderId, order) {
 
 
     //take the order on-chain using 'trade' abi action
-    var amountBuy = order.amountBuy * 10000; //precision multiplier for contract?
-    var amountSell = order.amountSell * 10000; //precision multiplier for contract?
+    var amountBuy = BN(order.amountBuy).multipliedBy(10000);
+    var amountSell = BN(order.amountSell).multipliedBy(10000);
 
     //TODO temp fix, need precision math for all symbols
     if (order.assetBuy.indexOf("IQ") > -1)
         amountBuy = Math.floor(amountBuy / 10);
+
+    console.log("amountBuy => " + amountBuy);
+    console.log("amountSell => " + amountSell);
 
     var makerFee = Math.floor(order.makerFee * amountBuy); //precision mux
     var takerFee = Math.floor(order.takerFee * amountSell); //precision mux
@@ -584,8 +588,8 @@ async function orderTake(orderId, order) {
     // for testing purposes only: hardcode maker1 taker1 and registering keys
     var maker = "maker1";
     var taker = "taker1";
-    var makerPK = "EOS5zr5ypz1KA7Atj2GVwBL5pWUk8cjpKGhDygFhr2VaZVwvXB6of";
-    var takerPK = "EOS5zr5ypz1KA7Atj2GVwBL5pWUk8cjpKGhDygFhr2VaZVwvXB6of";
+    var makerPK = process.env.USER_PUB_KEY;
+    var takerPK = process.env.USER_PUB_KEY;
 
     var registerMaker = await exchangeapi.exregisteruser(maker, makerPK);
     var registerTaker = await exchangeapi.exregisteruser(taker, takerPK);
