@@ -605,6 +605,9 @@ async function orderTake(orderId, order) {
         body: order
     });
 
+    //add the chain id for trade transaction
+    tradeTrx.transactionId=tradeApiTransaction.processed.id;
+
     console.log("orderById.amountBuy " + orderById.amountBuy);
     console.log("order.amountBuy " + order.amountBuy);
     console.log("orderById.amountSell " + orderById.amountSell);
