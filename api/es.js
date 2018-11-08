@@ -454,6 +454,8 @@ async function getOrdersByUser(user) {
     var userOrders = await client.search({
         index: 'orders',
         type: 'order',
+        size: 10000,
+        sort: 'timestamp:desc',
         body: {
             query: {
                 match: {
