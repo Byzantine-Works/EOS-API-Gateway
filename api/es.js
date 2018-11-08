@@ -605,7 +605,9 @@ async function orderTake(orderId, order) {
     var tradeApiTransaction = await exchangeapi.extrade('admin', amountBuy, amountSell, 1, amountBuy, 1, order.assetBuy, order.assetSell, makerFee, takerFee, maker, taker, "uberdex.fee");
 
     console.log(tradeApiTransaction);
-    //Add the trade entry offchain
+    //Add the trade entry offchain with the maker/taker fee
+    order.makerFee = makerFee;
+    order.takerFee = takerFee;
     var tradeTrx = await client.index({
         index: 'trades',
         type: 'trade',
