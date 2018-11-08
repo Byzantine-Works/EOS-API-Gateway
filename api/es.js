@@ -606,8 +606,8 @@ async function orderTake(orderId, order) {
 
     console.log(tradeApiTransaction);
     //Add the trade entry offchain with the maker/taker fee
-    order.makerFee = makerFee;
-    order.takerFee = takerFee;
+    order.makerFee = (order.makerFee * order.amountBuy);
+    order.takerFee = (order.takerFee * order.amountSell);
     var tradeTrx = await client.index({
         index: 'trades',
         type: 'trade',
@@ -616,6 +616,7 @@ async function orderTake(orderId, order) {
 
     //add the chain id for trade transaction
     tradeTrx.transactionId = tradeApiTransaction.processed.id;
+    tradeTrx.blockNumber = tradeApiTransaction.processed.block_num;
 
     console.log("orderById.amountBuy " + orderById.amountBuy);
     console.log("order.amountBuy " + order.amountBuy);
