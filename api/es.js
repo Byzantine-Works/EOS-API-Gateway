@@ -562,8 +562,15 @@ async function orderTake(orderId, order) {
 
     //Supported cases
     //Case 1: Non-partial fills
-    if (orderById.amountBuy != order.amountSell && orderById.amountSell != order.amountBuy)
-        throw new Error("UberDEX currently does not support partial fills at the moment!");
+    if (orderById.type == "SELL") {
+        if (orderById.amountBuy != order.amountSell && orderById.amountSell != order.amountBuy)
+            throw new Error("UberDEX currently does not support partial-fill-buys at the moment!");
+    }
+
+    if (orderById.type == "BUY") {
+        if (orderById.amountSell != order.amountBuy && orderById.amountBuy != order.amountSell)
+            throw new Error("UberDEX currently does not support partial-fill-sells at the moment!");
+    }
 
 
     //take the order on-chain using 'trade' abi action
@@ -606,7 +613,7 @@ async function orderTake(orderId, order) {
     });
 
     //add the chain id for trade transaction
-    tradeTrx.transactionId=tradeApiTransaction.processed.id;
+    tradeTrx.transactionId = tradeApiTransaction.processed.id;
 
     console.log("orderById.amountBuy " + orderById.amountBuy);
     console.log("order.amountBuy " + order.amountBuy);
