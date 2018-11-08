@@ -3,7 +3,7 @@ info:
   version: "1.5"
   title: "Byzanti.ne API Gateway - Powered by Liberty Block"
 # during dev, should point to your local machine
-host: dev.byzanti.ne:8901
+host: dev.byzanti.ne:8902
 # basePath prefixes all resource paths
 basePath: /
 securityDefinitions:
@@ -162,7 +162,7 @@ paths:
       parameters:
         - name: body
           in: body
-          description: Body should encapsulate {side=BUY/SELL side}, {assetBuy}, {assetSell},{amountBuy},{amountSell},{expires},{type =1/2 for market/limit},{hash},{useraccount}}
+          description: Body should encapsulate {side=BUY/SELL side}, {assetBuy}, {assetSell},{amountBuy},{amountSell},{expires},{type =1/2 for market/limit},{useraccount},{hash}}
           required: true
           schema:
             properties:
@@ -183,6 +183,8 @@ paths:
               type:
                 type: integer
               useraccount:
+                type: string
+              hash:
                 type: string
       responses:
         "200":

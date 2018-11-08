@@ -22,6 +22,7 @@ securityDefinitions:
   #   name: api_key
 schemes:
   # tip: remove http to make production-grade
+  - http
   - https
 # format of bodies a client can send (Content-Type)
 consumes:
@@ -161,7 +162,7 @@ paths:
       parameters:
         - name: body
           in: body
-          description: Body should encapsulate {side=BUY/SELL side}, {assetBuy}, {assetSell},{amountBuy},{amountSell},{expires},{type =1/2 for market/limit},{hash},{useraccount}}
+          description: Body should encapsulate {side=BUY/SELL side}, {assetBuy}, {assetSell},{amountBuy},{amountSell},{expires},{type =1/2 for market/limit},{useraccount},{hash}}
           required: true
           schema:
             properties:
@@ -182,6 +183,8 @@ paths:
               type:
                 type: integer
               useraccount:
+                type: string
+              hash:
                 type: string
       responses:
         "200":

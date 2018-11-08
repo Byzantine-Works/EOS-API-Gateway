@@ -26,7 +26,7 @@ function ordermake(req, res) {
   ordermake.price = req.swagger.params.body.value.price;
   ordermake.expires = req.swagger.params.body.value.expires;
   ordermake.type = req.swagger.params.body.value.type; //1 for market and 2 for limit
-  ordermake.hash = "Scatter hash of the data";
+  ordermake.hash = req.swagger.params.body.value.hash;
   ordermake.useraccount = req.swagger.params.body.value.useraccount;
   ordermake.filled = 2;
   ordermake.cancelled = 2;
