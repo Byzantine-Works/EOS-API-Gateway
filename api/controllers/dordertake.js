@@ -44,7 +44,7 @@ function ordertake(req, res) {
     response.tradeId = order._id;
     response.result = order.result;
     response.transactionId = order.transactionId;
-    response.blockNumber = order.blockNumer;
+    response.blockNumber = order.blockNumber;
     res.json(response);
   }).catch(err => {
     console.log("Error in ordertake api:=>" + err);
