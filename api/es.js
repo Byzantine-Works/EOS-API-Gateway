@@ -3,6 +3,8 @@
 const BN = require("bignumber.js");
 var datetime = require('node-datetime');
 const elasticsearch = require('elasticsearch');
+const nodeDateTime = require('node-datetime');
+
 const client = new elasticsearch.Client({
     host: process.env.ES_HOST_INFO
     //log: 'trace'
@@ -625,8 +627,12 @@ async function orderTake(orderId, order) {
 
     //on-chain trade settlement
     var tradeApiTransaction = await exchangeapi.extrade('admin', amountBuy, amountSell, 1, amountBuy, 1, order.assetBuy, order.assetSell, makerFee, takerFee, maker, taker, "uberdex.fee");
-
     console.log(tradeApiTransaction);
+
+    //set order blocknum and transactionId
+    order.transactionId = tradeApiTransaction.processed.id;
+    order.blockNumber = tradeApiTransaction.processed.block_num;
+
     //Add the trade entry offchain with the maker/taker fee
     order.makerFee = (order.makerFee * order.amountBuy);
     order.takerFee = (order.takerFee * order.amountSell);
