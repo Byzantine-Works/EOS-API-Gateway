@@ -357,6 +357,24 @@ async function getApiKeySet(apikey) {
     });
 }
 
+async function getNonce(apikey) {
+    var keySet = await client.search({
+        index: apiKeyIndexName,
+        type: apiKeyIndexType,
+        body: {
+            query: {
+                match: {
+                    key: apikey
+                }
+            }
+        }
+    });
+    if (keySet.hits.hits.length > 0)
+        return keySet.hits.hits[0]._source.nonce;
+    else
+        throw new Error("Unknown API key " + apikey);
+}
+
 function index(object, indexName, indexType) {
     //console.log("es.index => " + JSON.stringify(object));
     if (process.env.ES_EVENT_AUDIT_ENABLED !== 'false') {
@@ -678,3 +696,4 @@ module.exports.getOrdersByUser = getOrdersByUser;
 module.exports.getOrderById = getOrderById;
 module.exports.getExchanges = getExchanges;
 module.exports.orderTake = orderTake;
+module.exports.getNonce = getNonce;

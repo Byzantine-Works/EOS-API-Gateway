@@ -22,7 +22,7 @@ securityDefinitions:
   #   name: api_key
 schemes:
   # tip: remove http to make production-grade
-  - http
+  # - http
   - https
 # format of bodies a client can send (Content-Type)
 consumes:
@@ -434,6 +434,45 @@ paths:
               amount:
                 type: string
               sig:
+                type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/transferResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Error
+          schema:
+            $ref: "#/definitions/TransferErrorResponse"
+  /exwithdrawscatter:
+    x-swagger-router-controller: dwithdrawscatter
+    post:
+      tags:
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Withdraw EOS/DACs from the exchange account.
+      operationId: withdrawViaScatter
+      parameters:
+        - name: body
+          in: body
+          description: Body should encapsulate {user=account withdrawing}, {amount=amout to withdraw such as 1.0000 EOS or 1.000 IQ},{token=token symbol to withdraw},{nonce=unique nonce to prevent replays},{headers= scatter headers},{signature=sig captured via scatter}}
+          required: true
+          schema:
+            properties:
+              user:
+                type: string
+              token:
+                type: string
+              amount:
+                type: number
+              nonce:
+                type: integer
+              headers:
+                type: object                
+              signature:
                 type: string
       responses:
         "200":
