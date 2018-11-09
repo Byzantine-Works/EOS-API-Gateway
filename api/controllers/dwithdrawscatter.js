@@ -8,10 +8,10 @@ const {
 } = require('perf_hooks');
 
 module.exports = {
-  withdrawViascatter: withdrawViaScatter
+  withdrawscatter: withdrawscatter
 };
 
-function withdrawViaScatter(req, res) {
+function withdrawscatter(req, res) {
   var t0 = performance.now();
   var apiKey = req.headers.api_key;
   var user = req.swagger.params.body.value.user;
@@ -22,28 +22,37 @@ function withdrawViaScatter(req, res) {
   var signature = req.swagger.params.body.value.signature;
 
   //Do we need token contract?
-  console.log("withdrawViaScatter-req:user:token:amount:nonce:headers:signature => " + user + ":" + token + ":" + amount + ":" + nonce + ":" + headers + ":" + signature);
+  console.log("withdrawscatter-req:user:token:amount:nonce:headers:signature => " + user + ":" + token + ":" + amount + ":" + nonce + ":" + headers + ":" + signature);
 
   //check for valid nonce
-  es.getNonce().then(function (curNonce) {
+  es.getNonce(apiKey).then(function (curNonce) {
     if (nonce != curNonce)
       throw new Error("Invalid nonce, replay attack detected!");
     exchangeapi.exOfflineWithdrawal(user, token, amount, nonce, headers, signature).then(function (result) {
-      console.log("withdrawViaScatter-res => " + JSON.stringify(result));
+      console.log("withdrawscatter-res => " + JSON.stringify(result));
       es.incrementNonce(apiKey, Number(decipheredKey[0]));
       var t1 = performance.now();
       es.auditAPIEvent(req, t1 - t0, true);
       res.json(result);
     }).catch(err => {
-      console.log("Error in withdrawViaScatter:=>" + err);
+      console.log("Error in withdrawscatter:=>" + err);
       var error = {
         statusCode: 500,
         message: err.message,
-        code: 'exchange_withdrawViaScatter_error'
+        code: 'exchange_withdrawscatter_error'
       };
       var t2 = performance.now();
       es.auditAPIEvent(req, t2 - t0, false);
       res.status(500).json(error);
     });
-  });
-}
+  }).catch(err => {
+    console.log("Error in getNonce() as part of withdrawscatter:=>" + err);
+    var t2 = performance.now();
+    es.auditAPIEvent(req, t2 - t0, false);
+    var error = {
+      statusCode: 500,
+      message: err.message,
+      code: 'exchange_withdrawscatter_error'
+    };
+    res.status(error.statusCode).json(error);
+  });}
