@@ -600,8 +600,10 @@ async function orderTake(orderId, order) {
     var makerPK = process.env.USER_PUB_KEY;
     var takerPK = process.env.USER_PUB_KEY;
 
-    var registerMaker = await exchangeapi.exregisteruser(maker, makerPK);
-    var registerTaker = await exchangeapi.exregisteruser(taker, takerPK);
+    //for now brute-force registration of user active pubkeys for hash verification in contract
+    //TODO move this to getKeyAccounts on user, and find dynamically active key for registration?
+    // var registerMaker = await exchangeapi.exregisteruser(maker, makerPK);
+    // var registerTaker = await exchangeapi.exregisteruser(taker, takerPK);
 
     //on-chain trade settlement
     var tradeApiTransaction = await exchangeapi.extrade('admin', amountBuy, amountSell, 1, amountBuy, 1, order.assetBuy, order.assetSell, makerFee, takerFee, maker, taker, "uberdex.fee");
