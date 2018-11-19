@@ -261,8 +261,8 @@ function loadTrades() {
                         trade.makerExchange = asks[arr[j]].source;
                         trade.takerExchange = source;
                         //TODO load these from exchange specific data
-                        trade.makerFee = (trade.amountBuy * 0.01).toFixed(4) + " " + trade.assetBuy;
-                        trade.takerFee = (trade.amountSell * 0.02).toFixed(4) + " " + trade.assetSell;
+                        trade.makerFee = (trade.amountBuy * 0.01).toFixed(4); // + " " + trade.assetBuy;
+                        trade.takerFee = (trade.amountSell * 0.02).toFixed(4); // + " " + trade.assetSell;
                         trade.created = nodeDateTime.create().format('Y-m-d H:M:S');
                         trade.updated = nodeDateTime.create().format('Y-m-d H:M:S');
                         trade.feediscount = asks[arr[j]].feediscount;
@@ -309,8 +309,8 @@ function loadTrades() {
                         trade.makerExchange = bids[arr[j]].source;
                         trade.takerExchange = source;
                         //TODO load these from exchange specific data
-                        trade.makerFee = (trade.amountBuy * 0.01).toFixed(4) + " " + trade.assetBuy;
-                        trade.takerFee = (trade.amountSell * 0.02).toFixed(4) + " " + trade.assetSell;
+                        trade.makerFee = (trade.amountBuy * 0.01).toFixed(4); // + " " + trade.assetBuy;
+                        trade.takerFee = (trade.amountSell * 0.02).toFixed(4); // + " " + trade.assetSell;
                         trade.created = nodeDateTime.create().format('Y-m-d H:M:S');
                         trade.updated = nodeDateTime.create().format('Y-m-d H:M:S');
                         trade.feediscount = bids[arr[j]].feediscount;

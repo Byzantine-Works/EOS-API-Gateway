@@ -634,10 +634,12 @@ async function orderTake(orderId, order) {
     //set order blocknum and transactionId
     order.transactionId = tradeApiTransaction.processed.id;
     order.blockNumber = tradeApiTransaction.processed.block_num;
+    order.updated = nodeDateTime.create().format('Y-m-d H:M:S');
+    order.timestamp = Math.floor(new Date() / 1000);
 
     //Add the trade entry offchain with the maker/taker fee
-    order.makerFee = (order.makerFee * order.amountBuy) + " " + order.assetBuy;
-    order.takerFee = (order.takerFee * order.amountSell) + " " + order.assetSell;
+    order.makerFee = (order.makerFee * order.amountBuy).toFixed(4);
+    order.takerFee = (order.takerFee * order.amountSell).toFixed(4);
     var tradeTrx = await client.index({
         index: 'trades',
         type: 'trade',
