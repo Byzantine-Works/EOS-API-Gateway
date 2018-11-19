@@ -253,8 +253,8 @@ async function getOrderBook(indexName, indexType, symbol, size) {
             }
         }
     });
-    console.log("buyOrderBook size => " + buyOrderBook.hits.hits.length);
-    console.log("sellOrderBook size => " + sellOrderBook.hits.hits.length);
+    console.log("buyOrderBook size for " + symbol + "  => " + buyOrderBook.hits.hits.length);
+    console.log("sellOrderBook size for  " + symbol + "  => " + sellOrderBook.hits.hits.length);
     var buyOrderData = [];
     for (var i = 0, len = buyOrderBook.hits.hits.length; i < len; i++) {
         buyOrderBook.hits.hits[i]._source.orderId = buyOrderBook.hits.hits[i]._id;
@@ -599,9 +599,11 @@ async function orderTake(orderId, order) {
     var amountBuy = BN(order.amountBuy).multipliedBy(10000);
     var amountSell = BN(order.amountSell).multipliedBy(10000);
 
+
     //TODO temp fix, need precision math for all symbols
-    if (order.assetBuy.indexOf("IQ") > -1)
+    if (order.assetBuy.indexOf("IQ") > -1) {
         amountBuy = Math.floor(amountBuy / 10);
+    }
 
     console.log("amountBuy => " + amountBuy);
     console.log("amountSell => " + amountSell);
@@ -634,8 +636,8 @@ async function orderTake(orderId, order) {
     order.blockNumber = tradeApiTransaction.processed.block_num;
 
     //Add the trade entry offchain with the maker/taker fee
-    order.makerFee = (order.makerFee * order.amountBuy);
-    order.takerFee = (order.takerFee * order.amountSell);
+    order.makerFee = (order.makerFee * order.amountBuy) + " " + order.assetBuy;
+    order.takerFee = (order.takerFee * order.amountSell) + " " + order.assetSell;
     var tradeTrx = await client.index({
         index: 'trades',
         type: 'trade',

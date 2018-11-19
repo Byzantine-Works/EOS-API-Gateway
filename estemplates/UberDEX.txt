@@ -104,10 +104,10 @@ PUT trades
           "type": "keyword"
         },
         "makerfee": {
-          "type": "float"
+          "type": "keyword"
         },
         "takerfee": {
-          "type": "float"
+          "type": "keyword"
         },
         "created": {
           "type": "keyword"
