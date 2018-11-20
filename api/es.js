@@ -630,12 +630,14 @@ async function orderTake(orderId, order) {
     console.log("TakerFee => " + takerFee + " " + order.assetSell);
 
 
-    //TODO remove for prod: 
+    //TODO @reddy remove for prod: 
     // for testing purposes only: hardcode maker1 taker1 and registering keys
-    var maker = "maker1";
-    var taker = "taker1";
-    var makerPK = process.env.USER_PUB_KEY;
-    var takerPK = process.env.USER_PUB_KEY;
+    if (order.hash = "******************************") {
+        var maker = "maker1";
+        var taker = "taker1";
+        var makerPK = process.env.USER_PUB_KEY;
+        var takerPK = process.env.USER_PUB_KEY;
+    }
 
     //for now brute-force registration of user active pubkeys for hash verification in contract
     //TODO move this to getKeyAccounts on user, and find dynamically active key for registration?
