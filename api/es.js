@@ -584,6 +584,13 @@ async function orderTake(orderId, order) {
     order.created = datetime.create().format('Y-m-d H:M:S');
     order.updated = datetime.create().format('Y-m-d H:M:S');
 
+    //Allow for only IQ/EOS pair trades
+    if (order.assetBuy != 'IQ' && order.assetBuy != 'EOS')
+        throw new Error("Sorry, only EOS/IQ pair is currently enabled for trading!");
+
+    if (order.assetSell != 'IQ' && order.assetSell != 'EOS')
+        throw new Error("Sorry, only EOS/IQ pair is currently enabled for trading!");
+
     //check if the order to take exists and is NOT filled
     var orderById = await getOrderById(orderId);
     console.log(orderById);
