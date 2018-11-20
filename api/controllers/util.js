@@ -25,6 +25,8 @@ function sanitizeOrderData(orderData) {
     var order = [];
     for (var i = 0, len = orderData.length; i < len; i++) {
         orderData[i]._source.orderId = orderData[i]._id;
+        //hide the hash for now
+        orderData[i]._source.hash = "******************************";
         order.push(orderData[i]._source)
     }
     return order;

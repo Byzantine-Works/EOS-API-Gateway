@@ -17,6 +17,9 @@ function orderbyid(req, res) {
   console.log(" orderbyid api call => " + orderId);
   es.getOrderById(orderId).then(function (order) {
     console.log('orderbyid res => ' + JSON.stringify(order));
+
+    //hide the hash for now
+    order.hash="******************************";
     var t1 = performance.now();
     es.auditAPIEvent(req, t1 - t0, true);
     res.json(order);

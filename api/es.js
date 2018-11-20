@@ -258,12 +258,16 @@ async function getOrderBook(indexName, indexType, symbol, size) {
     var buyOrderData = [];
     for (var i = 0, len = buyOrderBook.hits.hits.length; i < len; i++) {
         buyOrderBook.hits.hits[i]._source.orderId = buyOrderBook.hits.hits[i]._id;
+        //hide the hash for now
+        buyOrderBook.hits.hits[i]._source.hash = "******************************";
         buyOrderData.push(buyOrderBook.hits.hits[i]._source)
     }
 
     var sellOrderData = [];
     for (var i = 0, len = sellOrderBook.hits.hits.length; i < len; i++) {
         sellOrderBook.hits.hits[i]._source.orderId = sellOrderBook.hits.hits[i]._id;
+        //hide the hash for now
+        sellOrderBook.hits.hits[i]._source.hash = "******************************";
         sellOrderData.push(sellOrderBook.hits.hits[i]._source)
     }
 
@@ -436,6 +440,10 @@ async function getUserBalances(user) {
 
 async function orderCancel(orderId, orderHash) {
     console.log("orderCancel:orderId:orderHash => " + orderId + ":" + orderHash);
+    var signedOrder = await getOrderById(orderId);
+
+    if (signedOrder.hash != orderHash)
+        throw new Error("Order Hash does not match the hash used to create order!");
     return await client.update({
         index: 'orders',
         type: 'order',
