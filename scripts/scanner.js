@@ -3,7 +3,7 @@ const Eos = require("eosjs");
 const es = require("../api/es.js");
 var datetime = require('node-datetime');
 
-
+//TODO - Move this to configs(db)/config.js/.env as a global setting
 const eos = Eos({
     eosVersion: '0f6695cb',
     chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',

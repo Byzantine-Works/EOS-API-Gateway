@@ -5,6 +5,8 @@ var datetime = require('node-datetime');
 const elasticsearch = require('elasticsearch');
 const nodeDateTime = require('node-datetime');
 
+const WITHDRAWAL = 'withdrawal';
+
 const client = new elasticsearch.Client({
     host: process.env.ES_HOST_INFO
     //log: 'trace'
@@ -559,7 +561,7 @@ async function addAccount(account) {
 
 }
 
-async function updateBalances(balance) {
+async function updateBalances(balance, WITHDRAWAL) {
     console.log("updateBalances :: req => " + JSON.stringify(balance));
     var amount = parseFloat(balance.amount);
 
@@ -611,8 +613,16 @@ async function updateBalances(balance) {
     });
 
     if (balanceAndSymbolExists.hits.hits.length > 0) {
-        //case of balance record for symbol exist, perform update
-        var updateAmount = (parseFloat(balanceAndSymbolExists.hits.hits[0]._source.amount) + parseFloat(amount)).toFixed(4);
+
+        if (WITHDRAWAL) {
+            //validate amount
+            //case of balance record for symbol exist, perform subtraction on withdrawal
+            var updateAmount = (parseFloat(balanceAndSymbolExists.hits.hits[0]._source.amount) - parseFloat(amount)).toFixed(4);
+            if (updateAmount < 0) throw new Error("Withdraw Balance cannot be greater than exchange balance!");
+        } else { //case of balance record for symbol exist, perform addition on deposit
+            var updateAmount = (parseFloat(balanceAndSymbolExists.hits.hits[0]._source.amount) + parseFloat(amount)).toFixed(4);
+        }
+
 
         console.log("Total Sum => " + updateAmount);
         console.log("Updating balances for: " + balance.account + " with amount=" + balance.amount + " for symbol=" + balance.symbol + " for previous amount = " + balanceAndSymbolExists.hits.hits[0]._source.amount);
@@ -759,11 +769,15 @@ async function updateOrderByOrderId(orderId) {
 }
 
 async function addWithdrawal(withdrawal) {
-    return await client.index({
+    // add a withdrawal record
+    await client.index({
         index: 'withdrawals',
         type: 'withdrawal',
         body: withdrawal
     });
+
+    //update balance record
+    await updateBalances(withdrawal, WITHDRAWAL);
 }
 
 async function getActionSequence(chain) {
