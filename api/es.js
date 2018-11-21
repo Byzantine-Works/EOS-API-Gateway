@@ -500,70 +500,101 @@ async function getOrdersByUser(user) {
     return orders;
 }
 
-async function updateBalanceRecord(user, amount, symbol, type) {
-    var dtFormatted = datetime.create().format('Y-m-d H:M:S');
-    var amount = parseFloat(amount);
-    console.log("addBalanceRecord :: user:amount:symbol => " + user + ":" + amount + ":" + symbol);
-    //check if account exists
-    //if account for token+user exists update balance
-    //if not add new record with token+user
-    //TODO Add a check for depositing only accepted tokens
-    var accountAndSymbolExists = await client.search({
-        index: accounts_indexName,
-        type: accounts_indexType,
+async function addAccount(account) {
+    var accountExists = await client.search({
+        index: 'accounts',
+        type: 'account',
         body: {
             query: {
                 match: {
-                    user: user
-                },
-                match: {
-                    symbol: symbol
+                    account: account.account
                 }
             }
         }
     });
 
-    if (accountAndSymbolExists.hits.hits.length > 0) {
-        //case of account and symbol exist, perform update
-        var updateAmount;
-        if (type.toString().trim() === EX_ACTION_TYPE_DEPOSIT) {
-            updateAmount = (parseFloat(amount) + parseFloat(accountAndSymbolExists.hits.hits[0]._source.amount)).toFixed(4);
-        } else if (type.toString().trim() === EX_ACTION_TYPE_WITHDRAW) {
-            if ((parseFloat(amount)) > parseFloat(accountAndSymbolExists.hits.hits[0]._source.amount)) {
-                throw new Error("Withdrawal amount cannot exceed balance")
-            }
-            updateAmount = (parseFloat(accountAndSymbolExists.hits.hits[0]._source.amount) - parseFloat(amount)).toFixed(4);
-        } else {
-            throw new Error("Unknown updateBalanceRecord Type => " + type);
+    if (accountExists.hits.hits.length == 0) {
+        //insert a new user record
+        console.log(" Creating new user Account.. ");
+        return await index(account, 'accounts', 'account');
+    }
+
+}
+
+async function updateBalances(balance) {
+    console.log("updateBalances :: req => " + JSON.stringify(balance));
+    var amount = parseFloat(balance.amount);
+
+    //check if balance record exists
+    //if account for token+user exists update balance
+    //if not add new record with token+user
+    var balanceAndSymbolExists = await client.search({
+        index: 'balances',
+        type: 'balance',
+        body: {
+            "query": {
+                "bool": {
+                    "must": [{
+                            "match": {
+                                "account": balance.account
+                            }
+                        },
+                        {
+                            "match": {
+                                "symbol": balance.symbol
+                            }
+                        }
+                    ]
+                }
+            } // query: {
+            //     match: {
+            //         account: balance.account
+            //     },
+            //     match: {
+            //         symbol: balance.symbol
+            //     }
+            // }
+            // "query": {
+            //     "bool": {
+            //         "should": [{
+            //                 "match_phrase": {
+            //                     "account": balance.account
+            //                 }
+            //             },
+            //             {
+            //                 "match_phrase": {
+            //                     "symbol": balance.symbol
+            //                 }
+            //             }
+            //         ]
+            //     }
+            // }
         }
+    });
+
+    if (balanceAndSymbolExists.hits.hits.length > 0) {
+        //case of balance record for symbol exist, perform update
+        var updateAmount = (parseFloat(balanceAndSymbolExists.hits.hits[0]._source.amount) + parseFloat(amount)).toFixed(4);
+
         console.log("Total Sum => " + updateAmount);
-        console.log("Updating account:" + user + " with amount=" + amount + " for symbol=" + symbol + " for previous amount = " + accountAndSymbolExists.hits.hits[0]._source.amount);
-        return await client.update({
-            index: accounts_indexName,
-            type: accounts_indexType,
-            id: accountAndSymbolExists.hits.hits[0]._id,
+        console.log("Updating balances for: " + balance.account + " with amount=" + balance.amount + " for symbol=" + balance.symbol + " for previous amount = " + balanceAndSymbolExists.hits.hits[0]._source.amount);
+        client.update({
+            index: 'balances',
+            type: 'balance',
+            id: balanceAndSymbolExists.hits.hits[0]._id,
             body: {
                 doc: {
                     amount: parseFloat(updateAmount),
-                    confirmed: 0,
-                    updated: dtFormatted,
+                    updated: datetime.create().format('Y-m-d H:M:S'),
                     timestamp: datetime.create().epoch()
                 }
             }
         });
     } else
-        return await client.index({
-            index: accounts_indexName,
-            type: accounts_indexType,
-            body: {
-                user,
-                amount,
-                symbol,
-                confirmed: 0,
-                created: dtFormatted,
-                updated: dtFormatted,
-                timestamp: datetime.create().epoch()
-            }
+        client.index({
+            index: 'balances',
+            type: 'balance',
+            body: balance
         });
 }
 
@@ -689,6 +720,38 @@ async function updateOrderByOrderId(orderId) {
     });
 }
 
+async function getActionSequence(chain) {
+    return await client.search({
+        index: 'configs',
+        type: 'config',
+        body: {
+            query: {
+                match: {
+                    chain: chain
+                }
+            }
+        }
+    });
+}
+
+async function updateActionSequence(chain, sequence) {
+    if (sequence == null || sequence < 1)
+        throw new Error(" Cannot update sequence for null or <1 !");
+    return await client.updateByQuery({
+        index: 'configs',
+        type: 'config',
+        body: {
+            "query": {
+                "match": {
+                    "chain": chain
+                }
+            },
+            "script": "ctx._source.actionsequence = " + sequence
+        }
+    });
+}
+
+
 //TODO Quick Tests - Move to Mocha + Chai when appropriate
 //getTradeBook("IQ",100);
 //getUserBalances("reddy");
@@ -713,7 +776,7 @@ module.exports.readIndex = read;
 module.exports.getOrders = getOrders;
 module.exports.getOrderBook = getOrderBook;
 module.exports.getOrderBookTick = getOrderBookTick;
-module.exports.updateBalanceRecord = updateBalanceRecord;
+module.exports.updateBalances = updateBalances;
 module.exports.getUserBalances = getUserBalances;
 module.exports.getTradeBook = getTradeBook;
 module.exports.orderMake = orderMake;
@@ -723,3 +786,7 @@ module.exports.getOrderById = getOrderById;
 module.exports.getExchanges = getExchanges;
 module.exports.orderTake = orderTake;
 module.exports.getNonce = getNonce;
+module.exports.getActionSequence = getActionSequence;
+module.exports.updateActionSequence = updateActionSequence;
+module.exports.index = index;
+module.exports.addAccount = addAccount;
