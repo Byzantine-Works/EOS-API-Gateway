@@ -15,7 +15,7 @@ function balance(req, res) {
   var t0 = performance.now();
   var account = req.swagger.params.account.value;
   // es.getUserBalances(account).then(function (accounts) {
-    exchangeapi.getExBalances(account).then(function (accounts) {
+  es.getUserBalances(account).then(function (accounts) {
     console.log('exchange account response data => ' + (accounts));
     var t1 = performance.now();
     es.auditAPIEvent(req, t1 - t0, true);

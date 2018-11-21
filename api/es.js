@@ -417,24 +417,27 @@ async function getExchanges() {
 }
 
 async function getUserBalances(user) {
-    var userAccount = await client.search({
-        index: accounts_indexName,
-        type: accounts_indexType,
+    var userBalances = await client.search({
+        index: 'balances',
+        type: 'balance',
         body: {
             query: {
                 match: {
-                    user: user
+                    account: user
                 }
             }
         }
     });
-    var accounts = [];
-    for (var i = 0, len = userAccount.hits.hits.length; i < len; i++) {
-        userAccount.hits.hits[i]._source.accountId = userAccount.hits.hits[i]._id;
-        accounts.push(userAccount.hits.hits[i]._source)
+    var balances = [];
+    for (var i = 0, len = userBalances.hits.hits.length; i < len; i++) {
+        //userBalances.hits.hits[i]._source.balanceId = userBalances.hits.hits[i]._id;
+        delete userBalances.hits.hits[i]._source.timestamp;
+        delete userBalances.hits.hits[i]._source.created;
+        delete userBalances.hits.hits[i]._source.updated;
+        balances.push(userBalances.hits.hits[i]._source)
     }
-    console.log("getUserBalances :: user:" + user + " has distinct token balances = " + accounts.length);
-    return accounts;
+    console.log("getUserBalances :: account:" + user + " has distinct token balances = " + balances.length);
+    return balances;
 }
 
 async function orderCancel(orderId, orderHash) {
