@@ -1,11 +1,26 @@
 # Simple index search queries
-GET symbols/_search
-GET tickers/_search
-GET orders/order/lgyFvmYBuQ5feLjDKK0g
-GET orders/_search
+GET symbols/_search?size=1000
+GET tickers/_search?size=1000
+GET orders/order/_search?q=IQ
+GET orders/_search?size=1000
 GET accounts/_search
 GET exchanges/_search
 GET trades/_search
+GET apikeys/_search
+GET apikeys
+POST /apikeys/apikey/P9RDZmYBJNEeaSKiKKOW/_update
+{
+   "doc" : {
+      "name" : "Byzantine EOS API Gateway"
+   }
+}
+
+
+DELETE apikeys/apikey/PtRDZmYBJNEeaSKiJaN1
+
+
+GET trades/trade/g1Jd8WYBJNEeaSKizq2x
+GET orders/order/a1558WYBJNEeaSKiTH8C
 
 #check sampling of trades generated
 GET trades/_search
@@ -104,10 +119,10 @@ PUT trades
           "type": "keyword"
         },
         "makerfee": {
-          "type": "keyword"
+          "type": "float"
         },
         "takerfee": {
-          "type": "keyword"
+          "type": "float"
         },
         "created": {
           "type": "keyword"
@@ -116,6 +131,12 @@ PUT trades
           "type": "keyword"
         },
         "feediscount": {
+          "type": "integer"
+        },
+        "transactionId": {
+          "type": "keyword"
+        },
+        "blockNumber": {
           "type": "integer"
         },
         "timestamp": {
