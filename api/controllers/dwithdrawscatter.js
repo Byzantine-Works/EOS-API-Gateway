@@ -30,10 +30,14 @@ function withdrawscatter(req, res) {
       throw new Error("Invalid nonce, replay attack detected!");
     exchangeapi.exOfflineWithdrawal(user, token, amount, nonce, headers, signature).then(function (result) {
       console.log("withdrawscatter-res => " + JSON.stringify(result));
-      es.incrementNonce(apiKey, Number(nonce));
+      es.incrementNonce(apiKey, Number(nonce + 1));
       var t1 = performance.now();
       es.auditAPIEvent(req, t1 - t0, true);
-      res.json(result);
+      var response = {};
+      response.result = "Success!";
+      response.transactionId = result.processed.id;
+      response.blockNumber = result.processed.block_num;
+      res.json(response); 
     }).catch(err => {
       console.log("Error in withdrawscatter:=>" + err);
       var error = {
@@ -55,4 +59,5 @@ function withdrawscatter(req, res) {
       code: 'exchange_withdrawscatter_error'
     };
     res.status(error.statusCode).json(error);
-  });}
+  });
+}
