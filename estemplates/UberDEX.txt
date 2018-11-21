@@ -1,4 +1,10 @@
 # Simple index search queries
+GET accounts/_search
+GET deposits/_search
+GET configs/_search
+GET balances/_search
+
+
 GET symbols/_search?size=1000
 GET tickers/_search?size=1000
 GET orders/order/_search?q=IQ
@@ -255,6 +261,61 @@ GET _search/template
 }
 
 
+#Balances Index
+GET balances/_search?size=1000
+
+DELETE /balances
+
+GET balances
+
+PUT balances
+{
+      "template": "balance",
+    "settings": {
+        "index.refresh_interval": "1s",
+        "analysis": {
+            "analyzer": {
+                "default": {
+                    "type": "standard",
+                    "stopwords": "_none_"
+                }
+            }
+        }
+    },
+
+  "version": 1,
+  "mappings": {
+    "balance": {
+      "properties": {
+        "account": {
+          "type": "keyword"
+        },
+        "amount": {
+          "type": "float"
+        },
+        "symbol": {
+          "type": "keyword"
+        },
+        "balance": {
+          "type": "float"
+        },
+        "created": {
+          "type": "keyword"
+        },
+        "updated": {
+          "type": "keyword"
+        },
+        "timestamp": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}
+
+
+#Accounts Index
 GET accounts/_search?size=1000
 
 DELETE /accounts
@@ -280,17 +341,17 @@ PUT accounts
   "mappings": {
     "account": {
       "properties": {
-        "symbol": {
+        "account": {
           "type": "keyword"
         },
-        "user": {
-          "type": "keyword"
+        "nonce": {
+          "type": "integer"
         },
-        "balance": {
+        "rewards": {
           "type": "float"
         },
-        "confirmed": {
-          "type": "integer"
+        "feediscount": {
+          "type": "float"
         },
         "created": {
           "type": "keyword"
@@ -307,6 +368,113 @@ PUT accounts
   }
 }
 
+# Deposits Index
+GET deposits/_search?size=1000
+
+DELETE /deposits
+
+GET deposits
+
+PUT deposits
+{
+      "template": "deposit",
+    "settings": {
+        "index.refresh_interval": "1s",
+        "analysis": {
+            "analyzer": {
+                "default": {
+                    "type": "standard",
+                    "stopwords": "_none_"
+                }
+            }
+        }
+    },
+
+  "version": 1,
+  "mappings": {
+    "deposit": {
+      "properties": {
+        "symbol": {
+          "type": "keyword"
+        },
+        "account": {
+          "type": "keyword"
+        },
+        "amount": {
+          "type": "float"
+        },
+        "transactionid": {
+          "type": "keyword"
+        },
+        "created": {
+          "type": "keyword"
+        },
+        "updated": {
+          "type": "keyword"
+        },
+        "timestamp": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}
+
+# Configs Index
+GET configs/_search?size=1000
+
+DELETE /configs
+
+GET configs
+
+PUT configs/config/1
+{
+    "chain" : "EOS",
+    "actionsequence": 0,
+    "created" : "2018-11-15T14:12:12",
+    "updated" : "2018-11-15T14:12:12"
+}
+
+PUT configs
+{
+      "template": "config",
+    "settings": {
+        "index.refresh_interval": "1s",
+        "analysis": {
+            "analyzer": {
+                "default": {
+                    "type": "standard",
+                    "stopwords": "_none_"
+                }
+            }
+        }
+    },
+
+  "version": 1,
+  "mappings": {
+    "config": {
+      "properties": {
+        "chain": {
+          "type": "keyword"
+        },
+        "actionsequence": {
+          "type": "integer"
+        },
+        "created": {
+          "type": "keyword"
+        },
+        "updated": {
+          "type": "keyword"
+        },
+        "timestamp": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}
 
 # Test orders that have matched on price
 GET orders/_search
@@ -807,7 +975,7 @@ PUT tickers
 
 
 
-
+# Basic stuff for keys setup
 
 GET apikeys/_search
 
@@ -860,6 +1028,8 @@ PUT apikeys
     }
   }
 }
+
+# Deprecated stuff for EOS
 
 GET eosapievents/_search
 
