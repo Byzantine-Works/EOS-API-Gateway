@@ -348,6 +348,23 @@ async function incrementNonce(apikey, nonce) {
     });
 }
 
+async function incrementUserNonce(user, nonce) {
+    if (user == null || nonce == null)
+        throw new Error(" Cannot increment nonce for null user!");
+    return await client.updateByQuery({
+        index: 'accounts',
+        type: 'account',
+        body: {
+            "query": {
+                "match": {
+                    "account": user
+                }
+            },
+            "script": "ctx._source.nonce += 1"
+        }
+    });
+}
+
 async function getApiKeySet(apikey) {
     return await client.search({
         index: apiKeyIndexName,
@@ -378,6 +395,24 @@ async function getNonce(apikey) {
         return keySet.hits.hits[0]._source.nonce;
     else
         throw new Error("Unknown API key " + apikey);
+}
+
+async function getUserNonce(user) {
+    var keySet = await client.search({
+        index: 'accounts',
+        type: 'account',
+        body: {
+            query: {
+                match: {
+                    account: user
+                }
+            }
+        }
+    });
+    if (keySet.hits.hits.length > 0)
+        return keySet.hits.hits[0]._source.nonce;
+    else
+        throw new Error("Unknown user account " + user);
 }
 
 function index(object, indexName, indexType) {
@@ -723,6 +758,14 @@ async function updateOrderByOrderId(orderId) {
     });
 }
 
+async function addWithdrawal(withdrawal) {
+    return await client.index({
+        index: 'withdrawals',
+        type: 'withdrawal',
+        body: withdrawal
+    });
+}
+
 async function getActionSequence(chain) {
     return await client.search({
         index: 'configs',
@@ -793,3 +836,6 @@ module.exports.getActionSequence = getActionSequence;
 module.exports.updateActionSequence = updateActionSequence;
 module.exports.index = index;
 module.exports.addAccount = addAccount;
+module.exports.addWithdrawal = addWithdrawal;
+module.exports.getUserNonce = getUserNonce;
+module.exports.incrementUserNonce = incrementUserNonce;

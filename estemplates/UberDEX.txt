@@ -260,6 +260,67 @@ GET _search/template
   }
 }
 
+#withdraws Index
+GET withdrawals/_search?size=1000
+
+DELETE /withdrawals
+
+GET withdrawals
+
+PUT withdrawals
+{
+      "template": "withdraw",
+    "settings": {
+        "index.refresh_interval": "1s",
+        "analysis": {
+            "analyzer": {
+                "default": {
+                    "type": "standard",
+                    "stopwords": "_none_"
+                }
+            }
+        }
+    },
+
+  "version": 1,
+  "mappings": {
+    "withdrawal": {
+      "properties": {
+        "account": {
+          "type": "keyword"
+        },
+        "amount": {
+          "type": "float"
+        },
+        "symbol": {
+          "type": "keyword"
+        },
+        "nonce": {
+          "type": "integer"
+        },
+        "transactionid": {
+          "type": "keyword"
+        },
+        "signature": {
+          "type": "keyword"
+        },
+        "transactionheaders": {
+          "type": "keyword"
+        },
+        "created": {
+          "type": "keyword"
+        },
+        "updated": {
+          "type": "keyword"
+        },
+        "timestamp": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}
 
 #Balances Index
 GET balances/_search?size=1000
