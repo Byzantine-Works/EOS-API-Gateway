@@ -1,9 +1,9 @@
 swagger: "2.0"
 info:
-  version: "2.0"
+  version: "2.0.1"
   title: "Byzanti.ne API Gateway - Powered by Liberty Block"
 # during dev, should point to your local machine
-host: api.byzanti.ne:8902
+host: api.byzanti.ne
 # basePath prefixes all resource paths
 basePath: /
 securityDefinitions:
