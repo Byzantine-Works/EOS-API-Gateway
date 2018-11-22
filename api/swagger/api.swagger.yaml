@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "1.5"
+  version: "2.0"
   title: "Byzanti.ne API Gateway - Powered by Liberty Block"
 # during dev, should point to your local machine
 host: api.byzanti.ne:8902
@@ -492,6 +492,27 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/TransferErrorResponse"
+  /exnonce:
+    x-swagger-router-controller: dnonce
+    get:
+      tags:
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Returns user nonce on the exchange
+      operationId: nonce
+      parameters:
+        - in: query
+          name: account
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/exnonceResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /exbalance:
     x-swagger-router-controller: dbalance
     get:
@@ -1126,6 +1147,12 @@ definitions:
         type: array
         items:
           type: object
+  exnonceResponse:
+    properties:
+      nonce:
+        type: integer
+      account:
+        type: string
   infoResponse:
     properties:
       server_version:

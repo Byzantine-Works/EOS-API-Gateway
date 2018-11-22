@@ -10,7 +10,7 @@ const ecc = require("eosjs-ecc");
 // const sleep = require('sleep');
 
 //A list of initial dexes part of LDAR
-const exchanges = ["uberdex", "mbaex", "adex", "bdex"];
+const exchanges = ["uberdex", "mbaex", "adex", "bdex", 'whalex', 'blockex'];
 
 const client = new elasticsearch.Client({
     host: process.env.ES_HOST_INFO
@@ -322,6 +322,7 @@ function loadTrades() {
                         trade.updated = nodeDateTime.create().format('Y-m-d H:M:S');
                         trade.feediscount = bids[arr[j]].feediscount;
                         trade.timestamp = Math.floor(new Date() / 1000) + Math.floor(Math.random() * 60) + 1;
+                        trade.signature = getSig();
                         console.log(trade);
                         //execute the trade on chain
                         //update the orderbook
