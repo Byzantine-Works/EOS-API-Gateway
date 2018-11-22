@@ -5,6 +5,8 @@ const request = require('request');
 const config = require('./chainsnapshot.js');
 const elasticsearch = require('elasticsearch');
 const nodeDateTime = require('node-datetime');
+const ecc = require("eosjs-ecc");
+
 // const sleep = require('sleep');
 
 //A list of initial dexes part of LDAR
@@ -19,6 +21,10 @@ function getHash() {
     var current_date = (new Date()).valueOf().toString();
     var random = Math.random().toString();
     return crypto.createHash('sha1').update(current_date + random).digest('hex');
+}
+
+function getSig() {
+    return "SIG_K1_REDD" + crypto.randomBytes(45).toString('hex');
 }
 
 function getAccountName() {
@@ -267,6 +273,7 @@ function loadTrades() {
                         trade.updated = nodeDateTime.create().format('Y-m-d H:M:S');
                         trade.feediscount = asks[arr[j]].feediscount;
                         trade.timestamp = Math.floor(new Date() / 1000) + Math.floor(Math.random() * 60) + 1;
+                        trade.signature = getSig();
                         console.log(trade);
                         //execute the trade on chain
                         //update the orderbook
@@ -441,6 +448,7 @@ function loadOrders() {
                             order.updated = nodeDateTime.create().format('Y-m-d H:M:S');
                             order.feediscount = item; //1 = FEE DISCOUNT else NOT (if the participant dex pays outside the exec window)?
                             order.timestamp = Math.floor(new Date() / 1000);
+                            order.signature = getSig();
                             //console.log(" Order is => " + JSON.stringify(order, null, 4));
                             //process.exit(-23);
                             orders.push({
