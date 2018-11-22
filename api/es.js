@@ -662,6 +662,7 @@ async function orderTake(orderId, order) {
     order.created = datetime.create().format('Y-m-d H:M:S');
     order.updated = datetime.create().format('Y-m-d H:M:S');
 
+
     //Allow for only IQ/EOS pair trades
     if (order.assetBuy != 'IQ' && order.assetBuy != 'EOS')
         throw new Error("Sorry, only EOS/IQ pair is currently enabled for trading!");
@@ -674,6 +675,14 @@ async function orderTake(orderId, order) {
     console.log(orderById);
     console.log(" Order status = > " + JSON.stringify(orderById.filled));
     if (orderById.filled == 1) throw new Error("OrderId " + orderId + " has already been filled!");
+
+
+    // order/trade hashes + maker/taker sigs
+    var orderHash = orderById.hash;
+    var tradeHash = order.hash;
+    var makerSignature = orderById.signature;
+    var takerSignature = order.signature;
+
 
     //Supported cases
     //Case 1: Non-partial fills
@@ -711,8 +720,8 @@ async function orderTake(orderId, order) {
     //TODO @reddy remove for prod: 
     // for testing purposes only: hardcode maker1 taker1 and registering keys
     if (order.hash = "******************************") {
-        var maker = "maker1";
-        var taker = "taker1";
+        order.maker = "maker1";
+        order.taker = "taker1";
         var makerPK = process.env.USER_PUB_KEY;
         var takerPK = process.env.USER_PUB_KEY;
     }
@@ -723,7 +732,7 @@ async function orderTake(orderId, order) {
     // var registerTaker = await exchangeapi.exregisteruser(taker, takerPK);
 
     //on-chain trade settlement
-    var tradeApiTransaction = await exchangeapi.extrade('admin', amountBuy, amountSell, 1, amountBuy, 1, order.assetBuy, order.assetSell, makerFee, takerFee, maker, taker, "uberdex.fee");
+    var tradeApiTransaction = await exchangeapi.extrade('admin', amountBuy, amountSell, 1, amountBuy, 1, order.assetBuy, order.assetSell, makerFee, takerFee, order.maker, order.taker, "uberdex.fee", orderHash, tradeHash, makerSignature, takerSignature);
     console.log(tradeApiTransaction);
 
     //set order blocknum and transactionId

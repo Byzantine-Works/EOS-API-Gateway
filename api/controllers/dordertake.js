@@ -26,11 +26,12 @@ function ordertake(req, res) {
   ordertake.amountSell = req.swagger.params.body.value.amountSell;
   ordertake.price = req.swagger.params.body.value.price;
   ordertake.type = 1; //market buy/sell
-  ordertake.hash = "Scatter hash of trade data";
+  ordertake.hash = req.swagger.params.body.value.hash;
   ordertake.taker = req.swagger.params.body.value.taker;
   ordertake.maker = req.swagger.params.body.value.maker;
   ordertake.takerExchange = req.swagger.params.body.value.takerExchange;
   ordertake.makerExchange = req.swagger.params.body.value.makerExchange;
+  ordertake.takerSignature = req.swagger.params.body.value.takerSignature;
   ordertake.takerFee = 0.02;
   ordertake.makerFee = 0.01;
   ordertake.feediscount = 2;

@@ -112,6 +112,9 @@ PUT trades
         "hash": {
           "type": "keyword"
         },
+        "signature": {
+          "type": "keyword"
+        },
         "maker": {
           "type": "keyword"
         },
@@ -430,7 +433,7 @@ PUT accounts
 }
 
 # Deposits Index
-GET deposits/_search?size=1000
+GET deposits/_search?q=ideos
 
 DELETE /deposits
 
@@ -932,6 +935,9 @@ PUT orders
           "type": "integer"
         },
         "hash": {
+          "type": "keyword"
+        },
+        "signature": {
           "type": "keyword"
         },
         "useraccount": {

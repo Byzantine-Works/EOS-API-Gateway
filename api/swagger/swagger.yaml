@@ -186,6 +186,8 @@ paths:
                 type: string
               hash:
                 type: string
+              makerSignature:
+                type: string              
       responses:
         "200":
           description: Success
@@ -205,7 +207,7 @@ paths:
       parameters:
         - name: body
           in: body
-          description: Body should encapsulate {orderId}, {assetBuy}, {assetSell},{amountBuy},{amountSell},{price},{taker},{maker},{takerExchange},{makerExchange}
+          description: Body should encapsulate {orderId}, {assetBuy}, {assetSell},{amountBuy},{amountSell},{price},{taker},{maker},{takerExchange},{makerExchange},{tradehash}
           required: true
           schema:
             properties:
@@ -228,6 +230,10 @@ paths:
               takerExchange:
                 type: string
               makerExchange:
+                type: string
+              hash:
+                type: string
+              takerSignature:
                 type: string
       responses:
         "200":
