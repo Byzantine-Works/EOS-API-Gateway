@@ -703,6 +703,9 @@ async function orderTake(orderId, order) {
 
 
     //TODO temp fix, need precision math for all symbols
+    if (order.assetSell.indexOf("IQ") > -1) {
+        amountSell = Math.floor(amountSell / 10);
+    }
     if (order.assetBuy.indexOf("IQ") > -1) {
         amountBuy = Math.floor(amountBuy / 10);
     }
@@ -717,19 +720,18 @@ async function orderTake(orderId, order) {
     console.log("TakerFee => " + takerFee + " " + order.assetSell);
 
 
-    //TODO @reddy remove for prod: 
-    // for testing purposes only: hardcode maker1 taker1 and registering keys
+    //TODO @reddy remove for prod
+    // for testing purposes only: hardcode taker1 and registering keys
     if (order.hash = "******************************") {
-        order.maker = "maker1";
+        order.maker="maker1";
         order.taker = "taker1";
         var makerPK = process.env.USER_PUB_KEY;
         var takerPK = process.env.USER_PUB_KEY;
+        //for now brute-force registration of user active pubkeys for hash verification in contract
+        //TODO move this to getKeyAccounts on user, and find dynamically active key for registration?
+        // var registerMaker = await exchangeapi.exregisteruser(maker, makerPK);
+        // var registerTaker = await exchangeapi.exregisteruser(taker, takerPK);
     }
-
-    //for now brute-force registration of user active pubkeys for hash verification in contract
-    //TODO move this to getKeyAccounts on user, and find dynamically active key for registration?
-    // var registerMaker = await exchangeapi.exregisteruser(maker, makerPK);
-    // var registerTaker = await exchangeapi.exregisteruser(taker, takerPK);
 
     //on-chain trade settlement
     var tradeApiTransaction = await exchangeapi.extrade('admin', amountBuy, amountSell, 1, amountBuy, 1, order.assetBuy, order.assetSell, makerFee, takerFee, order.maker, order.taker, "uberdex.fee", orderHash, tradeHash, makerSignature, takerSignature);
