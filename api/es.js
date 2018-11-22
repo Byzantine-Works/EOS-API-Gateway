@@ -558,10 +558,98 @@ async function addAccount(account) {
         console.log(" Creating new user Account.. ");
         return await index(account, 'accounts', 'account');
     }
-
 }
 
-async function updateBalances(balance, WITHDRAWAL) {
+async function getBalanceIDByAccountAndSymbol(account, symbol) {
+    var returnData = await client.search({
+        index: 'balances',
+        type: 'balance',
+        body: {
+            "query": {
+                "bool": {
+                    "must": [{
+                            "match": {
+                                "account": account
+                            }
+                        },
+                        {
+                            "match": {
+                                "symbol": symbol
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    });
+    return returnData.hits.hits[0]._id;
+}
+
+
+async function updateTradeBalances(trade) {
+    console.log("updateTradeBalances :: req => " + JSON.stringify(trade));
+    console.log("Updating balances for: " + trade.maker + " with amount=" + trade.amountSell + " for symbol=" + trade.assetSell);
+    // [0] Updating balances for: maker1 with amount=0.3307 for symbol=EOS -- addition
+    var balanceId = await getBalanceIDByAccountAndSymbol(trade.maker, trade.assetSell);
+    if (balanceId != null || balanceId != 'undefined') {
+        await updateBalances({
+            account: trade.maker,
+            symbol: trade.assetSell,
+            amount: trade.amountSell
+        });
+    } else {
+        var balance = {};
+        balance.account = trade.maker;
+        balance.amount = trade.amountSell;
+        balance.symbol = trade.assetSell;
+        balance.timestamp = datetime.create().epoch();
+        balance.created = datetime.create().format('Y-m-d H:M:S');
+        balance.updated = datetime.create().format('Y-m-d H:M:S');
+        await updateBalances(balance);
+    }
+
+    console.log("Updating balances for: " + trade.maker + " with amount=" + trade.amountBuy + " for symbol=" + trade.assetBuy);
+    // [0] Updating balances for: maker1 with amount=313.0198 for symbol=IQ -- subtraction
+    var balance = {};
+    balance.account = trade.maker;
+    balance.amount = trade.amountBuy;
+    balance.symbol = trade.assetBuy;
+    balance.timestamp = datetime.create().epoch();
+    balance.updated = datetime.create().format('Y-m-d H:M:S');
+    await updateBalances(balance, WITHDRAWAL);
+
+    console.log("Updating balances for: " + trade.taker + " with amount=" + trade.amountSell + " for symbol=" + trade.assetSell);
+    // [0] Updating balances for: taker1 with amount=0.3307 for symbol=EOS -- subtraction
+    var balance = {};
+    balance.account = trade.taker;
+    balance.amount = trade.amountSell;
+    balance.symbol = trade.assetSell;
+    balance.timestamp = datetime.create().epoch();
+    balance.updated = datetime.create().format('Y-m-d H:M:S');
+    await updateBalances(balance, WITHDRAWAL);
+
+    console.log("Updating balances for: " + trade.taker + " with amount=" + trade.amountBuy + " for symbol=" + trade.assetBuy);
+    // [0] Updating balances for: taker1 with amount=313.0198 for symbol=IQ -- addition
+    var balanceId = await getBalanceIDByAccountAndSymbol(trade.taker, trade.assetBuy);
+    if (balanceId != null || balanceId != 'undefined') {
+        await updateBalances({
+            account: trade.taker,
+            symbol: trade.assetBuy,
+            amount: trade.amountBuy
+        });
+    } else {
+        var balance = {};
+        balance.account = trade.taker;
+        balance.amount = trade.amountBuy;
+        balance.symbol = trade.assetBuy;
+        balance.timestamp = datetime.create().epoch();
+        balance.created = datetime.create().format('Y-m-d H:M:S');
+        balance.updated = datetime.create().format('Y-m-d H:M:S');
+        await updateBalances(balance);
+    }
+}
+
+async function updateBalances(balance, type) {
     console.log("updateBalances :: req => " + JSON.stringify(balance));
     var amount = parseFloat(balance.amount);
 
@@ -613,8 +701,7 @@ async function updateBalances(balance, WITHDRAWAL) {
     });
 
     if (balanceAndSymbolExists.hits.hits.length > 0) {
-
-        if (WITHDRAWAL) {
+        if (type == WITHDRAWAL) {
             //validate amount
             //case of balance record for symbol exist, perform subtraction on withdrawal
             var updateAmount = (parseFloat(balanceAndSymbolExists.hits.hits[0]._source.amount) - parseFloat(amount)).toFixed(4);
@@ -723,7 +810,7 @@ async function orderTake(orderId, order) {
     //TODO @reddy remove for prod
     // for testing purposes only: hardcode taker1 and registering keys
     if (order.hash = "******************************") {
-        order.maker="maker1";
+        order.maker = "maker1";
         order.taker = "taker1";
         var makerPK = process.env.USER_PUB_KEY;
         var takerPK = process.env.USER_PUB_KEY;
@@ -762,7 +849,11 @@ async function orderTake(orderId, order) {
     console.log("order.amountSell " + order.amountSell);
 
     //Update the order entry set filled = 1
-    var updateOrder = await updateOrderByOrderId(orderId);
+    await updateOrderByOrderId(orderId);
+
+    //update trade balances in balances index
+    updateTradeBalances(order);
+
     return tradeTrx;
 }
 

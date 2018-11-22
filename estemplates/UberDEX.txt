@@ -1,3 +1,7 @@
+#Health
+GET /_cluster/stats?human&pretty
+
+
 # Simple index search queries
 GET accounts/_search
 GET deposits/_search

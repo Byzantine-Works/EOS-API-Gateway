@@ -5,6 +5,7 @@ const request = require('request');
 const config = require('./chainsnapshot.js');
 const elasticsearch = require('elasticsearch');
 const nodeDateTime = require('node-datetime');
+var sleep = require('sleep');
 const ecc = require("eosjs-ecc");
 
 // const sleep = require('sleep');
@@ -13,7 +14,8 @@ const ecc = require("eosjs-ecc");
 const exchanges = ["uberdex", "mbaex", "adex", "bdex", 'whalex', 'blockex'];
 
 const client = new elasticsearch.Client({
-    host: process.env.ES_HOST_INFO
+    host: process.env.ES_HOST_INFO,
+    requestTimeout: Infinity
     //log: 'trace'
 });
 
@@ -331,6 +333,7 @@ function loadTrades() {
                             updateOrderByOrderId(bids[arr[j]].orderId);
                         } catch (err) {
                             console.log(err);
+                            resume;
                         }
                         //insert trade
                         askTrades.push({
@@ -358,7 +361,7 @@ function loadTrades() {
                                     console.log("loadTrades Trades resp => " + ((resp)));
                             });
                         }
-                    }, 3000);
+                    }, 4000);
                 }
             });
         }
@@ -396,9 +399,7 @@ function loadOrders() {
                 } else {
                     console.log(body);
                     var orders = [];
-                    for (var j = 0, len = 5000; j < len; j++) {
-                        //create 1000 orders per symbol
-                        // sleep.sleep(2);
+                    for (var j = 0, len = 6000; j < len; j++) {
                         var order = {};
                         var ticker = JSON.parse(body);
 
@@ -481,7 +482,7 @@ function loadOrders() {
 
 
 function read(indexName, indexType, query) {
-    console.log("index:type:query is => " + indexName + ":" + indexType + ":" + query);
+    //console.log("index:type:query is => " + indexName + ":" + indexType + ":" + query);
     client.search({
         index: indexName,
         type: indexType,
