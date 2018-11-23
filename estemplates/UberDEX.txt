@@ -1,7 +1,3 @@
-#Health
-GET /_cluster/stats?human&pretty
-
-
 # Simple index search queries
 GET accounts/_search
 GET deposits/_search
@@ -25,6 +21,13 @@ POST /apikeys/apikey/P9RDZmYBJNEeaSKiKKOW/_update
    }
 }
 
+# Increment nonce on ideosmaker
+POST /accounts/account/rjV-OGcBJNEeaSKiO-d8/_update
+{
+   "doc" : {
+      "nonce" : 199
+   }
+}
 
 DELETE apikeys/apikey/PtRDZmYBJNEeaSKiJaN1
 
