@@ -22,7 +22,7 @@ POST /apikeys/apikey/P9RDZmYBJNEeaSKiKKOW/_update
 }
 
 # Increment nonce on ideosmaker
-POST /accounts/account/rjV-OGcBJNEeaSKiO-d8/_update
+POST /accounts/account/2DSbN2cBJNEeaSKiN26H/_update
 {
    "doc" : {
       "nonce" : 199
@@ -154,6 +154,12 @@ PUT trades
         },
         "blockNumber": {
           "type": "integer"
+        },
+        "makerSignature": {
+          "type": "keyword"
+        },
+        "takerSignature": {
+          "type": "keyword"
         },
         "timestamp": {
           "type": "date",
