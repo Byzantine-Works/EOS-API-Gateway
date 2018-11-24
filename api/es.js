@@ -827,6 +827,8 @@ async function orderTake(orderId, order) {
     //set order blocknum and transactionId
     order.transactionId = tradeApiTransaction.processed.id;
     order.blockNumber = tradeApiTransaction.processed.block_num;
+    order.makerSignature = makerSignature;
+    order.takerSignature = takerSignature;
     order.updated = nodeDateTime.create().format('Y-m-d H:M:S');
     order.timestamp = Math.floor(new Date() / 1000);
 

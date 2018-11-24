@@ -275,7 +275,8 @@ function loadTrades() {
                         trade.updated = nodeDateTime.create().format('Y-m-d H:M:S');
                         trade.feediscount = asks[arr[j]].feediscount;
                         trade.timestamp = Math.floor(new Date() / 1000) + Math.floor(Math.random() * 60) + 1;
-                        trade.signature = getSig();
+                        trade.makerSignature = getSig();
+                        trade.takerSignature = getSig();
                         console.log(trade);
                         //execute the trade on chain
                         //update the orderbook
@@ -324,7 +325,8 @@ function loadTrades() {
                         trade.updated = nodeDateTime.create().format('Y-m-d H:M:S');
                         trade.feediscount = bids[arr[j]].feediscount;
                         trade.timestamp = Math.floor(new Date() / 1000) + Math.floor(Math.random() * 60) + 1;
-                        trade.signature = getSig();
+                        trade.makerSignature = getSig();
+                        trade.takerSignature = getSig();
                         console.log(trade);
                         //execute the trade on chain
                         //update the orderbook
@@ -399,7 +401,7 @@ function loadOrders() {
                 } else {
                     console.log(body);
                     var orders = [];
-                    for (var j = 0, len = 6000; j < len; j++) {
+                    for (var j = 0, len = 3000; j < len; j++) {
                         var order = {};
                         var ticker = JSON.parse(body);
 
