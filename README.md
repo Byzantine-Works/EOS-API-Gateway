@@ -237,11 +237,27 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 //get exchange balances for user account
 curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/exbalance?account=reddy&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
 
+//get nonce for user account
+curl -X GET --header 'Accept: application/json' 'https://api.byzanti.ne/exnonce?account=ideos&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
+
+//get chain balances for user account
+curl -X GET --header 'Accept: application/json' 'https://api.byzanti.ne/balance?account=reddy&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
+
 //get exchanges on LDAR
 curl -X GET --header 'Accept: application/json' 'http://local.byzanti.ne:8901/exchanges?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
 
 //withdraw from UberDEX exchange contract
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"from":"reddy","amount":"0.0001 EOS","sig":"4A265092CC236908F99F25247AF94C03F8EB1DB0A05F599235CCC41CB47E6A1220AD91347854AF7417D367771F8E1D93ED4F83075DEBACAB974D4DD01327668B"}' 'https://api.byzanti.ne/exwithdraw?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N'
+
+//withdraw from UberDEX exchange contract with scatter
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
+  "user": "randomgooppy",
+  "token": "EOS",
+  "amount": 0.0100,
+  "nonce": 87,
+  "headers": {"expiration": "2018-09-26T21:45:47.000","ref_block_num": 21488,"ref_block_prefix": 4283352329},
+  "signature": "SIG_K1_JyiroHvAkmRPDURQaewCW5FQqpiMazWjtP9yz3XQ5X6FtQtQmDF5NoYoV7xS4kwNQ828JobkMwEMhTxEyyUswp2UJ3h8EF"
+}' 'https://api.byzanti.ne/exwithdrawscatter?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
 
 //trade api for UberDEX exchange contract
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
