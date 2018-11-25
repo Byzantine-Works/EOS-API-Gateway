@@ -761,6 +761,8 @@ async function orderTake(orderId, order) {
 
     //check if the order to take exists and is NOT filled
     var orderById = await getOrderById(orderId);
+    order.maker = orderById.useraccount;
+
     console.log(orderById);
     console.log(" Order status = > " + JSON.stringify(orderById.filled));
     if (orderById.filled == 1) throw new Error("OrderId " + orderId + " has already been filled!");
@@ -811,9 +813,8 @@ async function orderTake(orderId, order) {
 
     //TODO @reddy remove for prod
     // for testing purposes only: hardcode taker1 and registering keys
-    if (order.hash = "******************************") {
+    if (order.taker == 'taker1') {
         order.maker = "maker1";
-        order.taker = "taker1";
         var makerPK = process.env.USER_PUB_KEY;
         var takerPK = process.env.USER_PUB_KEY;
         //for now brute-force registration of user active pubkeys for hash verification in contract
@@ -843,7 +844,7 @@ async function orderTake(orderId, order) {
         body: order
     });
 
-    //add the chain id for trade transaction
+    //add the transaction confirmation id for trade
     tradeTrx.transactionId = tradeApiTransaction.processed.id;
     tradeTrx.blockNumber = tradeApiTransaction.processed.block_num;
 

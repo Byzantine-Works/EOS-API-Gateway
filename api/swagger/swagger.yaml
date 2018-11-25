@@ -225,15 +225,13 @@ paths:
                 type: number
               taker:
                 type: string
-              maker:
-                type: string
               takerExchange:
                 type: string
               makerExchange:
                 type: string
               hash:
                 type: string
-              takerSignature:
+              signature:
                 type: string
       responses:
         "200":

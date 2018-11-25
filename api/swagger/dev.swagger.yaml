@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "1.5"
+  version: "2.0.1"
   title: "Byzanti.ne API Gateway - Powered by Liberty Block"
 # during dev, should point to your local machine
 host: dev.byzanti.ne:8902
@@ -186,6 +186,8 @@ paths:
                 type: string
               hash:
                 type: string
+              makerSignature:
+                type: string              
       responses:
         "200":
           description: Success
@@ -205,7 +207,7 @@ paths:
       parameters:
         - name: body
           in: body
-          description: Body should encapsulate {orderId}, {assetBuy}, {assetSell},{amountBuy},{amountSell},{price},{taker},{maker},{takerExchange},{makerExchange}
+          description: Body should encapsulate {orderId}, {assetBuy}, {assetSell},{amountBuy},{amountSell},{price},{taker},{maker},{takerExchange},{makerExchange},{tradehash}
           required: true
           schema:
             properties:
@@ -228,6 +230,10 @@ paths:
               takerExchange:
                 type: string
               makerExchange:
+                type: string
+              hash:
+                type: string
+              signature:
                 type: string
       responses:
         "200":
@@ -448,6 +454,66 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/TransferErrorResponse"
+  /exwithdrawscatter:
+    x-swagger-router-controller: dwithdrawscatter
+    post:
+      tags:
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Withdraw EOS/DACs from the exchange account.
+      operationId: withdrawscatter
+      parameters:
+        - name: body
+          in: body
+          description: Body should encapsulate {user=account withdrawing}, {amount=amout to withdraw such as 1.0000 EOS or 1.000 IQ},{token=token symbol to withdraw},{nonce=unique nonce to prevent replays},{headers= scatter headers},{signature=sig captured via scatter}}
+          required: true
+          schema:
+            properties:
+              user:
+                type: string
+              token:
+                type: string
+              amount:
+                type: number
+              nonce:
+                type: integer
+              headers:
+                type: object                
+              signature:
+                type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/transferResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Error
+          schema:
+            $ref: "#/definitions/TransferErrorResponse"
+  /exnonce:
+    x-swagger-router-controller: dnonce
+    get:
+      tags:
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Returns user nonce on the exchange
+      operationId: nonce
+      parameters:
+        - in: query
+          name: account
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/exnonceResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /exbalance:
     x-swagger-router-controller: dbalance
     get:
@@ -1082,6 +1148,12 @@ definitions:
         type: array
         items:
           type: object
+  exnonceResponse:
+    properties:
+      nonce:
+        type: integer
+      account:
+        type: string
   infoResponse:
     properties:
       server_version:

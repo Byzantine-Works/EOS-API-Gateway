@@ -4,6 +4,16 @@ GET deposits/_search
 GET configs/_search
 GET balances/_search
 
+# Reset accounts,deposits, configs and balances
+POST /configs/config/1/_update
+{
+   "doc" : {
+      "actionsequence" : 0
+   }
+}
+DELETE /accounts/account/HLDENWcB-fjqjZudn5Cp
+DELETE /balances/balance/xhiwR2cBXcF08W3kS9GO
+
 
 GET symbols/_search?size=1000
 GET tickers/_search?size=1000
