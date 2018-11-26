@@ -540,6 +540,29 @@ async function getOrdersByUser(user) {
     return orders;
 }
 
+async function getTradesByUser(user) {
+    var userTrades = await client.search({
+        index: 'trades',
+        type: 'trade',
+        size: 10000,
+        sort: 'timestamp:desc',
+        body: {
+            query: {
+                match: {
+                    taker: user
+                }
+            }
+        }
+    });
+    var trades = [];
+    for (var i = 0, len = userTrades.hits.hits.length; i < len; i++) {
+        userTrades.hits.hits[i]._source.tradeId = userTrades.hits.hits[i]._id;
+        trades.push(userTrades.hits.hits[i]._source)
+    }
+    console.log("getTradesByUser :: user:" + user + " has ordersize = " + userTrades.length);
+    return trades;
+}
+
 async function addAccount(account) {
     var accountExists = await client.search({
         index: 'accounts',
@@ -960,3 +983,4 @@ module.exports.addAccount = addAccount;
 module.exports.addWithdrawal = addWithdrawal;
 module.exports.getUserNonce = getUserNonce;
 module.exports.incrementUserNonce = incrementUserNonce;
+module.exports.getTradesByUser = getTradesByUser;

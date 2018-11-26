@@ -1,6 +1,23 @@
 # Question
 
 ## What do all of these fields on a trade represent?
+[0]: amountBuy
+[1]: amountSell
+[2]: tradeNonce
+[3]: amount
+[4]: tradeNonce
+[5]: tokenBuy
+[6]: tokenSell
+[7]: makerFee
+[8]: takerFee
+[9]: feeAccount
+[10]: maker
+[11]: taker
+[12]: makerSig
+[13]: takerSig
+[14]: admin
+[15]: userNonce
+
 
 # A Sample trade transaction
 
@@ -81,7 +98,7 @@
    "id" : "375bbf189209f3107831c745cb2aa60081ccd72637919b635e669ced47eb1f1b"
 }
 ```
-MethodID: 0xef343588
+MethodID: trade
 [0]:  0000000000000000000000000000000000000000000006a2147ceaa14651c4ed
 [1]:  00000000000000000000000000000000000000000000000007d322ff9719600a
 [2]:  000000000000000000000000000000000000000000000000000000000002e630

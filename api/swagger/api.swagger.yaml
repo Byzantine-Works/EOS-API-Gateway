@@ -224,8 +224,6 @@ paths:
                 type: number
               taker:
                 type: string
-              maker:
-                type: string
               takerExchange:
                 type: string
               makerExchange:
@@ -358,6 +356,27 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/tradesResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /tradesByUser:
+    x-swagger-router-controller: dtradesbyuser
+    get:
+      tags:
+        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Returns trades by user account on DEX
+      operationId: tradesbyuser
+      parameters:
+        - in: query
+          name: user
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/balanceResponse"
         "400":
           description: Error
           schema:

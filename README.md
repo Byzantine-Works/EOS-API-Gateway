@@ -231,6 +231,9 @@ curl -X GET --header 'Accept: application/json' 'https://api.byzanti.ne/orderByI
 //get trade book for IQ with depth=n
 curl -X GET --header 'Accept: application/json' 'https://api.byzanti.ne/tradebook?symbol=IQ&size=10&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
 
+//get trades by user account
+curl -X GET --header 'Accept: application/json' 'https://api.byzanti.ne/tradesByUser?user=taker1&api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' | json_pp
+
 //deposit into UberDEX exchange contract
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"from":"reddy","amount":"0.0001 EOS","sig":"21E5D718BDF2BC83FEC192116DE6AEBC9B310039D75965076BEA4F1DD0745D7F57794A48D33F4D94F2679F973DC793D63D9E16CE457FDB3F6F2B06836A641480"}' 'https://api.byzanti.ne/exdeposit?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N' |json_pp
 
@@ -261,16 +264,17 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 
 //trade api for UberDEX exchange contract
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
-  "orderId": "86yM1WYBV74w5JAyWgyO",
+  "orderId": "Olp6R2cBKKlqgDKXH7mq",
   "assetBuy": "IQ",
   "assetSell": "EOS",
-  "amountBuy": 681.44,
-  "amountSell": 1.1974,
-  "price": 0.0017572,
-  "taker": "taker1",
-  "maker": "spaintrader1",
-  "takerExchange": "uberdex",
-  "makerExchange": "mbaex"
+  "amountBuy": 537.4328,
+  "amountSell": 0.515,
+  "price": 0.0009578,
+  "taker": "reddy",
+  "takerExchange": "mbaex",
+  "makerExchange": "mbaex",
+  "signature": "SIG_K1_REDD8c49760b9a95e05524be36f723e4eba242be073688bf89721158284354599ced1b92c91185decba924b99cb5d0",
+  "hash": "73688bf89721158284354599ced1b92c91185decba924b99cb5d0"
 }' 'https://api.byzanti.ne/orderTake?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N'
 ```
 
