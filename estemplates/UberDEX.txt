@@ -4,16 +4,6 @@ GET deposits/_search
 GET configs/_search
 GET balances/_search
 
-# Reset accounts,deposits, configs and balances
-POST /configs/config/1/_update
-{
-   "doc" : {
-      "actionsequence" : 0
-   }
-}
-DELETE /accounts/account/HLDENWcB-fjqjZudn5Cp
-DELETE /balances/balance/xhiwR2cBXcF08W3kS9GO
-
 
 GET symbols/_search?size=1000
 GET tickers/_search?size=1000
@@ -42,8 +32,17 @@ POST /accounts/account/2DSbN2cBJNEeaSKiN26H/_update
 DELETE apikeys/apikey/PtRDZmYBJNEeaSKiJaN1
 
 
-GET trades/trade/g1Jd8WYBJNEeaSKizq2x
+GET trades/trade/YH7-UGcBKKlqgDKXVaUU
 GET orders/order/a1558WYBJNEeaSKiTH8C
+
+GET trades/_search
+{
+  "query": {
+    "match": {
+      "taker": "taker1"
+    }
+  }
+}
 
 #check sampling of trades generated
 GET trades/_search

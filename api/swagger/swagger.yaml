@@ -90,8 +90,8 @@ paths:
     x-swagger-router-controller: dsymbols
     get:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
-      description: Returns All *legit EOS Derivative Token Pairs for Trading DEX
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Returns All *legit EOS Derivative Token Pairs for Trading on LDAR
       operationId: symbols
       responses:
         "200":
@@ -106,8 +106,8 @@ paths:
     x-swagger-router-controller: dticker
     get:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
-      description: Returns ticker of all tradable EOS Derivative Token Pairs on DEX
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Returns ticker of all tradable EOS Derivative Token Pairs on LDAR
       operationId: ticker
       parameters:
         - in: query
@@ -127,8 +127,8 @@ paths:
     x-swagger-router-controller: dorders
     get:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
-      description: Returns order books for a given symbol on DEX
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Returns order books for a given symbol on LDAR
       operationId: orders
       parameters:
         - in: query
@@ -156,8 +156,8 @@ paths:
     x-swagger-router-controller: dordermake
     post:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
-      description: Adds a new Order for a given symbol on DEX
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Adds a new Order for a given symbol on LDAR
       operationId: ordermake
       parameters:
         - name: body
@@ -201,8 +201,8 @@ paths:
     x-swagger-router-controller: dordertake
     post:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
-      description: Take(buy/sell) an order for a given symbol on DEX
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Take(buy/sell) an order for a given symbol on LDAR
       operationId: ordertake
       parameters:
         - name: body
@@ -246,8 +246,8 @@ paths:
     x-swagger-router-controller: dordercancel
     post:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
-      description: Cancels an existing Order on DEX
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Cancels an existing Order on LDAR
       operationId: ordercancel
       parameters:
         - name: body
@@ -273,8 +273,8 @@ paths:
     x-swagger-router-controller: dordersbyuser
     get:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
-      description: Returns orders by user account on DEX
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Returns orders by user account on LDAR
       operationId: ordersbyuser
       parameters:
         - in: query
@@ -294,8 +294,8 @@ paths:
     x-swagger-router-controller: dorderbyid
     get:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
-      description: Returns order by a given orderId on DEX
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Returns order by a given orderId on LDAR
       operationId: orderbyid
       parameters:
         - in: query
@@ -315,8 +315,8 @@ paths:
     x-swagger-router-controller: dorderbook
     get:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
-      description: Returns order books for a given symbol on DEX
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Returns order books for a given symbol on LDAR
       operationId: orderbook
       parameters:
         - in: query
@@ -340,8 +340,8 @@ paths:
     x-swagger-router-controller: dtradebook
     get:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
-      description: Returns trade book for a given symbol on DEX
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Returns trade book for a given symbol on LDAR
       operationId: tradebook
       parameters:
         - in: query
@@ -365,8 +365,8 @@ paths:
     x-swagger-router-controller: dtradesbyuser
     get:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
-      description: Returns trades by user account on DEX
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Returns trades by user account on LDAR
       operationId: tradesbyuser
       parameters:
         - in: query
@@ -386,8 +386,8 @@ paths:
     x-swagger-router-controller: dorderbooktick
     get:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
-      description: Ticksize based return of order book price aggregation for a given symbol on DEX
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Ticksize based return of order book price aggregation for a given symbol on LDAR
       operationId: orderbooktick
       parameters:
         - in: query
@@ -411,7 +411,7 @@ paths:
     x-swagger-router-controller: ddeposit
     post:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
       description: Deposit EOS DACs to the exchange account {from account}  {amount as extended asset}
       operationId: deposit
       parameters:
@@ -444,7 +444,7 @@ paths:
     x-swagger-router-controller: dwithdraw
     post:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
       description: Withdraw EOS DACs from the exchange account {from user account}  {amount as extended asset}
       operationId: withdraw
       parameters:
@@ -477,7 +477,7 @@ paths:
     x-swagger-router-controller: dwithdrawscatter
     post:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
       description: Withdraw EOS/DACs from the exchange account.
       operationId: withdrawscatter
       parameters:
@@ -516,7 +516,7 @@ paths:
     x-swagger-router-controller: dnonce
     get:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
       description: Returns user nonce on the exchange
       operationId: nonce
       parameters:
@@ -537,8 +537,8 @@ paths:
     x-swagger-router-controller: dbalance
     get:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
-      description: Returns exchange balances of EOS Derivative Tokens on DEX
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+      description: Returns exchange balances of EOS Derivative Tokens on LDAR
       operationId: balance
       parameters:
         - in: query
@@ -558,7 +558,7 @@ paths:
     x-swagger-router-controller: dchainbalance
     get:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
       description: Returns the user accounts balances on the chain
       operationId: chainbalance
       parameters:
@@ -579,7 +579,7 @@ paths:
     x-swagger-router-controller: dexchanges
     get:
       tags:
-        - DEX API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
       description: Returns exchanges enabled on the LDAR platform
       operationId: exchanges
       responses:

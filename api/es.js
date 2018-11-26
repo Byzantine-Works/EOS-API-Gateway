@@ -536,7 +536,7 @@ async function getOrdersByUser(user) {
         userOrders.hits.hits[i]._source.orderId = userOrders.hits.hits[i]._id;
         orders.push(userOrders.hits.hits[i]._source)
     }
-    console.log("getOrdersByUser :: user:" + user + " has ordersize = " + userOrders.length);
+    console.log("getOrdersByUser :: user:" + user + " has ordersize = " + orders.length);
     return orders;
 }
 
@@ -559,7 +559,7 @@ async function getTradesByUser(user) {
         userTrades.hits.hits[i]._source.tradeId = userTrades.hits.hits[i]._id;
         trades.push(userTrades.hits.hits[i]._source)
     }
-    console.log("getTradesByUser :: user:" + user + " has ordersize = " + userTrades.length);
+    console.log("getTradesByUser :: user:" + user + " has ordersize = " + trades.length);
     return trades;
 }
 
