@@ -19,21 +19,6 @@
 
 - - [NewDEX hacked with fake EOS tokens](https://thenextweb.com/hardfork/2018/09/18/eos-hackers-exchange-fake/)
 
-# [EOS 'Stripe' Wallet](https://api.byzanti.ne/wallet)
-
-```sh
-//To embed wallet on your web site to accept any EOS/Derivative assets copy this snippet
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>EOS Wallet</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<div id="wallet" style="transform: translateY(150px); margin: 0 auto; width:700px"></div>
-<script type="text/javascript" src="https://api.byzanti.ne/main.js"></script>
-</html>
-```
 
 # Design
 
