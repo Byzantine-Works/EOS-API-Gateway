@@ -12,7 +12,6 @@
 - - Get Airdrop/Airgrab Tokens with verifiable hashcodes, precision, contracts
 - - Create Account, (Un)Delegate, Vote, RAM price, Buy/Sell RAM, Refunds, Account history
 - - Transfer across any token with/without scatter
-- - A web embeddable ['stripe' wallet for EOS](https://api.byzanti.ne/wallet), that can be customized to work with QR codes on web, mobile or POS systems for accepting EOS/derivative digital assets
 - - A DEX market aggregation data across EOS/Derivative assets
 - - Reduces the complexity of rampup on EOS chain and prevents issues like the following:
 - - [EosBetDice hacked using eosio.token transfer exploit](https://www.zdnet.com/article/blockchain-betting-app-mocks-competitor-for-getting-hacked-gets-hacked-four-days-later/)
@@ -58,13 +57,6 @@ curl http://local.byzanti.ne/8901/info
 
 //to generate salt+apikey use
 node -e 'require("./api/controllers/apiKey").keygen()'
-```
-
-- EOS 'Stripe' Wallet
-
-```sh
-cd thin-wallet-client
-npm start
 ```
 
 # Validate
