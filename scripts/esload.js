@@ -115,6 +115,9 @@ function loadSymbols() {
             var indexableData = JSON.parse(body);
             for (var i = 0, len = indexableData.data.length; i < len; i++) {
                 console.log("Adding symbol => " + JSON.stringify(indexableData.data[i]));
+                // dont like "tradingpair": "trybenetwork-trybe-eos"
+                indexableData.data[i].tradingpair = (indexableData.data[i].currency).toLowerCase() + "_eos";
+                indexableData.data[i].symbol = (indexableData.data[i].currency).toLowerCase() + "_eos";
                 client.index({
                     index: 'symbols',
                     type: 'symbol',
@@ -150,8 +153,8 @@ function loadTickers() {
                         console.log("Loading Ticker data => " + JSON.stringify(indexableData));
                         console.log("STatus code => " + indexableData.code);
                         if (indexableData.code != 501 && indexableData.data.last) {
-                            indexableData.data.tradingpair = indexableData.data.symbol;
-                            indexableData.data.symbol = indexableData.data.currency;
+                            indexableData.data.tradingpair = indexableData.data.currency + "_eos";
+                            indexableData.data.symbol = (indexableData.data.currency).toUpperCase();
                             delete indexableData.data.currency;
                             //console.log(indexableData);
                             //process.exit();
@@ -464,7 +467,7 @@ function loadOrders() {
                             orders.push(order);
                         }
                     }
-                    console.log("Order size => " + orders.length);
+                    console.log("Order size for => " + JSON.stringify(body) + " is => " + orders.length);
                     client.bulk({
                         index: 'orders',
                         type: 'order',
