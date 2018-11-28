@@ -185,7 +185,7 @@ paths:
                 type: string
               hash:
                 type: string
-              makerSignature:
+              signature:
                 type: string              
       responses:
         "200":
@@ -1325,6 +1325,7 @@ definitions:
           updated: 2018-10-17 14:59:11,
           feediscount: 2,
           timestamp: 1539813551,
+          signature: SIG_K1_REDDdaa26a3f9f7d8d729c562f53b20440e9c0fcdce736cb798c1701fef3a2400b12c32e343e024c0bc3dfcd5c9f44,
           orderId: mw6FvmYBuQ5feLjDKeCp
         }
   tradesResponse:

@@ -190,7 +190,8 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 	"price": 0.001852,
 	"expires": "1d",
 	"type": 2,
-	"useraccount": "reddy"
+	"useraccount": "reddy",
+  "signature": "SIG_K1_REDDdaa26a3f9f7d8d729c562f53b20440e9c0fcdce736cb798c1701fef3a2400b12c32e343e024c0bc3dfcd5c9f44"
 }' 'https://api.byzanti.ne/orderMake?api_key=FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N'
 
 //POST cancel an order
