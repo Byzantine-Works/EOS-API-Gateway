@@ -45,7 +45,7 @@ function withdrawscatter(req, res) {
       var withdrawal = {};
       withdrawal.transactionId = result.processed.id;
       withdrawal.blocknumber = result.processed.block_num;
-      withdrawal.account = account;
+      withdrawal.account = user;
       withdrawal.symbol = token;
       withdrawal.amount = parseFloat(amount);
       withdrawal.nonce = nonce;
