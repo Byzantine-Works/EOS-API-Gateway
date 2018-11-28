@@ -50,7 +50,7 @@ function withdrawscatter(req, res) {
       withdrawal.amount = parseFloat(amount);
       withdrawal.nonce = nonce;
       withdrawal.signature = signature;
-      withdrawal.transactionheaders = headers;
+      withdrawal.transactionheaders = headers.expiration + "::" + headers.ref_block_num + "::" + headers.ref_block_prefix;
       withdrawal.timestamp = datetime.create().epoch();
       withdrawal.created = datetime.create().format('Y-m-d H:M:S');
       withdrawal.updated = datetime.create().format('Y-m-d H:M:S');
