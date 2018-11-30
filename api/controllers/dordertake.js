@@ -50,9 +50,15 @@ function ordertake(req, res) {
     console.log("Error in ordertake api:=>" + err);
     var t2 = performance.now();
     es.auditAPIEvent(req, t2 - t0, false);
+    //construct detailed err message
+    // var message = JSON.parse(err).error;
+    var messageDescription = err.message; //JSON.parse(err).message;
+    // for (var i = 0, len = message.length; i < len; i++) {
+    //   messageDescription += message[i].message;
+    // }
     var error = {
       statusCode: 500,
-      message: err.message,
+      message: messageDescription,
       code: 'exchange_ordertake_error'
     };
     res.status(500).json(error);

@@ -18,9 +18,12 @@ cleos push action everipediaiq issue '{"to":"maker1","quantity":"1000000.000 IQ"
 cleos push action everipediaiq issue '{"to":"exchange","quantity":"1.000 IQ","memo":"deposit"}' -p everipediaiq
 cleos push action eosio.token issue '{"to":"escapeuser","quantity":"100.0000 EOS","memo":"Init.."}' -p eosio.token
 
+cleos push action eosio.token issue '{"to":"uberdex.fee","quantity":"100.0000 EOS","memo":"Init.."}' -p eosio.token
+
+
 # Deposit into exchange taker1 tokens
 cleos transfer taker1 exchange "999999.0000 EOS" deposit -p taker1
-cleos push action everipediaiq transfer '[ "taker1", "exchange", "999999.000 IQ", "deposit" ]' -p taker1@active
+# cleos push action everipediaiq transfer '[ "taker1", "exchange", "999999.000 IQ", "deposit" ]' -p taker1@active
 
 # Deposit into exchnage maker1 tokens
 cleos push action everipediaiq transfer '[ "maker1", "exchange", "999999.000 IQ", "deposit" ]' -p maker1@active
