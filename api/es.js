@@ -7,6 +7,9 @@ const nodeDateTime = require('node-datetime');
 
 const WITHDRAWAL = 'withdrawal';
 
+//TODO @reddy: Move these to appropriate configs
+const FEE_ACCOUNT = 'uberdex.fee';
+
 const client = new elasticsearch.Client({
     host: process.env.ES_HOST_INFO
     //log: 'trace'
@@ -21,8 +24,6 @@ const apiKeyIndexType = "apikey";
 const accounts_indexName = "accounts";
 const accounts_indexType = "account";
 
-const EX_ACTION_TYPE_DEPOSIT = "deposit";
-const EX_ACTION_TYPE_WITHDRAW = "withdraw";
 
 // TODO @reddy - clean this up with proper templated calls
 
@@ -477,6 +478,24 @@ async function getUserBalances(user) {
     return balances;
 }
 
+async function getPrecisionBySymbol(symbol) {
+    var symbol = await client.search({
+        index: 'symbols',
+        type: 'symbol',
+        body: {
+            query: {
+                match: {
+                    currency: symbol
+                }
+            }
+        }
+    });
+    if (symbol.hits.hits != null && symbol.hits.hits.length > 0)
+        return symbol.hits.hits[0]._source.currency_precision;
+    else
+        return 4;
+}
+
 async function orderCancel(orderId, orderHash) {
     console.log("orderCancel:orderId:orderHash => " + orderId + ":" + orderHash);
     var signedOrder = await getOrderById(orderId);
@@ -607,13 +626,16 @@ async function getBalanceIDByAccountAndSymbol(account, symbol) {
             }
         }
     });
-    return returnData.hits.hits[0]._id;
+    if (returnData.hits.hits[0]._id != null || returnData.hits.hits[0]._id != 'undefined')
+        return returnData.hits.hits[0]._id;
+    else
+        return [];
 }
 
 
 async function updateTradeBalances(trade) {
     console.log("updateTradeBalances :: req => " + JSON.stringify(trade));
-    console.log("Updating balances for: " + trade.maker + " with amount=" + trade.amountSell + " for symbol=" + trade.assetSell);
+    console.log("ADDING balances for: " + trade.maker + " with amount=" + trade.amountSell + " for symbol=" + trade.assetSell);
     // [0] Updating balances for: maker1 with amount=0.3307 for symbol=EOS -- addition
     var balanceId = await getBalanceIDByAccountAndSymbol(trade.maker, trade.assetSell);
     if (balanceId != null || balanceId != 'undefined') {
@@ -627,36 +649,33 @@ async function updateTradeBalances(trade) {
         balance.account = trade.maker;
         balance.amount = trade.amountSell;
         balance.symbol = trade.assetSell;
-        balance.timestamp = datetime.create().epoch();
-        balance.created = datetime.create().format('Y-m-d H:M:S');
         balance.updated = datetime.create().format('Y-m-d H:M:S');
         await updateBalances(balance);
     }
 
-    console.log("Updating balances for: " + trade.maker + " with amount=" + trade.amountBuy + " for symbol=" + trade.assetBuy);
+    console.log("SUBTRACTING balances for: " + trade.maker + " with amount=" + trade.amountBuy + " for symbol=" + trade.assetBuy);
     // [0] Updating balances for: maker1 with amount=313.0198 for symbol=IQ -- subtraction
     var balance = {};
     balance.account = trade.maker;
     balance.amount = trade.amountBuy;
     balance.symbol = trade.assetBuy;
-    balance.timestamp = datetime.create().epoch();
     balance.updated = datetime.create().format('Y-m-d H:M:S');
     await updateBalances(balance, WITHDRAWAL);
 
-    console.log("Updating balances for: " + trade.taker + " with amount=" + trade.amountSell + " for symbol=" + trade.assetSell);
+    console.log("SUBTRACTING balances for: " + trade.taker + " with amount=" + trade.amountSell + " for symbol=" + trade.assetSell);
     // [0] Updating balances for: taker1 with amount=0.3307 for symbol=EOS -- subtraction
     var balance = {};
     balance.account = trade.taker;
     balance.amount = trade.amountSell;
     balance.symbol = trade.assetSell;
-    balance.timestamp = datetime.create().epoch();
     balance.updated = datetime.create().format('Y-m-d H:M:S');
+    // console.log(balance);
     await updateBalances(balance, WITHDRAWAL);
 
-    console.log("Updating balances for: " + trade.taker + " with amount=" + trade.amountBuy + " for symbol=" + trade.assetBuy);
+    console.log("ADDING balances for: " + trade.taker + " with amount=" + trade.amountBuy + " for symbol=" + trade.assetBuy);
     // [0] Updating balances for: taker1 with amount=313.0198 for symbol=IQ -- addition
     var balanceId = await getBalanceIDByAccountAndSymbol(trade.taker, trade.assetBuy);
-    if (balanceId != null || balanceId != 'undefined') {
+    if (balanceId == null || balanceId == 'undefined') {
         await updateBalances({
             account: trade.taker,
             symbol: trade.assetBuy,
@@ -667,9 +686,48 @@ async function updateTradeBalances(trade) {
         balance.account = trade.taker;
         balance.amount = trade.amountBuy;
         balance.symbol = trade.assetBuy;
-        balance.timestamp = datetime.create().epoch();
-        balance.created = datetime.create().format('Y-m-d H:M:S');
         balance.updated = datetime.create().format('Y-m-d H:M:S');
+        // console.log(balance);
+        await updateBalances(balance);
+    }
+    // Update fee account (takerfee)
+    console.log("***************************************************************************");
+    console.log("Updating Fee account balances => taker fee = " + trade.takerFee + "@" + trade.assetSell);
+    console.log("Updating Fee account balances => maker fee = " + trade.makerFee + "@" + trade.assetBuy);
+    console.log("***************************************************************************");
+
+    var balanceId = await getBalanceIDByAccountAndSymbol(FEE_ACCOUNT, trade.assetSell);
+    if (balanceId == null || balanceId == 'undefined') {
+        await updateBalances({
+            account: FEE_ACCOUNT,
+            symbol: trade.assetSell,
+            amount: parseFloat(trade.takerFee)
+        });
+    } else {
+        var balance = {};
+        balance.account = FEE_ACCOUNT;
+        balance.amount = parseFloat(trade.takerFee);
+        balance.symbol = trade.assetSell;
+        balance.updated = datetime.create().format('Y-m-d H:M:S');
+        // console.log(balance);
+        await updateBalances(balance);
+    }
+
+    // Update fee account (makerfee)
+    var balanceId = await getBalanceIDByAccountAndSymbol(FEE_ACCOUNT, trade.assetSell);
+    if (balanceId == null || balanceId == 'undefined') {
+        await updateBalances({
+            account: FEE_ACCOUNT,
+            symbol: trade.assetBuy,
+            amount: parseFloat(trade.makerFee)
+        });
+    } else {
+        var balance = {};
+        balance.account = FEE_ACCOUNT;
+        balance.amount = parseFloat(trade.makerFee);
+        balance.symbol = trade.assetBuy;
+        balance.updated = datetime.create().format('Y-m-d H:M:S');
+        // console.log(balance);
         await updateBalances(balance);
     }
 }
@@ -726,17 +784,18 @@ async function updateBalances(balance, type) {
     });
 
     if (balanceAndSymbolExists.hits.hits.length > 0) {
+        var updateAmount;
         if (type == WITHDRAWAL) {
             //validate amount
             //case of balance record for symbol exist, perform subtraction on withdrawal
-            var updateAmount = (parseFloat(balanceAndSymbolExists.hits.hits[0]._source.amount) - parseFloat(amount)).toFixed(4);
+            updateAmount = (parseFloat(balanceAndSymbolExists.hits.hits[0]._source.amount) - parseFloat(amount)).toFixed(4);
             if (updateAmount < 0) throw new Error("Withdraw Balance cannot be greater than exchange balance!");
         } else { //case of balance record for symbol exist, perform addition on deposit
-            var updateAmount = (parseFloat(balanceAndSymbolExists.hits.hits[0]._source.amount) + parseFloat(amount)).toFixed(4);
+            updateAmount = (parseFloat(balanceAndSymbolExists.hits.hits[0]._source.amount) + parseFloat(amount)).toFixed(4);
         }
 
 
-        console.log("Total Sum => " + updateAmount);
+        console.log("Amount being updated ... => " + updateAmount);
         console.log("Updating balances for: " + balance.account + " with amount=" + balance.amount + " for symbol=" + balance.symbol + " for previous amount = " + balanceAndSymbolExists.hits.hits[0]._source.amount);
         client.update({
             index: 'balances',
@@ -777,10 +836,10 @@ async function orderTake(orderId, order) {
 
     //Allow for only IQ/EOS pair trades
     if (order.assetBuy != 'IQ' && order.assetBuy != 'EOS')
-        throw new Error("Sorry, only EOS/IQ pair is currently enabled for trading!");
+        throw new Error("Sorry, only EOS/IQ pair are currently trading on this exchange!");
 
     if (order.assetSell != 'IQ' && order.assetSell != 'EOS')
-        throw new Error("Sorry, only EOS/IQ pair is currently enabled for trading!");
+        throw new Error("Sorry, only EOS/IQ pair are currently trading on this exchange!");
 
     //check if the order to take exists and is NOT filled
     var orderById = await getOrderById(orderId);
@@ -810,28 +869,30 @@ async function orderTake(orderId, order) {
             throw new Error("UberDEX currently does not support partial-fill-sells at the moment!");
     }
 
+    //no wash trading with same account?
+    if (order.taker == orderById.useraccount)
+        throw new Error("Washtrading between the same account is prohibited on this exchange!");
 
     //take the order on-chain using 'trade' abi action
-    var amountBuy = BN(order.amountBuy).multipliedBy(10000);
-    var amountSell = BN(order.amountSell).multipliedBy(10000);
+    //use the right precision
+    var pAssetBuy = await getPrecisionBySymbol(order.assetBuy);
+    var pAssetSell = await getPrecisionBySymbol(order.assetSell);
+    var amountBuy = order.amountBuy.toFixed(pAssetBuy);
+    var amountSell = order.amountSell.toFixed(pAssetSell);
 
+    amountBuy = BN(amountBuy).multipliedBy(Math.pow(10, pAssetBuy)); //.toFixed(0);
+    amountSell = BN(amountSell).multipliedBy(Math.pow(10, pAssetSell)); //.toFixed(0);
 
-    //TODO temp fix, need precision math for all symbols
-    if (order.assetSell.indexOf("IQ") > -1) {
-        amountSell = Math.floor(amountSell / 10);
-    }
-    if (order.assetBuy.indexOf("IQ") > -1) {
-        amountBuy = Math.floor(amountBuy / 10);
-    }
+    console.log("***********************************");
+    console.log("amountBuy=" + amountBuy + "@" + order.assetBuy);
+    console.log("amountSell=" + amountSell + "@" + order.assetSell);
+    console.log("***********************************");
 
-    console.log("amountBuy => " + amountBuy);
-    console.log("amountSell => " + amountSell);
+    var makerFee = parseFloat(Math.floor(order.makerFee * amountBuy)); //precision mux
+    var takerFee = parseFloat(Math.floor(order.takerFee * amountSell)); //precision mux
 
-    var makerFee = Math.floor(order.makerFee * amountBuy); //precision mux
-    var takerFee = Math.floor(order.takerFee * amountSell); //precision mux
-
-    console.log("MakerFee => " + makerFee + " " + order.assetBuy);
-    console.log("TakerFee => " + takerFee + " " + order.assetSell);
+    console.log("MakerFee => " + makerFee + "@" + order.assetBuy);
+    console.log("TakerFee => " + takerFee + "@" + order.assetSell);
 
 
     //TODO @reddy remove for prod
@@ -847,7 +908,7 @@ async function orderTake(orderId, order) {
     }
 
     //on-chain trade settlement
-    var tradeApiTransaction = await exchangeapi.extrade('admin', amountBuy, amountSell, 1, amountBuy, 1, order.assetBuy, order.assetSell, makerFee, takerFee, order.maker, order.taker, "uberdex.fee", orderHash, tradeHash, makerSignature, takerSignature);
+    var tradeApiTransaction = await exchangeapi.extrade('admin', amountBuy, amountSell, 1, amountBuy, 1, order.assetBuy, order.assetSell, makerFee, takerFee, order.maker, order.taker, FEE_ACCOUNT, orderHash, tradeHash, makerSignature, takerSignature);
     console.log(tradeApiTransaction);
 
     //set order blocknum and transactionId
@@ -859,8 +920,14 @@ async function orderTake(orderId, order) {
     order.timestamp = Math.floor(new Date() / 1000);
 
     //Add the trade entry offchain with the maker/taker fee
-    order.makerFee = (order.makerFee * order.amountBuy).toFixed(4);
-    order.takerFee = (order.takerFee * order.amountSell).toFixed(4);
+    order.makerFee = makerFee / Math.pow(10, pAssetBuy);
+    order.takerFee = takerFee / Math.pow(10, pAssetSell);
+
+    console.log("***********************************");
+    console.log("Persisting makerFee=" + order.makerFee + "@" + order.assetBuy);
+    console.log("Persisting takerFee=" + order.takerFee + "@" + order.assetSell);
+    console.log("***********************************");
+
     var tradeTrx = await client.index({
         index: 'trades',
         type: 'trade',

@@ -1,17 +1,27 @@
 # Simple index search queries
 GET accounts/_search
 GET deposits/_search
+GET withdrawals/_search
 GET configs/_search
 GET balances/_search
 
 
 GET symbols/_search?size=1000
 GET tickers/_search?size=1000
-GET orders/order/_search?q=IQ
+GET orders/order/_search?q="IQ"
 GET orders/_search?size=1000
 GET accounts/_search
 GET exchanges/_search
 GET trades/_search
+
+# Reset actions count for scanner
+POST /configs/config/1/_update
+{
+   "doc" : {
+      "actionsequence" : 65
+   }
+}
+
 GET apikeys/_search
 GET apikeys
 POST /apikeys/apikey/P9RDZmYBJNEeaSKiKKOW/_update
