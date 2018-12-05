@@ -437,6 +437,9 @@ PUT accounts
         "account": {
           "type": "keyword"
         },
+        "activekey": {
+          "type": "keyword"
+        },
         "nonce": {
           "type": "integer"
         },

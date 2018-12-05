@@ -5,12 +5,24 @@ var datetime = require('node-datetime');
 
 //TODO - Move this to configs(db)/config.js/.env as a global setting
 const eos = Eos({
-    eosVersion: '0f6695cb',
-    chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
+    eosVersion: '1e9ca55c',
+    chainId: 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f',
     httpEndpoint: 'http://127.0.0.1:8888',
     debug: false,
     verbose: false
 });
+
+async function getActiveKey(account) {
+    var accountInfo = await eos.getAccount(account);
+    for (var i = 0, len = accountInfo.permissions.length; i < len; i++) {
+        // console.log("permission type => " + accountInfo.permissions[i].perm_name);
+        // console.log("key => " + accountInfo.permissions[i].required_auth.keys[0].key);
+        if (accountInfo.permissions[i].perm_name == 'active') {
+            console.log(accountInfo.permissions[i].required_auth.keys[0].key);
+            return accountInfo.permissions[i].required_auth.keys[0].key;
+        }
+    }
+}
 
 async function getActions(contractName, startSeq, endSeq) {
     console.log("scanner:getActions=> account:startSeq:endSeq  =>" + contractName + ":" + startSeq + ":" + endSeq);
@@ -66,6 +78,7 @@ async function scanBlockchain() {
             //create account record if new user
             var account = {};
             account.account = result.actions[i].action_trace.act.data.from;
+            account.activekey = await getActiveKey(account.account);
             account.nonce = 1; //init user nonce
             account.feediscount = 1; //??
             account.rewards = 1; //??
