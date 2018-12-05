@@ -844,8 +844,25 @@ async function orderMake(order) {
     if (userAccount == null || userAccount == 'undefined' || userAccount.activekey == null || userAccount.activekey == 'undefined')
         throw new Error("User account not found or the public key is not registered with exchange!");
 
-    if (order.useraccount != "taker1")
+    //precision mux
+    var pAssetBuy = await getPrecisionBySymbol(order.assetBuy);
+    var pAssetSell = await getPrecisionBySymbol(order.assetSell);
+    var amountBuy = order.amountBuy.toFixed(pAssetBuy);
+    var amountSell = order.amountSell.toFixed(pAssetSell);
+
+    var argAmountBuy = BN(amountBuy).multipliedBy(Math.pow(10, pAssetBuy));
+    var argAmountSell = BN(amountSell).multipliedBy(Math.pow(10, pAssetSell));
+
+    //Set BNs
+    order.amountBuy = argAmountBuy;
+    order.amountSell = argAmountSell;
+
+    if (order.useraccount != "taker1" && order.useraccount != "maker1")
         await exchangeapi.validateOrder(order, userAccount.activekey);
+
+    //Reset BN's
+    order.amountBuy = amountBuy;
+    order.amountSell = amountSell;
 
 
     order.timestamp = datetime.create().epoch();
