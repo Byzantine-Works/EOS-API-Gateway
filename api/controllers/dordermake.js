@@ -21,7 +21,7 @@ function ordermake(req, res) {
   ordermake.assetBuy = req.swagger.params.body.value.assetBuy;
   ordermake.assetSell = req.swagger.params.body.value.assetSell;
   ordermake.signature = req.swagger.params.body.value.signature;
-
+  ordermake.nonce = req.swagger.params.body.value.nonce;
   ordermake.amountBuy = req.swagger.params.body.value.amountBuy;
   ordermake.amountSell = req.swagger.params.body.value.amountSell;
   ordermake.price = req.swagger.params.body.value.price;
