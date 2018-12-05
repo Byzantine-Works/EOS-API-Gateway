@@ -515,6 +515,28 @@ async function orderCancel(orderId, orderHash) {
 }
 
 
+async function getAccount(account) {
+    console.log("es:req=>getAccount:" + account);
+    var userAccount = await client.search({
+        index: 'accounts',
+        type: 'account',
+        body: {
+            "query": {
+                "match": {
+                    "account": account
+                }
+            }
+        }
+    });
+    //console.log(userAccount);
+    if (userAccount.hits.hits.length == 0)
+        throw new Error("Account not registered with exchange!");
+    else {
+        userAccount.hits.hits[0]._source.accountId = userAccount.hits.hits[0]._id;
+        return userAccount.hits.hits[0]._source;
+    }
+}
+
 async function getOrderById(orderId) {
     var userOrder = await client.search({
         index: 'orders',
@@ -818,14 +840,22 @@ async function updateBalances(balance, type) {
 }
 
 async function orderMake(order) {
-    order.timestamp = datetime.create().epoch();
-    order.created = datetime.create().format('Y-m-d H:M:S');
-    order.updated = datetime.create().format('Y-m-d H:M:S');
-    return await client.index({
-        index: 'orders',
-        type: 'order',
-        body: order
-    });
+    if (order.useraccount != 'maker1' || order.useraccount != 'taker1') {
+        var userAccount = await getAccount(order.useraccount);
+        if (userAccount == null || userAccount == 'undefined' || userAccount.activekey == null || userAccount.activekey == 'undefined')
+            throw new Error("User account not found or the public key is not registered with exchange!");
+
+        await exchangeapi.validateOrder(order, userAccount.activekey);
+
+        order.timestamp = datetime.create().epoch();
+        order.created = datetime.create().format('Y-m-d H:M:S');
+        order.updated = datetime.create().format('Y-m-d H:M:S');
+        return await client.index({
+            index: 'orders',
+            type: 'order',
+            body: order
+        });
+    }
 }
 
 async function orderTake(orderId, order) {

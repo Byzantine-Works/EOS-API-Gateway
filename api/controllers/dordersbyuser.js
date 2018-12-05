@@ -16,7 +16,7 @@ function ordersbyuser(req, res) {
   var user = req.swagger.params.user.value;
   console.log(" ordersbyuser api call => " + user);
   es.getOrdersByUser(user).then(function (order) {
-    console.log('ordersbyuser res => ' + JSON.stringify(order));
+    console.log('ordersbyuser res => ' + (order.length));
     var t1 = performance.now();
     es.auditAPIEvent(req, t1 - t0, true);
     res.json(order);

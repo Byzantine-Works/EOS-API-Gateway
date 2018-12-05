@@ -44,9 +44,14 @@ function ordermake(req, res) {
     response.result = order.result;
     res.json(response);
   }).catch(err => {
-    console.log("Error in makeorder api:=>" + err);
+    console.log("Error in ordermake api:=>" + err);
+    var error = {
+      statusCode: 500,
+      message: err.message,
+      code: 'exchange_ordermake_error'
+    };
     var t2 = performance.now();
     es.auditAPIEvent(req, t2 - t0, false);
-    res.status(500).json(err);
+    res.status(500).json(error);
   });
 }

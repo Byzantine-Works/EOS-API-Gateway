@@ -50,7 +50,7 @@ var config = {
           callCount: 0,
         },
         "FQK0SYR-W4H4NP2-HXZ2PKH-3J8797N": {
-          "name": "Byzantine Skinny(Stripe) Web Wallet",
+          "name": "Byzantine EOS API Gateway",
           isEnabled: true,
           callCount: 0,
         },
@@ -75,7 +75,7 @@ var config = {
       if (allKeys.hasOwnProperty(scopesOrApiKey) && allKeys[scopesOrApiKey]['isEnabled'] === true) {
         //console.log('------ headers["api_key"]: ' + (req.headers["api_key"] || 'api_key MISSING'))
         //console.log('------ query["api_key"]: ' + (req.query["api_key"] || 'api_key MISSING') + '\n')
-        console.log('\n~~~~~~~~~~~~ API Key Accepted for name: ' + allKeys[scopesOrApiKey]['name'] + ' ~~~~~~~~~~~~~~~~~~~\n');
+        //console.log('\n~~~~~~~~~~~~ API Key Accepted for name: ' + allKeys[scopesOrApiKey]['name'] + ' ~~~~~~~~~~~~~~~~~~~\n');
         req.headers['api_key'] = scopesOrApiKey; //inject api_key as header arg for consistent access in the backend
         //print headers
         // console.log("app.js printing headers => " + JSON.stringify(req.headers));
