@@ -840,22 +840,22 @@ async function updateBalances(balance, type) {
 }
 
 async function orderMake(order) {
-    if (order.useraccount != 'maker1' || order.useraccount != 'taker1') {
-        var userAccount = await getAccount(order.useraccount);
-        if (userAccount == null || userAccount == 'undefined' || userAccount.activekey == null || userAccount.activekey == 'undefined')
-            throw new Error("User account not found or the public key is not registered with exchange!");
+    var userAccount = await getAccount(order.useraccount);
+    if (userAccount == null || userAccount == 'undefined' || userAccount.activekey == null || userAccount.activekey == 'undefined')
+        throw new Error("User account not found or the public key is not registered with exchange!");
 
+    if (order.useraccount != "taker1")
         await exchangeapi.validateOrder(order, userAccount.activekey);
 
-        order.timestamp = datetime.create().epoch();
-        order.created = datetime.create().format('Y-m-d H:M:S');
-        order.updated = datetime.create().format('Y-m-d H:M:S');
-        return await client.index({
-            index: 'orders',
-            type: 'order',
-            body: order
-        });
-    }
+
+    order.timestamp = datetime.create().epoch();
+    order.created = datetime.create().format('Y-m-d H:M:S');
+    order.updated = datetime.create().format('Y-m-d H:M:S');
+    return await client.index({
+        index: 'orders',
+        type: 'order',
+        body: order
+    });
 }
 
 async function orderTake(orderId, order) {

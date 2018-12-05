@@ -352,29 +352,30 @@ function loadTrades() {
                     //bulk index bidTrades
                     console.log("askTrades size => " + askTrades.length);
 
-                    setTimeout(function () {
-                        if (askTrades.length > 0) {
-                            client.bulk({
-                                index: 'trades',
-                                type: 'trade',
-                                body: askTrades
-                            }, function (err, resp, status) {
-                                console.log(status);
-                                if (err) {
-                                    console.log("loadTrades Trades err => " + err);
-                                } else
-                                    console.log("loadTrades Trades resp => " + ((resp)));
-                            });
-                        }
-                    }, 4000);
+                    // setTimeout(function () {
+                    if (askTrades.length > 0) {
+                        client.bulk({
+                            index: 'trades',
+                            type: 'trade',
+                            body: askTrades
+                        }, function (err, resp, status) {
+                            sleep.sleep(1);
+                            console.log(status);
+                            if (err) {
+                                console.log("loadTrades Trades err => " + err);
+                            } else
+                                console.log("loadTrades Trades resp => " + ((resp)));
+                        });
+                    }
+                    // }, 4000);
                 }
             });
         }
     });
 }
 
-function updateOrderByOrderId(orderId) {
-    client.update({
+async function updateOrderByOrderId(orderId) {
+    await client.update({
         index: 'orders',
         type: 'order',
         id: orderId,
@@ -402,7 +403,7 @@ function loadOrders() {
                 {
                     console.log(err);
                 } else {
-                    console.log(body);
+                    //console.log(body);
                     var orders = [];
                     for (var j = 0, len = 3000; j < len; j++) {
                         var order = {};
@@ -473,6 +474,7 @@ function loadOrders() {
                         type: 'order',
                         body: orders
                     }, function (err, resp, status) {
+                        sleep.sleep(1);
                         console.log(status);
                         if (err)
                             console.log("loadOrders err => " + err);
