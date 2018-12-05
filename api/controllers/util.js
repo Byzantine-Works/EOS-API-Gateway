@@ -4,7 +4,7 @@ function sanitizeTickerData(rawTickerData) {
     var ticker = [];
     for (var i = 0, len = rawTickerData.length; i < len; i++) {
         var rndMuxer = (Math.random() * (0.0412 - 0.0267) + 0.0267).toFixed(4);
-        console.log(rndMuxer);
+        //console.log(rndMuxer);
         var volume = Math.round(rawTickerData[i]._source.data.amount * 10000) / 10000;
         var amount = Math.round(rawTickerData[i]._source.data.volume * 10000) / 10000;
         rawTickerData[i]._source.data.volume = volume + volume * rndMuxer;
@@ -29,6 +29,7 @@ function sanitizeOrderData(orderData) {
         orderData[i]._source.hash = "******************************";
         order.push(orderData[i]._source)
     }
+    console.log('order data length => ' + (order.length));
     return order;
 }
 
@@ -41,6 +42,7 @@ function sanitizeSymbols(symbolData) {
         delete symbolData.hits.hits[i]._source.currency;
         symbol.push(symbolData.hits.hits[i]._source);
     }
+    console.log('symbols data length => ' + (symbol.length));
     return symbol;
 }
 

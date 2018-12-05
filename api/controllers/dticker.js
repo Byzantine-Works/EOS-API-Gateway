@@ -17,7 +17,7 @@ function ticker(req, res) {
   var symbol = req.swagger.params.symbol.value;
   es.readIndex(indexName, indexType, symbol).then(function (tickers) {
     var ticker = util.sanitizeTickerData(tickers.hits.hits);
-    //console.log('ticker data => ' + JSON.stringify(ticker));
+    console.log('ticker data length => ' + (ticker.length));
     var t1 = performance.now();
     es.auditAPIEvent(req, t1 - t0, true);
     res.json(ticker);
