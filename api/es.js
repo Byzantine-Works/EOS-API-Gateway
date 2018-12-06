@@ -847,8 +847,8 @@ async function orderMake(order) {
     //precision mux
     var pAssetBuy = await getPrecisionBySymbol(order.assetBuy);
     var pAssetSell = await getPrecisionBySymbol(order.assetSell);
-    var amountBuy = order.amountBuy.toFixed(pAssetBuy);
-    var amountSell = order.amountSell.toFixed(pAssetSell);
+    var amountBuy = parseFloat(order.amountBuy.toFixed(pAssetBuy));
+    var amountSell = parseFloat(order.amountSell.toFixed(pAssetSell));
 
     var argAmountBuy = BN(amountBuy).multipliedBy(Math.pow(10, pAssetBuy));
     var argAmountSell = BN(amountSell).multipliedBy(Math.pow(10, pAssetSell));
