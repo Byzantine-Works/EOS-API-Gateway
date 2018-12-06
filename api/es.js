@@ -604,6 +604,15 @@ async function getTradesByUser(user) {
     return trades;
 }
 
+async function addExchange(exchange) {
+    console.log(" Adding a new user exchange.. ");
+    return await client.index({
+        index: 'exchanges',
+        type: 'exchange',
+        body: exchange
+    });
+}
+
 async function addAccount(account) {
     var accountExists = await client.search({
         index: 'accounts',
@@ -1098,3 +1107,4 @@ module.exports.addWithdrawal = addWithdrawal;
 module.exports.getUserNonce = getUserNonce;
 module.exports.incrementUserNonce = incrementUserNonce;
 module.exports.getTradesByUser = getTradesByUser;
+module.exports.addExchange = addExchange;

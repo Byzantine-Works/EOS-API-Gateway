@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.0.1"
+  version: "2.1.0"
   title: "Byzanti.ne API Gateway - Powered by Liberty Block"
 # during dev, should point to your local machine
 host: local.byzanti.ne:8901
@@ -42,7 +42,7 @@ paths:
     x-swagger-router-controller: info
     get:
       tags:
-        - BASE API {info,tokens,account,transaction,actions,transfer}
+        - EOS BASE API {info,tokens,account,transaction,actions,transfer}
       description: Returns 'info' of the node to the calling application
       # used as the method name of the controller
       operationId: info
@@ -66,7 +66,7 @@ paths:
     x-swagger-router-controller: tokens
     get:
       tags:
-        - BASE API {info,tokens,account,transaction,actions,transfer}
+        - EOS BASE API {info,tokens,account,transaction,actions,transfer}
       description: Returns All *legit EOS Derivative Tokens Airdropped, Airgrabbed and ICO'd with an operational contract,symbol
       operationId: tokens
       # parameters:
@@ -90,7 +90,7 @@ paths:
     x-swagger-router-controller: dsymbols
     get:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] API {symbols,ticker,orders,orderbook,orderbooktick,tradebook,makeorder,takeorder,exbalance}
       description: Returns All *legit EOS Derivative Token Pairs for Trading on LDAR
       operationId: symbols
       responses:
@@ -106,7 +106,7 @@ paths:
     x-swagger-router-controller: dticker
     get:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] API {symbols,ticker,orders,orderbook,orderbooktick,tradebook,makeorder,takeorder,exbalance}
       description: Returns ticker of all tradable EOS Derivative Token Pairs on LDAR
       operationId: ticker
       parameters:
@@ -127,7 +127,7 @@ paths:
     x-swagger-router-controller: dorders
     get:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] API {symbols,ticker,orders,orderbook,orderbooktick,tradebook,makeorder,takeorder,exbalance}
       description: Returns order books for a given symbol on LDAR
       operationId: orders
       parameters:
@@ -156,7 +156,7 @@ paths:
     x-swagger-router-controller: dordermake
     post:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] API {symbols,ticker,orders,orderbook,orderbooktick,tradebook,makeorder,takeorder,exbalance}
       description: Adds a new Order for a given symbol on LDAR
       operationId: ordermake
       parameters:
@@ -201,7 +201,7 @@ paths:
     x-swagger-router-controller: dordertake
     post:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] API {symbols,ticker,orders,orderbook,orderbooktick,tradebook,makeorder,takeorder,exbalance}
       description: Take(buy/sell) an order for a given symbol on LDAR
       operationId: ordertake
       parameters:
@@ -246,7 +246,7 @@ paths:
     x-swagger-router-controller: dordercancel
     post:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] API {symbols,ticker,orders,orderbook,orderbooktick,tradebook,makeorder,takeorder,exbalance}
       description: Cancels an existing Order on LDAR
       operationId: ordercancel
       parameters:
@@ -273,7 +273,7 @@ paths:
     x-swagger-router-controller: dordersbyuser
     get:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] API {symbols,ticker,orders,orderbook,orderbooktick,tradebook,makeorder,takeorder,exbalance}
       description: Returns orders by user account on LDAR
       operationId: ordersbyuser
       parameters:
@@ -294,7 +294,7 @@ paths:
     x-swagger-router-controller: dorderbyid
     get:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] API {symbols,ticker,orders,orderbook,orderbooktick,tradebook,makeorder,takeorder,exbalance}
       description: Returns order by a given orderId on LDAR
       operationId: orderbyid
       parameters:
@@ -315,7 +315,7 @@ paths:
     x-swagger-router-controller: dorderbook
     get:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] API {symbols,ticker,orders,orderbook,orderbooktick,tradebook,makeorder,takeorder,exbalance}
       description: Returns order books for a given symbol on LDAR
       operationId: orderbook
       parameters:
@@ -340,7 +340,7 @@ paths:
     x-swagger-router-controller: dtradebook
     get:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] API {symbols,ticker,orders,orderbook,orderbooktick,tradebook,makeorder,takeorder,exbalance}
       description: Returns trade book for a given symbol on LDAR
       operationId: tradebook
       parameters:
@@ -365,7 +365,7 @@ paths:
     x-swagger-router-controller: dtradesbyuser
     get:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] API {symbols,ticker,orders,orderbook,orderbooktick,tradebook,makeorder,takeorder,exbalance}
       description: Returns trades by user account on LDAR
       operationId: tradesbyuser
       parameters:
@@ -386,7 +386,7 @@ paths:
     x-swagger-router-controller: dorderbooktick
     get:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] API {symbols,ticker,orders,orderbook,orderbooktick,tradebook,makeorder,takeorder,exbalance}
       description: Ticksize based return of order book price aggregation for a given symbol on LDAR
       operationId: orderbooktick
       parameters:
@@ -411,7 +411,7 @@ paths:
     x-swagger-router-controller: ddeposit
     post:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] API {symbols,ticker,orders,orderbook,orderbooktick,tradebook,makeorder,takeorder,exbalance}
       description: Deposit EOS DACs to the exchange account {from account}  {amount as extended asset}
       operationId: deposit
       parameters:
@@ -444,7 +444,7 @@ paths:
     x-swagger-router-controller: dwithdraw
     post:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] API {symbols,ticker,orders,orderbook,orderbooktick,tradebook,makeorder,takeorder,exbalance}
       description: Withdraw EOS DACs from the exchange account {from user account}  {amount as extended asset}
       operationId: withdraw
       parameters:
@@ -477,7 +477,7 @@ paths:
     x-swagger-router-controller: dwithdrawscatter
     post:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] API {symbols,ticker,orders,orderbook,orderbooktick,tradebook,makeorder,takeorder,exbalance}
       description: Withdraw EOS/DACs from the exchange account.
       operationId: withdrawscatter
       parameters:
@@ -516,7 +516,7 @@ paths:
     x-swagger-router-controller: dnonce
     get:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] API {symbols,ticker,orders,orderbook,orderbooktick,tradebook,makeorder,takeorder,exbalance}
       description: Returns user nonce on the exchange
       operationId: nonce
       parameters:
@@ -537,7 +537,7 @@ paths:
     x-swagger-router-controller: dbalance
     get:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] API {symbols,ticker,orders,orderbook,orderbooktick,tradebook,makeorder,takeorder,exbalance}
       description: Returns exchange balances of EOS Derivative Tokens on LDAR
       operationId: balance
       parameters:
@@ -558,7 +558,7 @@ paths:
     x-swagger-router-controller: dchainbalance
     get:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] API {symbols,ticker,orders,orderbook,orderbooktick,tradebook,makeorder,takeorder,exbalance}
       description: Returns the user accounts balances on the chain
       operationId: chainbalance
       parameters:
@@ -579,7 +579,7 @@ paths:
     x-swagger-router-controller: dexchanges
     get:
       tags:
-        - LDAR API {symbols,ticker,orders,orderbook,orderbooktick,exdeposit,exwithdraw,makeorder,takeorder,extrade}
+        - Liquid Digital Asset Relay [LDAR] Admin API {exchanges,settings}
       description: Returns exchanges enabled on the LDAR platform
       operationId: exchanges
       responses:
@@ -595,7 +595,7 @@ paths:
     x-swagger-router-controller: tokensByAccount
     get:
       tags:
-        - BASE API {info,tokens,account,transaction,actions,transfer}
+        - EOS BASE API {info,tokens,account,transaction,actions,transfer}
       description: Returns All EOS and Derivative Tokens Airdropped, Airgrabbed and ICO'd that a user has in his account
       operationId: tokensByAccount
       parameters:
@@ -623,7 +623,7 @@ paths:
     x-swagger-router-controller: transfer
     post:
       tags:
-        - BASE API {info,tokens,account,transaction,actions,transfer}
+        - EOS BASE API {info,tokens,account,transaction,actions,transfer}
       description: Returns transaction response to transfer on-chain action {from account} {to account} {amount} {memo}
       operationId: transfer
       parameters:
@@ -664,7 +664,7 @@ paths:
     x-swagger-router-controller: transferWithScatter
     post:
       tags:
-        - BASE API {info,tokens,account,transaction,actions,transfer}
+        - EOS BASE API {info,tokens,account,transaction,actions,transfer}
       description: Returns transaction response to transfer on-chain action {from account} {to account} {amount} {memo} {sig} {transactionHeaders}
       operationId: transferWithScatter
       parameters:
@@ -703,7 +703,7 @@ paths:
     x-swagger-router-controller: getTransaction
     get:
       tags:
-        - BASE API {info,tokens,account,transaction,actions,transfer}
+        - EOS BASE API {info,tokens,account,transaction,actions,transfer}
       description: Returns transaction details of a previously executed on-chain transaction. Used to validate with certainty successfull completion, and or reversed transaction.
       operationId: getTransaction
       parameters:
@@ -724,7 +724,7 @@ paths:
     x-swagger-router-controller: getAccount
     get:
       tags:
-        - BASE API {info,tokens,account,transaction,actions,transfer}
+        - EOS BASE API {info,tokens,account,transaction,actions,transfer}
       description: Returns EOS blockchain account details including avail or staked RAM, CPU.
       operationId: getAccount
       parameters:
@@ -745,7 +745,7 @@ paths:
     x-swagger-router-controller: getCurrencyStats
     get:
       tags:
-        - BASE API {info,tokens,account,transaction,actions,transfer}
+        - EOS BASE API {info,tokens,account,transaction,actions,transfer}
       description: Returns currency stats for a given tokencontract and symbol.
       operationId: getCurrencyStats
       parameters:
@@ -770,7 +770,7 @@ paths:
     x-swagger-router-controller: getActions
     get:
       tags:
-        - BASE API {info,tokens,account,transaction,actions,transfer}
+        - EOS BASE API {info,tokens,account,transaction,actions,transfer}
       description: Returns actions the given account partook in along with the transaction details. Use pos and offset as a cursor to navigate the items.
       operationId: getActions
       parameters:
@@ -799,7 +799,7 @@ paths:
     x-swagger-router-controller: getRefunds
     get:
       tags:
-        - BASE API {info,tokens,account,transaction,actions,transfer}
+        - EOS BASE API {info,tokens,account,transaction,actions,transfer}
       description: Returns refunds on a given account.
       operationId: getRefunds
       parameters:
@@ -820,7 +820,7 @@ paths:
     x-swagger-router-controller: getNameBids
     get:
       tags:
-        - BASE API {info,tokens,account,transaction,actions,transfer}
+        - EOS BASE API {info,tokens,account,transaction,actions,transfer}
       description: Returns Name Bids on a given account.
       operationId: getNameBids
       parameters:
@@ -841,7 +841,7 @@ paths:
     x-swagger-router-controller: getKeyset
     get:
       tags:
-        - BASE API {info,tokens,account,transaction,actions,transfer}
+        - EOS BASE API {info,tokens,account,transaction,actions,transfer}
       description: Returns a public/private key pairs. You need 2 pairs for account creation. these are owner keypair and active keypair. Although you can use the same keypair for both owner and active, it is not recommended.
       operationId: getKeyset
       responses:
@@ -857,7 +857,7 @@ paths:
     x-swagger-router-controller: createAccount
     post:
       tags:
-        - BASE API {info,tokens,account,transaction,actions,transfer}
+        - EOS BASE API {info,tokens,account,transaction,actions,transfer}
       description: Create an EOS Account
       operationId: createAccount
       parameters:
@@ -894,7 +894,7 @@ paths:
     x-swagger-router-controller: getProducers
     get:
       tags:
-        - Block API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
+        - EOS CHAIN API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
       description: Returns the list of 21 producers.
       operationId: getProducers
       responses:
@@ -910,7 +910,7 @@ paths:
     x-swagger-router-controller: voteProducer
     post:
       tags:
-        - Block API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
+        - EOS CHAIN API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
       description: Lets you vote for a specific producer account
       operationId: voteProducer
       parameters:
@@ -943,7 +943,7 @@ paths:
     x-swagger-router-controller: delegate
     post:
       tags:
-        - Block API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
+        - EOS CHAIN API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
       description: Delegate specific NET and CPU bandwidth for a user
       operationId: delegate
       parameters:
@@ -980,7 +980,7 @@ paths:
     x-swagger-router-controller: undelegate
     post:
       tags:
-        - Block API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
+        - EOS CHAIN API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
       description: Undelegate specific NET and CPU bandwidth
       operationId: undelegate
       parameters:
@@ -1017,7 +1017,7 @@ paths:
     x-swagger-router-controller: getBandwidth
     get:
       tags:
-        - Block API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
+        - EOS CHAIN API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
       description: Returns account bandwidth staked in EOS for network and cpu.
       operationId: getBandwidth
       parameters:
@@ -1038,7 +1038,7 @@ paths:
     x-swagger-router-controller: buyRam
     post:
       tags:
-        - Block API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
+        - EOS CHAIN API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
       description: Buy Ram
       operationId: buyRam
       parameters:
@@ -1073,7 +1073,7 @@ paths:
     x-swagger-router-controller: buyRamBytes
     post:
       tags:
-        - Block API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
+        - EOS CHAIN API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
       description: Buy Ram in specified bytes
       operationId: buyRamBytes
       parameters:
@@ -1108,7 +1108,7 @@ paths:
     x-swagger-router-controller: sellRamBytes
     post:
       tags:
-        - Block API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
+        - EOS CHAIN API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
       description: Sell Ram in specified bytes
       operationId: sellRamBytes
       parameters:
@@ -1141,9 +1141,42 @@ paths:
     x-swagger-router-controller: getRamPrice
     get:
       tags:
-        - Block API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
+        - EOS CHAIN API {Producer List, Voting, Delegate, Undelegate, Buy/sell RAM & get RAM price}
       description: Returns RAM prices based on supply/quote and the Bancor algorithm
       operationId: getRamPrice
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/transferResponse"
+        "400":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /exchangeAdd:
+    x-swagger-router-controller: dexchangeadd
+    post:
+      tags:
+        - Liquid Digital Asset Relay [LDAR] Admin API {exchanges,settings}
+      description: Adds a new exchange on LDAR
+      operationId: exchangeadd
+      parameters:
+        - name: body
+          in: body
+          description: Body should encapsulate {name=MBAeX}, {makerFee}, {takerFee},{feeAccount},{LDARenabled}
+          required: true
+          schema:
+            properties:
+              name:
+                type: string
+              makerFee:
+                type: number
+              takerFee:
+                type: number
+              feeAccount:
+                type: string
+              LDARenabled:
+                type: integer          
       responses:
         "200":
           description: Success
