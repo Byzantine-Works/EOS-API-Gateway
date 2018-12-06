@@ -197,6 +197,7 @@ function loadExchanges() {
     for (var i = 0, len = exchanges.length; i < len; i++) {
         var exchange = {};
         exchange.name = exchanges[i];
+        exchange.chain = "EOS";
         exchange.makerFee = 0.01;
         exchange.takerFee = 0.02;
         exchange.feeAccount = exchanges[i] + '.fee';
