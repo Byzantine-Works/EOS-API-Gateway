@@ -226,7 +226,7 @@ async function getOrderBook(indexName, indexType, symbol, size) {
         index: indexName,
         type: indexType,
         size: size,
-        sort: 'price:asc',
+        sort: 'price:desc',
         // chain: "EOS",
         body: {
             query: {
