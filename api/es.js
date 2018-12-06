@@ -606,6 +606,9 @@ async function getTradesByUser(user) {
 
 async function addExchange(exchange) {
     console.log(" Adding a new user exchange.. ");
+    exchange.updated = datetime.create().format('Y-m-d H:M:S'),
+        exchange.created = datetime.create().format('Y-m-d H:M:S'),
+        exchange.timestamp = datetime.create().epoch();
     return await client.index({
         index: 'exchanges',
         type: 'exchange',

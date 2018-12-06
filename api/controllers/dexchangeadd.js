@@ -22,7 +22,7 @@ function exchangeadd(req, res) {
 
   console.log(" exchangeadd api call => " + JSON.stringify(exchange));
   es.addExchange(exchange).then(function (exchangeResponse) {
-    console.log('exchangeadd res => ' + JSON.stringify(exchangeResponse));
+    //console.log('exchangeadd res => ' + JSON.stringify(exchangeResponse));
     var t1 = performance.now();
     es.auditAPIEvent(req, t1 - t0, true);
     var response = {};
