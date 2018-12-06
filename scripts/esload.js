@@ -436,12 +436,16 @@ function loadOrders() {
                                 order.assetSell = BASE_SYMBOL;
                                 order.amountBuy = parseFloat(randomAmountBuy);
                                 order.amountSell = parseFloat(randomSell);
+                                if (order.assetBuy == 'IQ')
+                                    order.amountBuy = parseFloat(order.amountBuy.toFixed(3));
                             } else {
                                 // console.log("SELL ORDER");
                                 order.assetBuy = BASE_SYMBOL;
                                 order.assetSell = ticker[0].symbol;
                                 order.amountBuy = parseFloat(randomSell);
                                 order.amountSell = parseFloat(randomAmountBuy);
+                                if (order.assetSell == 'IQ')
+                                    order.amountSell = parseFloat(order.amountSell.toFixed(3));
                             }
                             order.expires = expire; // 1d, 2d, 3d, 7d?
                             order.type = 2; //1 = MARKET, 2 = LIMIT
