@@ -18,7 +18,7 @@ async function getActiveKey(account) {
         // console.log("permission type => " + accountInfo.permissions[i].perm_name);
         // console.log("key => " + accountInfo.permissions[i].required_auth.keys[0].key);
         if (accountInfo.permissions[i].perm_name == 'active') {
-            console.log(accountInfo.permissions[i].required_auth.keys[0].key);
+            console.log('Active Key for ' + account + "=" + accountInfo.permissions[i].required_auth.keys[0].key);
             return accountInfo.permissions[i].required_auth.keys[0].key;
         }
     }

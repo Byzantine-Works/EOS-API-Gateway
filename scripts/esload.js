@@ -7,6 +7,8 @@ const elasticsearch = require('elasticsearch');
 const nodeDateTime = require('node-datetime');
 var sleep = require('sleep');
 const ecc = require("eosjs-ecc");
+const faker = require("fakerator")("default");
+
 
 // const sleep = require('sleep');
 
@@ -69,6 +71,9 @@ function readTrades() {
     return read('trades', 'trade');
 }
 
+function readSonar() {
+    return read('sonars', 'sonar');
+}
 
 function readExchanges() {
     return read('exchanges', 'exchange');
@@ -99,7 +104,25 @@ function getSymbolByCurrency(currency) {
     }, function (err) {
         console.log("Error in getSymbolByCurrency " + err);
     });
+}
 
+function getRandomGeo() {
+    const to = 180;
+    const from = -180;
+    const fixed = 4;
+    var geo = {};
+    geo.latitude = (Math.random() * (to - from) + from).toFixed(fixed) * 1;
+    geo.longitude = (Math.random() * (to - from) + from).toFixed(fixed) * 1;
+    return geo;
+}
+
+function loadSonar() {
+    console.log("Loading sonar datasets...");
+    //console.log(faker.address.geoLocation());
+    console.log(faker.entity.user());
+    //console.log(getRandomGeo());
+
+    process.exit(9);
 }
 
 function loadSymbols() {
@@ -186,6 +209,11 @@ function deleteOrders() {
 function deleteTrades() {
     console.log("Deleting Trades...!");
     deleteRecords('trades', 'trade');
+}
+
+function deleteSonar() {
+    console.log("Deleting Sonar...!");
+    deleteRecords('sonars', 'sonar');
 }
 
 function loadExchanges() {
@@ -555,7 +583,11 @@ module.exports.loadTickers = loadTickers;
 module.exports.readTickers = readTickers;
 module.exports.readSymbols = readSymbols;
 module.exports.readOrders = readOrders;
-module.exports.readTrades = readTrades;
+module.exports.deleteSonar = deleteSonar;
+module.exports.loadSonar = loadSonar;
+module.exports.readSonar = readSonar;
+
+
 
 module.exports.read = read;
 module.exports.index = index;
