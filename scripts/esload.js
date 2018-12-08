@@ -175,7 +175,7 @@ function loadTickers() {
                         console.log("Raw Ticker for Symbol is  => " + body);
                         console.log("Loading Ticker data => " + JSON.stringify(indexableData));
                         console.log("STatus code => " + indexableData.code);
-                        if (indexableData.code != 501 && indexableData.data.last) {
+                        if (indexableData.code != 501 && indexableData.code != -1103 && indexableData.data.last) {
                             indexableData.data.tradingpair = indexableData.data.currency + "_eos";
                             indexableData.data.symbol = (indexableData.data.currency).toUpperCase();
                             delete indexableData.data.currency;
