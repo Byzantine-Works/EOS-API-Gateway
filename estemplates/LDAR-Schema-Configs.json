@@ -1,11 +1,11 @@
 # Simple index search queries
-GET accounts/_search
+GET accounts/_search?size=100
 GET deposits/_search
 GET withdrawals/_search
 GET configs/_search
 GET balances/_search
 
-
+GET sonars/_search
 GET symbols/_search?size=1000
 GET tickers/_search?size=1000
 GET orders/order/_search?q="IQ"
@@ -14,13 +14,79 @@ GET accounts/_search
 GET exchanges/_search
 GET trades/_search
 
+# SONAR stuff
+# Create index
+GET sonars/_search
+
+DELETE sonars
+
+GET sonars
+
+PUT sonars
+{
+      "template": "sonars",
+    "settings": {
+        "index.refresh_interval": "1s",
+        "analysis": {
+            "analyzer": {
+                "default": {
+                    "type": "standard",
+                    "stopwords": "_none_"
+                }
+            }
+        }
+    },
+
+  "version": 1,
+  "mappings": {
+    "sonar": {
+      "properties": {
+        "account": {
+          "type": "keyword"
+        },
+        "exchange": {
+          "type": "keyword"
+        },
+        "assetBuy": {
+          "type": "keyword"
+        },
+        "amountBuy": {
+          "type": "float"
+        },
+        "assetSell": {
+          "type": "keyword"
+        },
+        "amountSell": {
+          "type": "float"
+        },
+        "side": {
+          "type": "keyword"
+        },
+        "orderCreatedDate": {
+          "type": "date"
+        },
+        "location": {
+          "type": "geo_point"
+        },
+        "blocked": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}
+
+
+
 # Reset actions count for scanner
 POST /configs/config/1/_update
 {
    "doc" : {
-      "actionsequence" : 65
+      "actionsequence" : 103
    }
 }
+
+DELETE accounts/account/blcdimcB_Z0tgStZSuFq
 
 GET apikeys/_search
 GET apikeys
@@ -516,6 +582,162 @@ PUT deposits
     }
   }
 }
+
+# Reverse engineering @Jamils stuff for admin
+# create index for services features and footercontent
+PUT services
+PUT features
+PUT footercontent
+PUT campaigntickers
+# profile
+GET contents/_search?size=1000
+
+DELETE /contents
+
+GET contents
+
+PUT contents 
+{
+  "mappings": {
+    "_doc": { 
+      "properties": { 
+        "mainTitle":    { "type": "text"  }, 
+        "contactUs":     { "type": "text"  }, 
+        "mainContent":    { "type": "text"  }, 
+        "aboutUsTitle":     { "type": "text"  }, 
+        "agreement":     { "type": "text"  }, 
+        "trade":     { "type": "text"  }, 
+        "agreementTitle":     { "type": "text"  }, 
+        "tradeTitle":     { "type": "text"  }, 
+        "aboutUs":     { "type": "text"  }, 
+        "contactUsTitle":     { "type": "text"  }, 
+        "uid":     { "type": "text"  }, 
+        "created":  {
+          "type":   "date", 
+          "format": "strict_date_optional_time||epoch_millis"
+        },
+        "updated":  {
+          "type":   "date", 
+          "format": "strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}
+
+#adminexchanges
+DELETE adminexchanges
+GET adminexchanges/_search
+# profile
+GET profile/_search?size=1000
+
+DELETE /profile
+
+GET profile
+
+PUT profile 
+{
+  "mappings": {
+    "_doc": { 
+      "properties": { 
+        "companyname":    { "type": "text"  }, 
+        "companyaddress":     { "type": "text"  }, 
+        "companydesc":    { "type": "text"  }, 
+        "companyemail":     { "type": "text"  }, 
+        "companynumber":     { "type": "text"  }, 
+        "created":  {
+          "type":   "date", 
+          "format": "strict_date_optional_time||epoch_millis"
+        },
+        "updated":  {
+          "type":   "date", 
+          "format": "strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}
+
+# settings
+GET settings/_search?size=1000
+
+DELETE settings
+
+PUT settings/_doc/1
+{
+    "theme_color" : "#d5364f",
+    "logo": "logo_main.png",
+    "lightLogo": "logoBlue.png",
+    "uid": "1",
+    "created" : "2018-12-07T14:12:12",
+    "updated" : "2018-12-07T14:12:12"
+}
+PUT settings/_doc/2
+{
+    "theme_color" : "#d5364f",
+    "logo": "logo_main - Copy.png",
+    "lightLogo": "",
+    "uid": "2",
+    "created" : "2018-12-07T14:12:12",
+    "updated" : "2018-12-07T14:12:12"
+}
+PUT settings 
+{
+  "mappings": {
+    "_doc": { 
+      "properties": { 
+        "theme_color":    { "type": "text"  }, 
+        "logo":     { "type": "text"  }, 
+        "lightLogo":    { "type": "text"  }, 
+        "uid":     { "type": "text"  }, 
+        "created":  {
+          "type":   "date", 
+          "format": "strict_date_optional_time||epoch_millis"
+        },
+        "updated":  {
+          "type":   "date", 
+          "format": "strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}
+
+# Users Index
+GET users/_search?size=1000
+
+DELETE /users
+
+GET users
+
+PUT users/_doc/1
+{
+    "username" : "admin",
+    "password": "310",
+    "created" : "2018-12-07T14:12:12",
+    "updated" : "2018-12-07T14:12:12"
+}
+
+PUT users 
+{
+  "mappings": {
+    "_doc": { 
+      "properties": { 
+        "username":    { "type": "text"  }, 
+        "password":     { "type": "text"  }, 
+        "created":  {
+          "type":   "date", 
+          "format": "strict_date_optional_time||epoch_millis"
+        },
+        "updated":  {
+          "type":   "date", 
+          "format": "strict_date_optional_time||epoch_millis"
+        }
+      }
+    }
+  }
+}
+
 
 # Configs Index
 GET configs/_search?size=1000
