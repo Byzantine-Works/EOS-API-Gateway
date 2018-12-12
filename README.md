@@ -63,7 +63,8 @@ node -e 'require("./api/controllers/apiKey").keygen()'
 
 - Replace `api` with `local` and `port` with `8901` for local dev validation for the following
 - swagger-ui: http://api.byzanti.ne/8902/docs
-- API-Analytics: https://analytics.byzanti.ne/goto/5c34272dd2c0a4e76e886d214876706f
+- API-Analytics: https://analytics.byzanti.ne/goto/f5e19f3c02731e08a077492d19fd22ad
+- Sonar-Analytics: https://analytics.byzanti.ne/goto/b511dbca961bb20fa27f4337c036ad9c
 - API-stats: https://api.byzanti.ne/swagger-stats/ui#sws_summary
 - swagger-apidocs: https://api.byzanti.ne/api-docs
 - swagger-editor: https://editor.swagger.io/
