@@ -7,12 +7,17 @@ GET balances/_search
 
 GET sonars/_search
 GET symbols/_search?size=1000
+GET symbols/_search?q=='IQ'
 GET tickers/_search?size=1000
 GET orders/order/_search?q="IQ"
 GET orders/_search?size=1000
-GET accounts/_search
+GET accounts/_search?size=1000
 GET exchanges/_search
 GET trades/_search
+
+# Simple index delete queries
+DELETE symbols/symbol/1YbiyWcB_Z0tgStZe_XS
+DELETE accounts/account/b24iw2cB_Z0tgStZIRp1
 
 # SONAR stuff
 # Create index
@@ -82,7 +87,7 @@ PUT sonars
 POST /configs/config/1/_update
 {
    "doc" : {
-      "actionsequence" : 103
+      "actionsequence" : 122
    }
 }
 
