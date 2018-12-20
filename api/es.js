@@ -632,7 +632,7 @@ async function addAccount(account) {
     if (accountExists.hits.hits.length == 0) {
         //insert a new user record
         console.log("registering new user account on exchange");
-        // await exchangeapi.exregisteruseraccount(account.account);
+        await exchangeapi.exregisteruseraccount(account.account);
         console.log(" Creating new user Account.. ");
         return await index(account, 'accounts', 'account');
     }
